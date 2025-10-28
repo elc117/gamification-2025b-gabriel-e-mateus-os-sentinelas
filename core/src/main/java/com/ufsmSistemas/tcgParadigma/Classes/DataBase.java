@@ -1,4 +1,4 @@
-package classes;
+package com.ufsmSistemas.tcgParadigma.Classes;
 
 public class DataBase {
     // Insert

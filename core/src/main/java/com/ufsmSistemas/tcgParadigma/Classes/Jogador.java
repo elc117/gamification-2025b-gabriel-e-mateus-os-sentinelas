@@ -1,10 +1,9 @@
-package classes;
+package com.ufsmSistemas.tcgParadigma.Classes;
 
 public class Jogador {
     private int id;
     private String nome;
     private int pontos;
-    private int cartasObtidas;
     private int quizesRespondidos;
 
     // Getters
@@ -16,9 +15,6 @@ public class Jogador {
     }
     public int getPontos() {
         return pontos;
-    }
-    public int getCartasObtidas() {
-        return cartasObtidas;
     }
     public int getQuizesRespondidos() {
         return quizesRespondidos;
@@ -33,9 +29,6 @@ public class Jogador {
     }
     public void setPontos(int pontos) {
         this.pontos = pontos;
-    }
-    public void setCartasObtidas(int cartasObtidas) {
-        this.cartasObtidas = cartasObtidas;
     }
     public void setQuizesRespondidos(int quizesRespondidos) {
         this.quizesRespondidos = quizesRespondidos;

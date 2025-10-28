@@ -1,4 +1,4 @@
-package classes;
+package com.ufsmSistemas.tcgParadigma.Classes;
 
 public class Session {
     private Jogador jogador;

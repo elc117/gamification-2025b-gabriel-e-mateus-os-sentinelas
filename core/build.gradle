@@ -14,5 +14,6 @@ dependencies {
 
   if(enableGraalNative == 'true') {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
+    implementation "org.xerial:sqlite-jdbc:3.45.3.0"
   }
 }

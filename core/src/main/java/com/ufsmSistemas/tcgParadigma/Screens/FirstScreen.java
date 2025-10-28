@@ -1,4 +1,4 @@
-package com.ufsmSistemas.tcgParadigma;
+package com.ufsmSistemas.tcgParadigma.Screens;
 
 import com.badlogic.gdx.Screen;
 
