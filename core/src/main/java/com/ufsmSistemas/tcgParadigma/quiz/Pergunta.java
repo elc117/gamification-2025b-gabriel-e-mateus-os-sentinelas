@@ -1,4 +1,4 @@
-package com.ufsmSistemas.tcgParadigma.Classes;
+package com.ufsmSistemas.tcgParadigma.quiz;
 
 import java.util.List;
 

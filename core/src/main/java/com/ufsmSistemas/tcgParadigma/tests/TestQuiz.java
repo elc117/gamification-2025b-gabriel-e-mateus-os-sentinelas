@@ -1,4 +1,7 @@
-package com.ufsmSistemas.tcgParadigma.Classes;
+package com.ufsmSistemas.tcgParadigma.tests;
+
+import com.ufsmSistemas.tcgParadigma.quiz.Pergunta;
+import com.ufsmSistemas.tcgParadigma.quiz.Quiz;
 
 public class TestQuiz {
     public static void main(String[] args) {

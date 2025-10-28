@@ -1,4 +1,6 @@
-package com.ufsmSistemas.tcgParadigma.Classes;
+package com.ufsmSistemas.tcgParadigma.utils;
+
+import com.ufsmSistemas.tcgParadigma.models.Carta;
 
 import java.util.List;
 

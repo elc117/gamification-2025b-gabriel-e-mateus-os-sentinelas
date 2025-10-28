@@ -1,4 +1,6 @@
-package com.ufsmSistemas.tcgParadigma.Classes;
+package com.ufsmSistemas.tcgParadigma.data;
+
+import com.ufsmSistemas.tcgParadigma.models.Jogador;
 
 public class Session {
     private Jogador jogador;

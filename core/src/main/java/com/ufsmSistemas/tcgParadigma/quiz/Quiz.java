@@ -1,11 +1,9 @@
-package com.ufsmSistemas.tcgParadigma.Classes;
+package com.ufsmSistemas.tcgParadigma.quiz;
 
-import com.ufsmSistemas.tcgParadigma.TemaQuiz;
+import com.ufsmSistemas.tcgParadigma.utils.LeJsonQuiz;
 
 import java.io.FileNotFoundException;
 import java.util.List;
-import java.util.Objects;
-
 
 public class Quiz {
     private TemaQuiz tema;
@@ -16,10 +14,9 @@ public class Quiz {
 
     //Construtor
     public Quiz(String tema, String dificuldade) throws FileNotFoundException {
-        this.tema = TemaQuiz.fromNome(tema); // já valida se o tema existe
+        this.tema = TemaQuiz.fromNome(tema);
         this.nivelDificuldade = dificuldade;
 
-        // imagemHost agora vem do enum
         this.imagemHost = this.tema.getImagemHost();
 
         //Pontos
@@ -38,19 +35,15 @@ public class Quiz {
     public String getTema() {
         return tema.getNome();
     }
-
     public String getNivelDificuldade() {
         return nivelDificuldade;
     }
-
     public String getImagemHost() {
         return imagemHost;
     }
-
     public int getPontosGanhos() {
         return pontosGanhos;
     }
-
     public List<Pergunta> getPerguntaList() {
         return perguntaList;
     }

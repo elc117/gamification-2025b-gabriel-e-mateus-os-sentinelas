@@ -1,4 +1,4 @@
-package com.ufsmSistemas.tcgParadigma;
+package com.ufsmSistemas.tcgParadigma.quiz;
 
 public enum TemaQuiz {
     LIDERES_POLITICA("Líderes e Política", "Lincoln"),

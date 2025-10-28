@@ -1,4 +1,4 @@
-package com.ufsmSistemas.tcgParadigma.Classes;
+package com.ufsmSistemas.tcgParadigma.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -9,14 +9,14 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import com.google.gson.*;
-import java.io.FileReader;
-import java.util.*;
+
+import com.ufsmSistemas.tcgParadigma.quiz.Pergunta;
+
 import java.io.FileNotFoundException;
 
 public class LeJsonQuiz {
     public static List<Pergunta> carregarPerguntas(String tema, String dificuldade) throws FileNotFoundException {
-        List<Pergunta> perguntas = new ArrayList<>(10);
+        List<Pergunta> perguntas = new ArrayList<Pergunta>(10);
         Gson gson = new Gson();
         FileReader reader = new FileReader("assets/json/questoesJson/questaoJson.json");
         JsonObject json = gson.fromJson(reader, JsonObject.class);
@@ -25,7 +25,7 @@ public class LeJsonQuiz {
             .getAsJsonObject(tema)
             .getAsJsonArray(dificuldade);
 
-        List<Integer> numeros = new ArrayList<>();
+        List<Integer> numeros = new ArrayList<Integer>();
         for (int i = 0; i < 100; i++) {
             numeros.add(i);
         }
@@ -40,7 +40,7 @@ public class LeJsonQuiz {
             String respostaCerta = obj.get("respostaCerta").getAsString();
             JsonArray erradas = obj.getAsJsonArray("respostaErrada");
 
-            List<String> respostasErradas = new ArrayList<>();
+            List<String> respostasErradas = new ArrayList<String>();
             for (JsonElement e : erradas) {
                 respostasErradas.add(e.getAsString());
             }
