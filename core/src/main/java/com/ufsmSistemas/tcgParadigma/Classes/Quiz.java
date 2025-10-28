@@ -1,52 +1,58 @@
 package com.ufsmSistemas.tcgParadigma.Classes;
 
+import com.ufsmSistemas.tcgParadigma.TemaQuiz;
+
+import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.Objects;
+
 
 public class Quiz {
-    private String tema;
-    private int nivelDificuldade;
+    private TemaQuiz tema;
+    private String nivelDificuldade;
     private String imagemHost;
     private int pontosGanhos;
-    private int bonusFimQuiz;
     private List<Pergunta> perguntaList;
+
+    //Construtor
+    public Quiz(String tema, String dificuldade) throws FileNotFoundException {
+        this.tema = TemaQuiz.fromNome(tema); // já valida se o tema existe
+        this.nivelDificuldade = dificuldade;
+
+        // imagemHost agora vem do enum
+        this.imagemHost = this.tema.getImagemHost();
+
+        //Pontos
+        if (dificuldade.equals("facil")) {
+            this.pontosGanhos = 1;
+        } else if (dificuldade.equals("média")) {
+            this.pontosGanhos = 2;
+        } else if (dificuldade.equals("difícil")) {
+            this.pontosGanhos = 3;
+        }
+
+        this.perguntaList = LeJsonQuiz.carregarPerguntas(this.tema.getNome(), this.nivelDificuldade);
+    }
 
     // Getters
     public String getTema() {
-        return tema;
+        return tema.getNome();
     }
-    public int getNivelDificuldade() {
+
+    public String getNivelDificuldade() {
         return nivelDificuldade;
     }
+
     public String getImagemHost() {
         return imagemHost;
     }
+
     public int getPontosGanhos() {
         return pontosGanhos;
     }
-    public int getBonusFimQuiz() {
-        return bonusFimQuiz;
-    }
+
     public List<Pergunta> getPerguntaList() {
         return perguntaList;
     }
 
-    // Setters
-    public void setTema(String tema) {
-        this.tema = tema;
-    }
-    public void setNivelDificuldade(int nivelDificuldade) {
-        this.nivelDificuldade = nivelDificuldade;
-    }
-    public void setImagemHost(String imagemHost) {
-        this.imagemHost = imagemHost;
-    }
-    public void setPontosGanhos(int pontosGanhos) {
-        this.pontosGanhos = pontosGanhos;
-    }
-    public void setBonusFimQuiz(int bonusFimQuiz) {
-        this.bonusFimQuiz = bonusFimQuiz;
-    }
-    public void setPerguntaList(List<Pergunta> perguntaList) {
-        this.perguntaList = perguntaList;
-    }
 }
