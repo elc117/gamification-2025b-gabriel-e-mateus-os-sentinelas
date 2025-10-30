@@ -12,9 +12,8 @@ public class Lwjgl3Launcher {
 
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setTitle("TParadigmaCG");
-        config.setWindowedMode(640, 480);
+        config.setWindowedMode(1280, 720);
         config.useVsync(true);
-
         new Lwjgl3Application(new Main(), config);
     }
 }

@@ -124,6 +124,8 @@ tasks.register("jarWin") {
   }
 }
 
+
+
 construo {
     // name of the executable
     name.set(appName)

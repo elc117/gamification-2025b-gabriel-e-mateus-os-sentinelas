@@ -25,3 +25,4 @@ java {
     languageVersion = JavaLanguageVersion.of(8)
   }
 }
+sourceSets.main.resources.srcDirs += [file("../core/assets").absolutePath]
