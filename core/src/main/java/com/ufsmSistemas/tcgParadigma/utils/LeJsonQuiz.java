@@ -1,53 +1,43 @@
 package com.ufsmSistemas.tcgParadigma.utils;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
-import java.io.FileReader;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
+import com.ufsmSistemas.tcgParadigma.quiz.Pergunta;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.ufsmSistemas.tcgParadigma.quiz.Pergunta;
-
-import java.io.FileNotFoundException;
-
 public class LeJsonQuiz {
-    public static List<Pergunta> carregarPerguntas(String tema, String dificuldade) throws FileNotFoundException {
-        List<Pergunta> perguntas = new ArrayList<Pergunta>(10);
-        Gson gson = new Gson();
-        FileReader reader = new FileReader("assets/json/questoesJson/questaoJson.json");
-        JsonObject json = gson.fromJson(reader, JsonObject.class);
 
-        JsonArray perguntasArray = json
-            .getAsJsonObject(tema)
-            .getAsJsonArray(dificuldade);
+    public static List<Pergunta> carregarPerguntas(String tema, String dificuldade) {
+        List<Pergunta> perguntas = new ArrayList<Pergunta>(10);
+
+        JsonReader reader = new JsonReader();
+        JsonValue json = reader.parse(Gdx.files.internal("json/questoesJson/questaoJson.json"));
+
+        JsonValue perguntasArray = json.get(tema).get(dificuldade);
 
         List<Integer> numeros = new ArrayList<Integer>();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < perguntasArray.size; i++) {
             numeros.add(i);
         }
         Collections.shuffle(numeros);
-        List<Integer> selecionados = numeros.subList(0, 10);
+        List<Integer> selecionados = numeros.subList(0, Math.min(10, numeros.size()));
 
-        for (int i = 0; i < 10; i++) {
-
-            JsonObject obj = perguntasArray.get(selecionados.get(i)).getAsJsonObject();
-
-            String enunciado = obj.get("pergunta").getAsString();
-            String respostaCerta = obj.get("respostaCerta").getAsString();
-            JsonArray erradas = obj.getAsJsonArray("respostaErrada");
+        for (int i : selecionados) {
+            JsonValue obj = perguntasArray.get(i);
+            String enunciado = obj.getString("pergunta");
+            String respostaCerta = obj.getString("respostaCerta");
 
             List<String> respostasErradas = new ArrayList<String>();
-            for (JsonElement e : erradas) {
-                respostasErradas.add(e.getAsString());
+            for (JsonValue errada : obj.get("respostaErrada")) {
+                respostasErradas.add(errada.asString());
             }
 
-            Pergunta p = new Pergunta(enunciado, respostaCerta, respostasErradas);
-            perguntas.add(p);
+            perguntas.add(new Pergunta(enunciado, respostaCerta, respostasErradas));
         }
+
         return perguntas;
     }
 }
