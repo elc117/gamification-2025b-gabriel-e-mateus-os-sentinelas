@@ -1,10 +1,6 @@
 package com.ufsmSistemas.tcgParadigma.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -14,8 +10,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ufsmSistemas.tcgParadigma.Main;
 
 public class TelaMenu extends TelaBase{
-
-    private TextButton botaoIniciar;
 
     public TelaMenu(Main game) {
         super(game);

@@ -1,7 +1,6 @@
 package com.ufsmSistemas.tcgParadigma;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Screen;
 import com.ufsmSistemas.tcgParadigma.data.DataBaseFactory;
 import com.ufsmSistemas.tcgParadigma.interfaces.DataBaseInterface;
 import com.ufsmSistemas.tcgParadigma.screens.TelaMenu;
