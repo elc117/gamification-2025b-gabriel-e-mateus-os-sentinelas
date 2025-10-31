@@ -4,9 +4,9 @@ import com.ufsmSistemas.tcgParadigma.quiz.Pergunta;
 import com.ufsmSistemas.tcgParadigma.quiz.Quiz;
 
 public class TestQuiz {
-    public static void main(String[] args) {
+    public void chamaQuiz(String topico, String dificuldade){
         try {
-            Quiz quiz = new Quiz("Matemática", "difícil");
+            Quiz quiz = new Quiz(topico, dificuldade);
 
             System.out.println("Tema: " + quiz.getTema());
             System.out.println("Dificuldade: " + quiz.getNivelDificuldade());
