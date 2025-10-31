@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ufsmSistemas.tcgParadigma.Main;
 
 public class TelaBase implements Screen {
@@ -14,6 +15,7 @@ public class TelaBase implements Screen {
 
     public TelaBase(Main game) {
         this.game = game;
+        stage = new Stage(new ScreenViewport());
     }
 
     @Override

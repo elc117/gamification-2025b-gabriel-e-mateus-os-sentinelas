@@ -8,10 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ufsmSistemas.tcgParadigma.Main;
-import com.ufsmSistemas.tcgParadigma.quiz.Pergunta;
-import com.ufsmSistemas.tcgParadigma.quiz.Quiz;
-
-import java.io.FileNotFoundException;
+import com.ufsmSistemas.tcgParadigma.screens.quiz.TelaOpcoesQuiz;
 
 public class TelaInicialJogo extends TelaBase {
 
@@ -29,7 +26,7 @@ public class TelaInicialJogo extends TelaBase {
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
         // Cria o botão usando o skin
-        TextButton botaoBooster = new TextButton("Abrir Booster", skin);
+        TextButton botaoBooster = new TextButton("Abríndo Bãossteáaaar", skin);
         TextButton botaoQuiz = new TextButton("Abrir Quiz", skin);
 
         botaoBooster.setSize(200, 60);
@@ -43,33 +40,14 @@ public class TelaInicialJogo extends TelaBase {
         botaoBooster.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Abrindo Booster!");
+                System.out.println("Abríndo Bãossteáaaar!");
             }
         });
 
         botaoQuiz.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Abrindo Quiz!");
-                try {
-                    Quiz quiz = new Quiz("Matemática", "difícil");
-                    System.out.println("Tema: " + quiz.getTema());
-                    System.out.println("Dificuldade: " + quiz.getNivelDificuldade());
-                    System.out.println("Imagem Host: " + quiz.getImagemHost());
-                    System.out.println("Número de perguntas: " + quiz.getPerguntaList().size());
-
-                    // Mostrar perguntas
-                    for (int i = 0; i < quiz.getPerguntaList().size(); i++) {
-                        Pergunta p = quiz.getPerguntaList().get(i);
-                        System.out.println((i+1) + ". " + p.getEnunciado());
-                        System.out.println("  Resposta certa: " + p.getRespostaCerta());
-                        System.out.println("  Erradas: " + p.getRespostaErrada());
-                    }
-
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-
+                game.setScreen(new TelaOpcoesQuiz(game));
             }
         });
 

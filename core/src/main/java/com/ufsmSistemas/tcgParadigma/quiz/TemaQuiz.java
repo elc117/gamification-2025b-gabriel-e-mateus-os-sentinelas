@@ -1,7 +1,7 @@
 package com.ufsmSistemas.tcgParadigma.quiz;
 
 public enum TemaQuiz {
-    LIDERES_POLITICA("Líderes e Política", "Lincoln"),
+    LIDERES_POLITICA("Lideres e Política", "Lincoln"),
     FILOSOFIA_HISTORIA("Filosofia e História", "Platão"),
     CIENCIA("Ciência", "Newton"),
     MATEMATICA("Matemática", "Pitágoras"),
