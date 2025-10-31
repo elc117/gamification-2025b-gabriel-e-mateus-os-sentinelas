@@ -1,14 +1,16 @@
 package com.ufsmSistemas.tcgParadigma.models;
 
-import com.ufsmSistemas.tcgParadigma.interfaces.DataBaseEntity;
+import com.badlogic.gdx.utils.JsonValue;
+import com.ufsmSistemas.tcgParadigma.interfaces.DataBaseEntityAPI;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class Jogador implements DataBaseEntity {
+public class Jogador implements DataBaseEntityAPI {
     private int id;
     private String nome;
     private int pontos;
     private int quizesRespondidos;
+    private int quantidadeBoosterAbertos;
     private String senha;
 
     // Getters
@@ -27,6 +29,9 @@ public class Jogador implements DataBaseEntity {
     public String getSenha() {
         return senha;
     }
+    public int getQuantidadeBoosterAbertos() {
+        return quantidadeBoosterAbertos;
+    }
 
     // Setters
     public void setId(int id) {
@@ -44,42 +49,38 @@ public class Jogador implements DataBaseEntity {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-
-
-    // Insert
-    @Override
-    public String getInsertSQL(){
-        return "INSERT INTO jogador (nome, senha) VALUES (?, ?)";
-    }
-    @Override
-    public void setInsertParameters(PreparedStatement pstmt) throws SQLException {
-        pstmt.setString(1, nome);
-        pstmt.setString(2, senha);
+    public void setQuantidadeBoosterAbertos(int quantidadeBoosterAbertos) {
+        this.quantidadeBoosterAbertos = quantidadeBoosterAbertos;
     }
 
 
-    // Update
     @Override
-    public String getUpdateSQL(){
-        return "UPDATE jogador SET pontos=?, quizesRespondidos=?, quantidadeBoosterAbertos=? WHERE id = ?";
-    }
-    @Override
-    public void setUpdateParameters(PreparedStatement pstmt) throws SQLException {
-        pstmt.setInt(1, pontos);
-        pstmt.setInt(2, quizesRespondidos);
-        pstmt.setInt(3, 0);
-        pstmt.setInt(4, id);
+    public JsonValue toJson() { // Converte os dados do objeto para um JsonValue que será salvo no banco de dados pela API
+        JsonValue json = new JsonValue(JsonValue.ValueType.object);
+        json.addChild("id", new JsonValue(id));
+        json.addChild("nome", new JsonValue(nome));
+        json.addChild("senha", new JsonValue(senha));
+        json.addChild("pontos", new JsonValue(pontos));
+        json.addChild("quizesRespondidos", new JsonValue(quizesRespondidos));
+        json.addChild("quantidadeBoosterAbertos", new JsonValue(quantidadeBoosterAbertos));
+        return json;
     }
 
-
-    // Select
     @Override
-    public String getSelectSQL(){
-        return "SELECT * FROM jogador WHERE id = ?";
+    public JsonValue toJsonKey() { // Retorna apenas o id do objeto para ser usado no select
+        JsonValue json = new JsonValue(JsonValue.ValueType.object);
+        json.addChild("id", new JsonValue(id));
+        return json;
     }
+
     @Override
-    public void setSelectParameters(PreparedStatement pstmt) throws SQLException {
-        pstmt.setInt(1, id);
+    public void fromJson(JsonValue json) { // Converte os dados do JsonValue para os atributos do objeto
+        id = json.getInt("id");
+        nome = json.getString("nome");
+        senha = json.getString("senha");
+        pontos = json.getInt("pontos");
+        quizesRespondidos = json.getInt("quizesRespondidos");
+        quantidadeBoosterAbertos = json.getInt("quantidadeBoosterAbertos");
     }
 }
 

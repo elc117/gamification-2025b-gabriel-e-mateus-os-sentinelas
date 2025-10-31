@@ -27,13 +27,4 @@ document.addEventListener('contextmenu', event => event.preventDefault());
 document.getElementById('embed-html').addEventListener('mousedown', handleMouseDown, false);
 document.getElementById('embed-html').addEventListener('mouseup', handleMouseUp, false);
 </script>
-<script src="database.js"></script>
-<script>
-    window.addEventListener("load", function() {
-        if (typeof initDatabase === "function") {
-            initDatabase();
-        }
-    });
-</script>
-
 </html>
