@@ -1,6 +1,9 @@
 package com.ufsmSistemas.tcgParadigma.models;
 
-public class Carta {
+import com.badlogic.gdx.utils.JsonValue;
+import com.ufsmSistemas.tcgParadigma.interfaces.DataBaseEntityAPI;
+
+public class Carta implements DataBaseEntityAPI {
     private int id;
     private String nome;
     private String caminhoImagem;
@@ -34,6 +37,29 @@ public class Carta {
     }
     public int getQuantidade() {
         return quantidade;
+    }
+
+    @Override
+    public JsonValue toJson() {
+        return null;
+    }
+
+    @Override
+    public JsonValue toJsonKey() {
+        // Para a API de getCartaRandom, só precisamos enviar a raridade
+        JsonValue json = new JsonValue(JsonValue.ValueType.object);
+        json.addChild("raridade", new JsonValue(this.raridade));
+        return json;
+    }
+
+    @Override
+    public void fromJson(JsonValue json) {
+        id =  json.getInt("id");
+        nome = json.getString("nome");
+        caminhoImagem = json.getString("caminhoImagem");
+        caminhoImagem = "assets/" + caminhoImagem;
+        raridade = json.getString("raridade");
+        categoria = json.getString("categoria");
     }
 
     // Setters

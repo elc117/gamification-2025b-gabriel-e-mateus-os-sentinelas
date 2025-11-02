@@ -16,7 +16,6 @@ public class TelaInicialJogo extends TelaBase {
         super(game);
     }
 
-
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
@@ -25,22 +24,28 @@ public class TelaInicialJogo extends TelaBase {
         // Carrega o skin a partir da pasta assets
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
-        // Cria o botão usando o skin
+        // Cria os botões usando o skin
         TextButton botaoBooster = new TextButton("Abríndo Bãossteáaaar", skin);
         TextButton botaoQuiz = new TextButton("Abrir Quiz", skin);
+        TextButton botaoLoja = new TextButton("Loja", skin); // Novo botão
 
         botaoBooster.setSize(200, 60);
         botaoQuiz.setSize(200, 60);
+        botaoLoja.setSize(200, 60); // Tamanho do botão da loja
 
-        float y = Gdx.graphics.getHeight() / 2f - botaoBooster.getHeight() / 2f; // vertical central
-        botaoBooster.setPosition(50, y); // 50 px da esquerda
-        botaoQuiz.setPosition(Gdx.graphics.getWidth() - 50 - botaoQuiz.getWidth(), y); // 50 px da direita
+        // Posicionamento
+        float centerY = Gdx.graphics.getHeight() / 2f - botaoBooster.getHeight() / 2f;
+        float topY = Gdx.graphics.getHeight() - botaoLoja.getHeight() - 20; // 20 px da borda superior
 
+        botaoBooster.setPosition(50, centerY); // 50 px da esquerda
+        botaoQuiz.setPosition(Gdx.graphics.getWidth() - 50 - botaoQuiz.getWidth(), centerY); // 50 px da direita
+        botaoLoja.setPosition(Gdx.graphics.getWidth() / 2f - botaoLoja.getWidth() / 2f, topY); // centralizado no topo
 
+        // Listeners
         botaoBooster.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Abríndo Bãossteáaaar!");
+                System.out.println("Ver Álbum");
             }
         });
 
@@ -51,8 +56,18 @@ public class TelaInicialJogo extends TelaBase {
             }
         });
 
+        botaoLoja.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Abrindo Loja!");
+                game.setScreen(new TelaLoja(game));
+            }
+        });
+
+        // Adiciona os botões ao stage
         stage.addActor(botaoBooster);
         stage.addActor(botaoQuiz);
+        stage.addActor(botaoLoja); // adiciona o novo botão
     }
 
     @Override

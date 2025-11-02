@@ -73,10 +73,6 @@ public class ApiTester {
                     @Override
                     public void run() {
                         Gdx.app.log("API_TEST", "4. UPDATE OK! Buscando jogador...");
-
-                        DataBaseAPI api = new DataBaseAPI();
-                        api.select(jogador);
-
                         // Aguardar resultado
                         agendarResultado(jogador, 2000);
                     }

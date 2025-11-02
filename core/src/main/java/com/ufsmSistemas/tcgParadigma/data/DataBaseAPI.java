@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
+import com.ufsmSistemas.tcgParadigma.models.Carta;
 import com.ufsmSistemas.tcgParadigma.models.Jogador;
 
 public class DataBaseAPI {
@@ -35,20 +36,22 @@ public class DataBaseAPI {
         });
     }
 
-    public void select(final DataBaseEntityAPI entity) {
+    public void select(final DataBaseEntityAPI entity, ResponseCallback booster) {
         String endpoint = getEndpoint(entity) + "/get";
         JsonValue json = entity.toJsonKey();
         sendRequest(endpoint, json, new ResponseCallback() {
             @Override
             public void onResponse(JsonValue response) {
                 entity.fromJson(response);
-                Gdx.app.log("API", entity.getClass().getSimpleName() + " carregado");
+                //Gdx.app.log("API", entity.getClass().getSimpleName() + " carregado");
+                System.out.println("API" + entity.getClass().getSimpleName() + " carregado");
             }
         });
     }
 
     private static String getEndpoint(DataBaseEntityAPI entity) {
         if (entity instanceof Jogador) return BASE_URL + "jogador";
+        else if(entity instanceof Carta) return BASE_URL + "carta";
         return BASE_URL + "generic";
     }
 
@@ -56,7 +59,8 @@ public class DataBaseAPI {
         // Converte JsonValue para String JSON manualmente (GWT-safe)
         String jsonString = buildJsonString(json);
 
-        Gdx.app.log("API", "Enviando para " + url + ": " + jsonString);
+        //Gdx.app.log("API", "Enviando para " + url + ": " + jsonString);
+        System.out.println("JSON: " + jsonString);
 
         // Cria requisição HTTP de forma mais simples
         Net.HttpRequest request = new Net.HttpRequest(Net.HttpMethods.POST);
