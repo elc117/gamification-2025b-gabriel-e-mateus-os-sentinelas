@@ -18,9 +18,11 @@ public class DataBaseAPI {
         sendRequest(endpoint, json, new ResponseCallback() {
             @Override
             public void onResponse(JsonValue response) {
-                int id = response.getInt("id");
-                entity.setId(id);
-                Gdx.app.log("API", entity.getClass().getSimpleName() + " inserido com ID " + id);
+                if (entity instanceof Jogador){
+                    int id = response.getInt("id");
+                    entity.setId(id);
+                    Gdx.app.log("API", entity.getClass().getSimpleName() + " inserido com ID " + id);
+                }
             }
         });
     }
