@@ -3,13 +3,15 @@ package com.ufsmSistemas.tcgParadigma.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ufsmSistemas.tcgParadigma.Main;
 
-public class TelaMenu extends TelaBase{
+public class TelaMenu extends TelaBase {
 
     public TelaMenu(Main game) {
         super(game);
@@ -19,52 +21,61 @@ public class TelaMenu extends TelaBase{
     public void show() {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
-
-        // Carrega o skin a partir da pasta assets
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
-        // Cria o botão usando o skin
-        TextButton botao = new TextButton("Iniciar Jogo", skin);
-        botao.setSize(200, 60);
-        botao.setPosition(
-            Gdx.graphics.getWidth() / 2f - 100,
-            Gdx.graphics.getHeight() / 2f - 30
-        );
+        Table table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
 
-        botao.addListener(new ClickListener() {
+        // Título
+        Label titulo = new Label("Bem-vindo ao TCG Paradigma!", skin);
+        titulo.setFontScale(1.2f);
+
+        // Botões principais
+        TextButton botaoLogin = new TextButton("Login", skin);
+        TextButton botaoCriarConta = new TextButton("Criar Conta", skin);
+        TextButton botaoSair = new TextButton("Sair", skin);
+
+        // Ações dos botões
+        botaoLogin.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Botão clicado!");
-                game.setScreen(new TelaInicialJogo(game));
+                game.setScreen(new TelaLogin(game));
             }
         });
 
-        stage.addActor(botao);
-    }
+        botaoCriarConta.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new TelaCriarUsuario(game));
+            }
+        });
 
+        botaoSair.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.exit();
+            }
+        });
+
+        // Layout da tabela
+        table.add(titulo).colspan(2).pad(20);
+        table.row();
+        table.add(botaoLogin).width(200).pad(10);
+        table.row();
+        table.add(botaoCriarConta).width(200).pad(10);
+        table.row();
+        table.add(botaoSair).width(200).pad(10);
+    }
 
     @Override
     public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
     public void dispose() {
-
+        stage.dispose();
+        skin.dispose();
     }
 }

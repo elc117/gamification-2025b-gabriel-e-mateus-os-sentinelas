@@ -21,7 +21,7 @@ public class ApiTester {
         Gdx.app.log("API_TEST", "========================================");
 
         // Criar jogador de teste
-        final Jogador jogador = new Jogador();
+        final Jogador jogador = new Jogador("testador", "123");
         jogador.setNome("Testador_" + System.currentTimeMillis());
         jogador.setSenha("teste123");
         jogador.setPontos(0);

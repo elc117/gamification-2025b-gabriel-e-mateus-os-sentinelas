@@ -13,6 +13,14 @@ public class Jogador implements DataBaseEntityAPI {
     private int quantidadeBoosterAbertos;
     private String senha;
 
+    public Jogador(String nome, String senha) {
+        this.nome = nome;
+        this.senha = senha;
+        this.pontos = 0;
+        this.quizesRespondidos = 0;
+        this.quantidadeBoosterAbertos = 0;
+    }
+
     // Getters
     public int getId() {
         return id;
