@@ -32,37 +32,7 @@ public class Booster {
 
             System.out.println("[Booster] Solicitando carta " + (i+1) + " - Raridade: " + carta.getRaridade());
 
-            api.select(carta, response -> {
-                System.out.println("[Booster] *** CALLBACK API RECEBIDO para carta " + (index+1) + " ***");
-
-                synchronized (cartasBooster) {
-                    try {
-                        carta.fromJson(response);
-                        cartasBooster.add(carta);
-                        cartasCarregadas++;
-
-                        System.out.println("[Booster] Carta adicionada: " + cartasCarregadas + "/" + cartasEsperadas);
-                        System.out.println("[Booster]   Nome: " + carta.getNome());
-                        System.out.println("[Booster]   Raridade: " + carta.getRaridade());
-                        System.out.println("[Booster]   Caminho: " + carta.getCaminhoImagem());
-
-                        if (cartasCarregadas >= cartasEsperadas) {
-                            System.out.println("[Booster] ========================================");
-                            System.out.println("[Booster] TODAS AS " + cartasEsperadas + " CARTAS CARREGADAS!");
-                            System.out.println("[Booster] Tamanho da lista: " + cartasBooster.size());
-                            System.out.println("[Booster] CHAMANDO CALLBACK...");
-                            System.out.println("[Booster] ========================================");
-
-                            callback.onBoosterCompleto(new ArrayList<>(cartasBooster));
-
-                            System.out.println("[Booster] Callback executado com sucesso!");
-                        }
-                    } catch (Exception e) {
-                        System.err.println("[Booster] ERRO ao processar carta: " + e.getMessage());
-                        e.printStackTrace();
-                    }
-                }
-            });
+            api.select(carta);
         }
     }
 }

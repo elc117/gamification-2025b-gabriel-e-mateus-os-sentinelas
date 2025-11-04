@@ -12,17 +12,27 @@ public class DataBaseAPI {
 
     private static final String BASE_URL = "https://mateuscardoso.pythonanywhere.com/api/";
 
+    public interface ResponseCallback {
+        void onResponse(JsonValue response);
+
+        void onError(String errorMessage);
+    }
+
     public static void insert(final DataBaseEntityAPI entity) {
         String endpoint = getEndpoint(entity) + "/insert";
         JsonValue json = entity.toJson();
         sendRequest(endpoint, json, new ResponseCallback() {
             @Override
             public void onResponse(JsonValue response) {
-                if (entity instanceof Jogador){
+                if (entity instanceof Jogador) {
                     int id = response.getInt("id");
                     entity.setId(id);
                     Gdx.app.log("API", entity.getClass().getSimpleName() + " inserido com ID " + id);
                 }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
             }
         });
     }
@@ -35,36 +45,52 @@ public class DataBaseAPI {
             public void onResponse(JsonValue response) {
                 Gdx.app.log("API", entity.getClass().getSimpleName() + " atualizado com sucesso");
             }
-        });
-    }
 
-    public void select(final DataBaseEntityAPI entity, ResponseCallback booster) {
-        String endpoint = getEndpoint(entity) + "/get";
-        JsonValue json = entity.toJsonKey();
-        sendRequest(endpoint, json, new ResponseCallback() {
             @Override
-            public void onResponse(JsonValue response) {
-                entity.fromJson(response);
-                //Gdx.app.log("API", entity.getClass().getSimpleName() + " carregado");
-                System.out.println("API" + entity.getClass().getSimpleName() + " carregado");
+            public void onError(String errorMessage) {
             }
         });
     }
 
+    public static void select(final DataBaseEntityAPI entity, final ResponseCallback extraCallback) {
+        String endpoint = getEndpoint(entity) + "/get";
+        JsonValue json = entity.toJsonKey();
+
+        sendRequest(endpoint, json, new ResponseCallback() {
+            @Override
+            public void onResponse(JsonValue response) {
+                entity.fromJson(response);
+                System.out.println("API " + entity.getClass().getSimpleName() + " carregado");
+
+                if (extraCallback != null) {
+                    extraCallback.onResponse(response);
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                System.out.println("Erro na requisição: " + errorMessage);
+                if (extraCallback != null) {
+                    extraCallback.onError(errorMessage);
+                }
+            }
+        });
+    }
+
+    public static void select(final DataBaseEntityAPI entity) {
+        select(entity, null);
+    }
+
     private static String getEndpoint(DataBaseEntityAPI entity) {
         if (entity instanceof Jogador) return BASE_URL + "jogador";
-        else if(entity instanceof Carta) return BASE_URL + "carta";
+        else if (entity instanceof Carta) return BASE_URL + "carta";
         return BASE_URL + "generic";
     }
 
     private static void sendRequest(final String url, JsonValue json, final ResponseCallback callback) {
-        // Converte JsonValue para String JSON manualmente (GWT-safe)
         String jsonString = buildJsonString(json);
-
-        //Gdx.app.log("API", "Enviando para " + url + ": " + jsonString);
         System.out.println("JSON: " + jsonString);
 
-        // Cria requisição HTTP de forma mais simples
         Net.HttpRequest request = new Net.HttpRequest(Net.HttpMethods.POST);
         request.setUrl(url);
         request.setHeader("Content-Type", "application/json");
@@ -76,17 +102,18 @@ public class DataBaseAPI {
                 try {
                     String responseString = httpResponse.getResultAsString();
                     Gdx.app.log("API", "Resposta recebida: " + responseString);
-
                     JsonValue response = new JsonReader().parse(responseString);
                     callback.onResponse(response);
                 } catch (Exception e) {
                     Gdx.app.error("API", "Erro ao processar resposta: " + e.getMessage());
+                    callback.onError("Erro ao processar resposta: " + e.getMessage());
                 }
             }
 
             @Override
             public void failed(Throwable t) {
                 Gdx.app.error("API", "Erro ao acessar " + url + ": " + t.getMessage());
+                callback.onError("Erro ao acessar " + url + ": " + t.getMessage());
             }
 
             @Override
@@ -96,9 +123,15 @@ public class DataBaseAPI {
         });
     }
 
-    /**
-     * Converte JsonValue para String JSON de forma GWT-safe
-     */
+    private static String escapeJson(String str) {
+        if (str == null) return "";
+        return str.replace("\\", "\\\\")
+            .replace("\"", "\\\"")
+            .replace("\n", "\\n")
+            .replace("\r", "\\r")
+            .replace("\t", "\\t");
+    }
+
     private static String buildJsonString(JsonValue json) {
         if (json == null) {
             return "{}";
@@ -127,6 +160,8 @@ public class DataBaseAPI {
 
         sb.append("}");
         return sb.toString();
+
+
     }
 
     private static void appendJsonValue(StringBuilder sb, JsonValue value) {
@@ -154,21 +189,9 @@ public class DataBaseAPI {
             }
             sb.append("]");
         } else {
-            // Fallback para número
-            sb.append(value.asString());
+            // fallback: valor genérico
+            sb.append("\"").append(escapeJson(value.asString())).append("\"");
         }
     }
 
-    private static String escapeJson(String str) {
-        if (str == null) return "";
-        return str.replace("\\", "\\\\")
-            .replace("\"", "\\\"")
-            .replace("\n", "\\n")
-            .replace("\r", "\\r")
-            .replace("\t", "\\t");
-    }
-
-    public interface ResponseCallback {
-        void onResponse(JsonValue response);
-    }
 }

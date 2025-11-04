@@ -1,4 +1,4 @@
-package com.ufsmSistemas.tcgParadigma.screens;
+package com.ufsmSistemas.tcgParadigma.screens.login;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -13,6 +13,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ufsmSistemas.tcgParadigma.Main;
 import com.ufsmSistemas.tcgParadigma.data.DataBaseAPI;
 import com.ufsmSistemas.tcgParadigma.models.Jogador;
+import com.ufsmSistemas.tcgParadigma.screens.TelaBase;
+import com.ufsmSistemas.tcgParadigma.screens.TelaMenu;
 
 public class TelaCriarUsuario extends TelaBase {
 
@@ -98,10 +100,14 @@ public class TelaCriarUsuario extends TelaBase {
         if (!senha.equals(confirmarSenha)) {
             mensagem.setText("As senhas não coincidem.");
             return;
+        } else {
+            Jogador jogador = new Jogador(nome, senha);
+            DataBaseAPI.insert(jogador);
+            mensagem.setText("Jogador criado com sucesso!");
+            campoNome.setText("");
+            campoSenha.setText("");
+            campoConfirmarSenha.setText("");
         }
-
-        Jogador jogador = new Jogador(nome, senha);
-        DataBaseAPI.insert(jogador);
     }
 
     @Override

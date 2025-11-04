@@ -75,20 +75,30 @@ public class Jogador implements DataBaseEntityAPI {
     }
 
     @Override
-    public JsonValue toJsonKey() { // Retorna apenas o id do objeto para ser usado no select
+    public JsonValue toJsonKey() {
         JsonValue json = new JsonValue(JsonValue.ValueType.object);
-        json.addChild("id", new JsonValue(id));
+        json.addChild("nome", new JsonValue(nome));
+        json.addChild("senha", new JsonValue(senha));
         return json;
     }
 
+
     @Override
-    public void fromJson(JsonValue json) { // Converte os dados do JsonValue para os atributos do objeto
-        id = json.getInt("id");
-        nome = json.getString("nome");
-        senha = json.getString("senha");
-        pontos = json.getInt("pontos");
-        quizesRespondidos = json.getInt("quizesRespondidos");
-        quantidadeBoosterAbertos = json.getInt("quantidadeBoosterAbertos");
+    public void fromJson(JsonValue json) {
+        if (json == null) return;
+
+        if (json.has("erro")) {
+            System.out.println("⚠ Erro ao carregar jogador: " + json.getString("erro"));
+            return;
+        }
+
+        if (json.has("id")) id = json.getInt("id");
+        if (json.has("nome")) nome = json.getString("nome");
+        if (json.has("senha")) senha = json.getString("senha");
+        if (json.has("pontos")) pontos = json.getInt("pontos");
+        if (json.has("quizesRespondidos")) quizesRespondidos = json.getInt("quizesRespondidos");
+        if (json.has("quantidadeBoosterAbertos")) quantidadeBoosterAbertos = json.getInt("quantidadeBoosterAbertos");
     }
+
 }
 

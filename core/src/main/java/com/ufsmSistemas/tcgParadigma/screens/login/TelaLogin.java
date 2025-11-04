@@ -1,4 +1,4 @@
-package com.ufsmSistemas.tcgParadigma.screens;
+package com.ufsmSistemas.tcgParadigma.screens.login;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -9,10 +9,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ufsmSistemas.tcgParadigma.Main;
+import com.ufsmSistemas.tcgParadigma.data.DataBaseAPI;
+import com.ufsmSistemas.tcgParadigma.models.Jogador;
+import com.ufsmSistemas.tcgParadigma.screens.TelaBase;
+import com.ufsmSistemas.tcgParadigma.screens.TelaInicialJogo;
 
-    public class TelaLogin extends TelaBase {
+public class TelaLogin extends TelaBase {
 
     private TextField campoNome;
     private TextField campoSenha;
@@ -68,14 +73,38 @@ import com.ufsmSistemas.tcgParadigma.Main;
         String nome = campoNome.getText();
         String senha = campoSenha.getText();
 
-        // Exemplo de validação simples (pode ser substituído por API)
-        if (nome.equals("admin") && senha.equals("1234")) {
-            mensagem.setText("Login bem-sucedido!");
-            game.setScreen(new TelaInicialJogo(game)); // vai para o menu
-        } else {
-            mensagem.setText("Usuário ou senha incorretos.");
+        if (nome.isEmpty() || senha.isEmpty()) {
+            mensagem.setText("Preencha todos os campos.");
+            return;
         }
+
+        final Jogador jogador = new Jogador(nome, senha);
+
+        DataBaseAPI.select(jogador, new DataBaseAPI.ResponseCallback() {
+            @Override
+            public void onResponse(JsonValue response) {
+                try {
+                    jogador.fromJson(response);
+                    mensagem.setText("Login realizado com sucesso!");
+                    System.out.println("Jogador logado: " + jogador.getNome());
+                    Gdx.app.postRunnable(() -> {
+                        game.setScreen(new TelaInicialJogo(game));
+                    });
+
+                } catch (Exception e) {
+                    mensagem.setText("Erro ao processar resposta do servidor.");
+                    System.out.println("Erro JSON: " + e.getMessage());
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                mensagem.setText("Usuário ou senha incorretos.");
+                System.out.println("Erro: " + errorMessage);
+            }
+        });
     }
+
 
     @Override
     public void resize(int width, int height) {
