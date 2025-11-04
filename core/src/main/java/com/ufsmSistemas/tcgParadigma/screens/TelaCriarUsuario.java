@@ -63,7 +63,7 @@ public class TelaCriarUsuario extends TelaBase {
         botaoVoltar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new TelaLogin(game));
+                game.setScreen(new TelaMenu(game));
             }
         });
 
