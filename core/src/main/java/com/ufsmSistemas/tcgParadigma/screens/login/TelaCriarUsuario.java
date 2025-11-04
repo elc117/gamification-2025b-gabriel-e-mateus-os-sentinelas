@@ -11,10 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ufsmSistemas.tcgParadigma.Main;
-import com.ufsmSistemas.tcgParadigma.data.DataBaseAPI;
-import com.ufsmSistemas.tcgParadigma.models.Jogador;
 import com.ufsmSistemas.tcgParadigma.screens.TelaBase;
 import com.ufsmSistemas.tcgParadigma.screens.TelaMenu;
+import com.ufsmSistemas.tcgParadigma.services.RegistroService;
 
 public class TelaCriarUsuario extends TelaBase {
 
@@ -22,9 +21,11 @@ public class TelaCriarUsuario extends TelaBase {
     private TextField campoSenha;
     private TextField campoConfirmarSenha;
     private Label mensagem;
+    private final RegistroService registroService;
 
     public TelaCriarUsuario(Main game) {
         super(game);
+        this.registroService = new RegistroService(); // ✅ instância local, sem Singleton
     }
 
     @Override
@@ -100,14 +101,26 @@ public class TelaCriarUsuario extends TelaBase {
         if (!senha.equals(confirmarSenha)) {
             mensagem.setText("As senhas não coincidem.");
             return;
-        } else {
-            Jogador jogador = new Jogador(nome, senha);
-            DataBaseAPI.insert(jogador);
-            mensagem.setText("Jogador criado com sucesso!");
-            campoNome.setText("");
-            campoSenha.setText("");
-            campoConfirmarSenha.setText("");
         }
+
+        mensagem.setText("Criando conta...");
+
+        registroService.registrarJogador(nome, senha, new RegistroService.RegistroCallback() {
+            @Override
+            public void onSuccess(String message) {
+                Gdx.app.postRunnable(() -> {
+                    mensagem.setText(message);
+                    campoNome.setText("");
+                    campoSenha.setText("");
+                    campoConfirmarSenha.setText("");
+                });
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Gdx.app.postRunnable(() -> mensagem.setText(errorMessage));
+            }
+        });
     }
 
     @Override

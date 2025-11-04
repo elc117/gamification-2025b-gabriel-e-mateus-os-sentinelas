@@ -9,13 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ufsmSistemas.tcgParadigma.Main;
-import com.ufsmSistemas.tcgParadigma.data.DataBaseAPI;
 import com.ufsmSistemas.tcgParadigma.models.Jogador;
 import com.ufsmSistemas.tcgParadigma.screens.TelaBase;
 import com.ufsmSistemas.tcgParadigma.screens.TelaInicialJogo;
+import com.ufsmSistemas.tcgParadigma.services.LoginService;
 
 public class TelaLogin extends TelaBase {
 
@@ -23,8 +22,12 @@ public class TelaLogin extends TelaBase {
     private TextField campoSenha;
     private Label mensagem;
 
+    // Instancia local do serviço
+    private final LoginService loginService;
+
     public TelaLogin(Main game) {
         super(game);
+        this.loginService = new LoginService(); // cria instância normalmente, sem singleton
     }
 
     @Override
@@ -52,10 +55,11 @@ public class TelaLogin extends TelaBase {
         botaoLogin.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                validarLogin();
+                autenticarUsuario();
             }
         });
 
+        // Layout
         table.add(labelTitulo).colspan(2).pad(10);
         table.row();
         table.add(labelNome).pad(5);
@@ -69,7 +73,7 @@ public class TelaLogin extends TelaBase {
         table.add(mensagem).colspan(2).pad(5);
     }
 
-    private void validarLogin() {
+    private void autenticarUsuario() {
         String nome = campoNome.getText();
         String senha = campoSenha.getText();
 
@@ -78,33 +82,28 @@ public class TelaLogin extends TelaBase {
             return;
         }
 
-        final Jogador jogador = new Jogador(nome, senha);
+        mensagem.setText("Autenticando...");
 
-        DataBaseAPI.select(jogador, new DataBaseAPI.ResponseCallback() {
+        // Chama o serviço normalmente
+        loginService.autenticar(nome, senha, new LoginService.LoginCallback() {
             @Override
-            public void onResponse(JsonValue response) {
-                try {
-                    jogador.fromJson(response);
+            public void onSuccess(Jogador jogador) {
+                Gdx.app.postRunnable(() -> {
                     mensagem.setText("Login realizado com sucesso!");
                     System.out.println("Jogador logado: " + jogador.getNome());
-                    Gdx.app.postRunnable(() -> {
-                        game.setScreen(new TelaInicialJogo(game));
-                    });
-
-                } catch (Exception e) {
-                    mensagem.setText("Erro ao processar resposta do servidor.");
-                    System.out.println("Erro JSON: " + e.getMessage());
-                }
+                    game.setScreen(new TelaInicialJogo(game));
+                });
             }
 
             @Override
-            public void onError(String errorMessage) {
-                mensagem.setText("Usuário ou senha incorretos.");
-                System.out.println("Erro: " + errorMessage);
+            public void onFailure(String errorMessage) {
+                Gdx.app.postRunnable(() -> {
+                    mensagem.setText(errorMessage);
+                    System.out.println("Erro: " + errorMessage);
+                });
             }
         });
     }
-
 
     @Override
     public void resize(int width, int height) {
