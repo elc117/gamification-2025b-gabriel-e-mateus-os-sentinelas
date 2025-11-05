@@ -1,24 +1,19 @@
 package com.ufsmSistemas.tcgParadigma.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ufsmSistemas.tcgParadigma.Main;
 import com.ufsmSistemas.tcgParadigma.models.Booster;
-import com.ufsmSistemas.tcgParadigma.models.Carta;
 
 public class TelaLoja extends TelaBase {
 
     private Booster booster1;
     private Booster booster2;
-    private Stage cartasStage; // camada acima para mostrar cartas abertas
 
     public TelaLoja(Main game) {
         super(game);
@@ -27,7 +22,6 @@ public class TelaLoja extends TelaBase {
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
-        cartasStage = new Stage(new ScreenViewport()); // camada para cartas abertas
         Gdx.input.setInputProcessor(stage);
 
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
@@ -47,14 +41,56 @@ public class TelaLoja extends TelaBase {
         botaoBooster1.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                booster1 = new Booster(cartas -> mostrarCartas((Array<Carta>) cartas));
+                System.out.println("[TelaLoja] ===== BOTAO CLICADO =====");
+                new Booster(cartas -> {
+                    System.out.println("[TelaLoja] ===== CALLBACK CHAMADO =====");
+                    System.out.println("[TelaLoja] Número de cartas: " + cartas.size());
+                    for (int i = 0; i < cartas.size(); i++) {
+                        System.out.println("[TelaLoja]   Carta " + i + ": " + cartas.get(i).getNome());
+                    }
+
+                    Gdx.app.postRunnable(() -> {
+                        System.out.println("[TelaLoja] ===== ABRINDO TELA =====");
+                        TelaAberturaBooster telaBooster = new TelaAberturaBooster(game, null);
+                        telaBooster.setCartas(cartas);
+                        game.setScreen(telaBooster);
+                    });
+                });
+            }
+        });botaoBooster1.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("[TelaLoja] ===== BOTAO CLICADO =====");
+                new Booster(cartas -> {
+                    System.out.println("[TelaLoja] ===== CALLBACK CHAMADO =====");
+                    System.out.println("[TelaLoja] Número de cartas: " + cartas.size());
+                    for (int i = 0; i < cartas.size(); i++) {
+                        System.out.println("[TelaLoja]   Carta " + i + ": " + cartas.get(i).getNome());
+                    }
+
+                    Gdx.app.postRunnable(() -> {
+                        System.out.println("[TelaLoja] ===== ABRINDO TELA =====");
+                        TelaAberturaBooster telaBooster = new TelaAberturaBooster(game, null);
+                        telaBooster.setCartas(cartas);
+                        game.setScreen(telaBooster);
+                    });
+                });
             }
         });
 
         botaoBooster2.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                booster2 = new Booster(cartas -> mostrarCartas((Array<Carta>) cartas));
+                System.out.println("[TelaLoja] Criando booster...");
+                new Booster(cartas -> {
+                    System.out.println("[TelaLoja] Callback recebido com " + cartas.size() + " cartas!");
+                    Gdx.app.postRunnable(() -> {
+                        System.out.println("[TelaLoja] Abrindo TelaAberturaBooster...");
+                        TelaAberturaBooster telaBooster = new TelaAberturaBooster(game, null);
+                        telaBooster.setCartas(cartas);
+                        game.setScreen(telaBooster);
+                    });
+                });
             }
         });
 
@@ -74,41 +110,20 @@ public class TelaLoja extends TelaBase {
         stage.addActor(botaoVoltar);
     }
 
-    private void mostrarCartas(Array<Carta> cartas) {
-        cartasStage.clear(); // limpa cartas anteriores
-        float startX = 50;
-        float startY = Gdx.graphics.getHeight() / 2f + 100;
-
-        for (Carta c : cartas) {
-            Texture textura = new Texture(Gdx.files.internal(c.getCaminhoImagem()));
-            Image imgCarta = new Image(textura);
-            imgCarta.setPosition(startX, startY);
-            imgCarta.setSize(100, 150); // tamanho da carta
-            startX += 120; // espaçamento horizontal
-            cartasStage.addActor(imgCarta);
-        }
-    }
-
     @Override
     public void render(float delta) {
         super.render(delta);
         stage.act(delta);
         stage.draw();
-
-        // desenha camada acima com cartas abertas
-        cartasStage.act(delta);
-        cartasStage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
-        cartasStage.getViewport().update(width, height, true);
     }
 
     @Override
     public void dispose() {
         stage.dispose();
-        cartasStage.dispose();
     }
 }

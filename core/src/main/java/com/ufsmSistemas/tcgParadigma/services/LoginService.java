@@ -6,6 +6,8 @@ import com.ufsmSistemas.tcgParadigma.data.Session;
 import com.ufsmSistemas.tcgParadigma.models.Jogador;
 import com.ufsmSistemas.tcgParadigma.interfaces.ResponseCallback;
 
+import javax.xml.crypto.Data;
+
 public class LoginService {
 
     public interface LoginCallback {
@@ -15,8 +17,8 @@ public class LoginService {
 
     public void autenticar(String nome, final String senha, final LoginCallback callback) {
         final Jogador jogador = new Jogador(nome, senha);
-
-        DataBaseAPI.select(jogador, new ResponseCallback() {
+        DataBaseAPI api = new DataBaseAPI();
+        api.select(jogador, new ResponseCallback() {
             @Override
             public void onResponse(JsonValue response) {
                 try {
