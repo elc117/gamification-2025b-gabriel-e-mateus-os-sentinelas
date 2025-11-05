@@ -3,7 +3,7 @@ package com.ufsmSistemas.tcgParadigma.models;
 import com.badlogic.gdx.utils.JsonValue;
 import com.ufsmSistemas.tcgParadigma.interfaces.DataBaseEntityAPI;
 
-public abstract class Album implements DataBaseEntityAPI {
+public abstract class Album implements DataBaseEntityAPI { // Abstract pois não possui id próprio
     private int idJogador;
     private int idCarta;
     private int quantidadeCartas;

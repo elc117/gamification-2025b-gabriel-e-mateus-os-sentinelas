@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ufsmSistemas.tcgParadigma.Main;
+import com.ufsmSistemas.tcgParadigma.interfaces.RegistroCallback;
 import com.ufsmSistemas.tcgParadigma.screens.TelaBase;
 import com.ufsmSistemas.tcgParadigma.screens.TelaMenu;
 import com.ufsmSistemas.tcgParadigma.services.RegistroService;
@@ -105,7 +106,7 @@ public class TelaCriarUsuario extends TelaBase {
 
         mensagem.setText("Criando conta...");
 
-        registroService.registrarJogador(nome, senha, new RegistroService.RegistroCallback() {
+        RegistroService.registrarJogador(nome, senha, new RegistroCallback() {
             @Override
             public void onSuccess(String message) {
                 Gdx.app.postRunnable(() -> {

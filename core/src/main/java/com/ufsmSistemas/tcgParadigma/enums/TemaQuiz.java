@@ -1,4 +1,4 @@
-package com.ufsmSistemas.tcgParadigma.quiz;
+package com.ufsmSistemas.tcgParadigma.enums;
 
 public enum TemaQuiz {
     LIDERES_POLITICA("Lideres e Política", "Lincoln"),
@@ -19,7 +19,6 @@ public enum TemaQuiz {
     public String getNome() {
         return nome;
     }
-
     public String getImagemHost() {
         return imagemHost;
     }

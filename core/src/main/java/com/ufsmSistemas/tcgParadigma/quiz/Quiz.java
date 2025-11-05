@@ -1,5 +1,6 @@
 package com.ufsmSistemas.tcgParadigma.quiz;
 
+import com.ufsmSistemas.tcgParadigma.enums.TemaQuiz;
 import com.ufsmSistemas.tcgParadigma.utils.LeJsonQuiz;
 
 import java.io.FileNotFoundException;

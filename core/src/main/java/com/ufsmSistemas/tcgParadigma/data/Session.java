@@ -17,8 +17,7 @@ public class Session {
     public Jogador getJogador() {
         return jogador;
     }
-
-    public boolean isLogado() {
+    public boolean getIsLogado() {
         return isLogado;
     }
 
@@ -27,7 +26,6 @@ public class Session {
         this.jogador = jogador;
         this.isLogado = (jogador != null);
     }
-
     public void setLogado(boolean isLogado) {
         this.isLogado = isLogado;
     }

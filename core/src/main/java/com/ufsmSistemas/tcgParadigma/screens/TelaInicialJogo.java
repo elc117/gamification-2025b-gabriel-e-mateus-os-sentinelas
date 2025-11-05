@@ -72,7 +72,6 @@ public class TelaInicialJogo extends TelaBase {
 
     @Override
     public void resize(int width, int height) {
-
     }
 
     @Override

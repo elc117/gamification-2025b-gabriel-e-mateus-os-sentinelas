@@ -39,29 +39,6 @@ public class Carta implements DataBaseEntityAPI {
         return quantidade;
     }
 
-    @Override
-    public JsonValue toJson() {
-        return null;
-    }
-
-    @Override
-    public JsonValue toJsonKey() {
-        // Para a API de getCartaRandom, só precisamos enviar a raridade
-        JsonValue json = new JsonValue(JsonValue.ValueType.object);
-        json.addChild("raridade", new JsonValue(this.raridade));
-        return json;
-    }
-
-    @Override
-    public void fromJson(JsonValue json) {
-        id =  json.getInt("id");
-        nome = json.getString("nome");
-        caminhoImagem = json.getString("caminhoImagem");
-        caminhoImagem = "assets/" + caminhoImagem;
-        raridade = json.getString("raridade");
-        categoria = json.getString("categoria");
-    }
-
     // Setters
     public void setId(int id) {
         this.id = id;
@@ -86,5 +63,28 @@ public class Carta implements DataBaseEntityAPI {
     }
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
+    }
+
+    @Override
+    public JsonValue toJson() {
+        return null;
+    }
+
+    @Override
+    public JsonValue toJsonKey() {
+        // Para a API de getCartaRandom, só precisamos enviar a raridade
+        JsonValue json = new JsonValue(JsonValue.ValueType.object);
+        json.addChild("raridade", new JsonValue(this.raridade));
+        return json;
+    }
+
+    @Override
+    public void fromJson(JsonValue json) {
+        id =  json.getInt("id");
+        nome = json.getString("nome");
+        caminhoImagem = json.getString("caminhoImagem");
+        caminhoImagem = "assets/" + caminhoImagem;
+        raridade = json.getString("raridade");
+        categoria = json.getString("categoria");
     }
 }

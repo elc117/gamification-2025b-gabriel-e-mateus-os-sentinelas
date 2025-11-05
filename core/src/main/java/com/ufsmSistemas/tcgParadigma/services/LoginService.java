@@ -4,6 +4,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.ufsmSistemas.tcgParadigma.data.DataBaseAPI;
 import com.ufsmSistemas.tcgParadigma.data.Session;
 import com.ufsmSistemas.tcgParadigma.models.Jogador;
+import com.ufsmSistemas.tcgParadigma.interfaces.ResponseCallback;
 
 public class LoginService {
 
@@ -15,7 +16,7 @@ public class LoginService {
     public void autenticar(String nome, final String senha, final LoginCallback callback) {
         final Jogador jogador = new Jogador(nome, senha);
 
-        DataBaseAPI.select(jogador, new DataBaseAPI.ResponseCallback() {
+        DataBaseAPI.select(jogador, new ResponseCallback() {
             @Override
             public void onResponse(JsonValue response) {
                 try {
