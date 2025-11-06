@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.ufsmSistemas.tcgParadigma.interfaces.ResponseCallback;
 import com.ufsmSistemas.tcgParadigma.models.Carta;
 import com.ufsmSistemas.tcgParadigma.models.Jogador;
+import com.ufsmSistemas.tcgParadigma.utils.CartaEJogador;
 
 public class DataBaseAPI {
 
@@ -50,8 +51,8 @@ public class DataBaseAPI {
         });
     }
 
-    public void select(final DataBaseEntityAPI entity, ResponseCallback callback) {
-        String endpoint = getEndpoint(entity) + "/get";
+    public void select(final DataBaseEntityAPI entity, ResponseCallback callback, String tipo) {
+        String endpoint = getEndpoint(entity) + tipo;
         JsonValue json = entity.toJsonKey();
         sendRequest(endpoint, json, new ResponseCallback() {
             @Override
@@ -74,6 +75,7 @@ public class DataBaseAPI {
     private static String getEndpoint(DataBaseEntityAPI entity) {
         if (entity instanceof Jogador) return BASE_URL + "jogador";
         else if(entity instanceof Carta) return BASE_URL + "carta";
+        else if(entity instanceof CartaEJogador) return BASE_URL + "carta";
         return BASE_URL + "generic";
     }
 

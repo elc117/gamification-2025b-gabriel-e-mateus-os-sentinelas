@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ufsmSistemas.tcgParadigma.Main;
+import com.ufsmSistemas.tcgParadigma.screens.loja.TelaLoja;
 import com.ufsmSistemas.tcgParadigma.screens.quiz.TelaOpcoesQuiz;
 
 public class TelaInicialJogo extends TelaBase {

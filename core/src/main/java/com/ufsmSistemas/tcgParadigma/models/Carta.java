@@ -67,7 +67,9 @@ public class Carta implements DataBaseEntityAPI {
 
     @Override
     public JsonValue toJson() {
-        return null;
+        JsonValue json = new JsonValue(JsonValue.ValueType.object);
+        json.addChild("id", new JsonValue(id));
+        return json;
     }
 
     @Override
@@ -75,6 +77,7 @@ public class Carta implements DataBaseEntityAPI {
         // Para a API de getCartaRandom, só precisamos enviar a raridade
         JsonValue json = new JsonValue(JsonValue.ValueType.object);
         json.addChild("raridade", new JsonValue(this.raridade));
+        json.addChild("idCarta",  new JsonValue(this.id));
         return json;
     }
 

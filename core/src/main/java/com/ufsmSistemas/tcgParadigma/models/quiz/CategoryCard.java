@@ -1,4 +1,4 @@
-package com.ufsmSistemas.tcgParadigma.quiz;
+package com.ufsmSistemas.tcgParadigma.models.quiz;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;

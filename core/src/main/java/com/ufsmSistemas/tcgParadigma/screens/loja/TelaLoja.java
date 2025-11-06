@@ -1,4 +1,4 @@
-package com.ufsmSistemas.tcgParadigma.screens;
+package com.ufsmSistemas.tcgParadigma.screens.loja;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ufsmSistemas.tcgParadigma.Main;
 import com.ufsmSistemas.tcgParadigma.models.Booster;
+import com.ufsmSistemas.tcgParadigma.screens.TelaBase;
+import com.ufsmSistemas.tcgParadigma.screens.TelaInicialJogo;
 
 public class TelaLoja extends TelaBase {
 

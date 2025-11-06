@@ -1,6 +1,6 @@
 package com.ufsmSistemas.tcgParadigma.utils;
 
-import com.ufsmSistemas.tcgParadigma.quiz.Quiz;
+import com.ufsmSistemas.tcgParadigma.models.quiz.Quiz;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;

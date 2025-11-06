@@ -1,4 +1,4 @@
-package com.ufsmSistemas.tcgParadigma.screens;
+package com.ufsmSistemas.tcgParadigma.screens.loja;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ufsmSistemas.tcgParadigma.Main;
 import com.ufsmSistemas.tcgParadigma.models.Booster;
 import com.ufsmSistemas.tcgParadigma.models.Carta;
+import com.ufsmSistemas.tcgParadigma.screens.TelaBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,9 +49,9 @@ public class TelaAberturaBooster extends TelaBase {
     private Texture fundoCarta;
 
     float larguraTela = Gdx.graphics.getWidth();
-    float LARGURA_CARTA = larguraTela / 4f; // 1/6 da tela
-    float ALTURA_CARTA = (LARGURA_CARTA * (1086f / 768f)) - 200;
-    private static final float ESPACAMENTO = 5;
+    float LARGURA_CARTA = larguraTela / 5f; // 1/6 da tela
+    float ALTURA_CARTA = (LARGURA_CARTA * (1086f / 768f)) - 230;
+    private static final float ESPACAMENTO = 0f;
 
     public TelaAberturaBooster(Main game, Booster booster) {
         super(game);

@@ -1,7 +1,7 @@
 package com.ufsmSistemas.tcgParadigma.tests;
 
-import com.ufsmSistemas.tcgParadigma.quiz.Pergunta;
-import com.ufsmSistemas.tcgParadigma.quiz.Quiz;
+import com.ufsmSistemas.tcgParadigma.models.quiz.Pergunta;
+import com.ufsmSistemas.tcgParadigma.models.quiz.Quiz;
 
 public class TestQuiz {
     public void chamaQuiz(String topico, String dificuldade){

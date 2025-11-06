@@ -49,6 +49,6 @@ public class LoginService {
             public void onError(String errorMessage) {
                 callback.onFailure("Usuário ou senha incorretos."); // erro genérico
             }
-        });
+        }, "/get");
     }
 }

@@ -1,16 +1,14 @@
 package com.ufsmSistemas.tcgParadigma.models;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.JsonValue;
-import com.ufsmSistemas.tcgParadigma.data.DataBaseAPI;
-import com.ufsmSistemas.tcgParadigma.interfaces.ResponseCallback;
+import com.ufsmSistemas.tcgParadigma.data.Session;
+import com.ufsmSistemas.tcgParadigma.utils.RecebeEnviaCartaApi;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Booster {
-    private final List<Carta> cartasBooster = new ArrayList<>();
+    private List<Carta> cartasBooster = new ArrayList<>();
     private final int cartasEsperadas = 5;
     private int cartasCarregadas = 0;
     private BoosterCallback callback;
@@ -19,57 +17,47 @@ public class Booster {
         void onBoosterCompleto(List<Carta> cartas);
     }
 
-    public List<Carta> getCartasBooster(){
+    public List<Carta> getCartasBooster() {
         return cartasBooster;
     }
 
     public Booster(BoosterCallback callback) {
         this.callback = callback;
         Random random = new Random();
-        DataBaseAPI api = new DataBaseAPI();
 
         System.out.println("[Booster] ===== INICIANDO CRIACAO DE BOOSTER =====");
 
         for (int i = 0; i < cartasEsperadas; i++) {
-            final int index = i;
             Carta carta = new Carta();
-
             int numero = random.nextInt(106) + 1;
             if (numero <= 1) carta.setRaridade("Ultra Rara");
             else if (numero <= 6) carta.setRaridade("Rara");
             else carta.setRaridade("Comum");
 
-            System.out.println("[Booster] Solicitando carta " + (i+1) + " - Raridade: " + carta.getRaridade());
+            System.out.println("[Booster] Solicitando carta " + (i + 1) + " - Raridade: " + carta.getRaridade());
+            RecebeEnviaCartaApi receberCarta = new RecebeEnviaCartaApi();
+            receberCarta.receberCartaApi(carta, novaCarta -> {
+                synchronized (cartasBooster) {
+                    cartasBooster.add(novaCarta);
 
-            api.select(carta, new ResponseCallback() {
-                @Override
-                public void onResponse(JsonValue response) {
-                    synchronized (cartasBooster) {
-                        try {
-                            carta.fromJson(response);
-                            cartasBooster.add(carta);
-                            cartasCarregadas++;
+                    if (cartasBooster.size() == cartasEsperadas && callback != null) {
+                        callback.onBoosterCompleto(new ArrayList<>(cartasBooster));
 
-                            System.out.println("[Booster] Carta " + cartasCarregadas + "/" + cartasEsperadas + " carregada: " + carta.getNome());
+                        // todas as cartas carregadas,enviar/verificar
+                        Jogador jogador = Session.getInstance().getJogador();
+                        RecebeEnviaCartaApi temp = new RecebeEnviaCartaApi();
+                        System.out.println("[Booster] Jogador Id: " + jogador.getId());
 
-                            if (cartasCarregadas >= cartasEsperadas) {
-                                System.out.println("[Booster] TODAS AS CARTAS CARREGADAS!");
-                                if (callback != null) {
-                                    Gdx.app.postRunnable(() -> callback.onBoosterCompleto(new ArrayList<>(cartasBooster)));
-                                }
-                            }
-                        } catch (Exception e) {
-                            System.err.println("[Booster] ERRO ao processar carta: " + e.getMessage());
-                            e.printStackTrace();
+                        for (Carta c : cartasBooster) {
+
+                            temp.atualizaCartaApi(c, jogador);
+                            System.out.println("[Booster] Carta atualizado com sucesso!");
+
                         }
                     }
-                }
-
-                @Override
-                public void onError(String errorMessage) {
-                    System.err.println("[Booster] Erro ao carregar carta: " + errorMessage);
                 }
             });
         }
     }
+
 }

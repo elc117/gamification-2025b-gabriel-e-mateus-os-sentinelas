@@ -3,7 +3,7 @@ package com.ufsmSistemas.tcgParadigma.utils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
-import com.ufsmSistemas.tcgParadigma.quiz.Pergunta;
+import com.ufsmSistemas.tcgParadigma.models.quiz.Pergunta;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

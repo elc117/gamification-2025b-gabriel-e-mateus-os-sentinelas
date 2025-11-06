@@ -1,4 +1,4 @@
-package com.ufsmSistemas.tcgParadigma.quiz;
+package com.ufsmSistemas.tcgParadigma.models.quiz;
 
 import com.ufsmSistemas.tcgParadigma.enums.TemaQuiz;
 import com.ufsmSistemas.tcgParadigma.utils.LeJsonQuiz;

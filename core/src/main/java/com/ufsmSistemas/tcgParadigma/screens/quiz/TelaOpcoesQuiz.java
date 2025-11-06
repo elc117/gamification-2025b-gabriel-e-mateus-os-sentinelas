@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import com.ufsmSistemas.tcgParadigma.Main;
 import com.ufsmSistemas.tcgParadigma.enums.CategoriaQuiz;
-import com.ufsmSistemas.tcgParadigma.quiz.CategoryCard;
+import com.ufsmSistemas.tcgParadigma.models.quiz.CategoryCard;
 import com.ufsmSistemas.tcgParadigma.screens.TelaBase;
 
 public class TelaOpcoesQuiz extends TelaBase {
