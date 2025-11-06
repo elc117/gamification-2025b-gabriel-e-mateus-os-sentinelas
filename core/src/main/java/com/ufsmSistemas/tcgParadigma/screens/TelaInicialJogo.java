@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ufsmSistemas.tcgParadigma.Main;
+import com.ufsmSistemas.tcgParadigma.screens.album.TelaAlbum;
 import com.ufsmSistemas.tcgParadigma.screens.loja.TelaLoja;
 import com.ufsmSistemas.tcgParadigma.screens.quiz.TelaOpcoesQuiz;
 
@@ -26,7 +27,7 @@ public class TelaInicialJogo extends TelaBase {
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
         // Cria os botões usando o skin
-        TextButton botaoAlbum = new TextButton("Álbum", skin);
+        TextButton botaoAlbum = new TextButton("Album", skin);
         TextButton botaoQuiz = new TextButton("Quiz", skin);
         TextButton botaoLoja = new TextButton("Loja", skin); // Novo botão
 
@@ -46,7 +47,7 @@ public class TelaInicialJogo extends TelaBase {
         botaoAlbum.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Ver Álbum");
+                game.setScreen(new TelaAlbum(game));
             }
         });
 

@@ -86,7 +86,6 @@ public class Carta implements DataBaseEntityAPI {
         id =  json.getInt("id");
         nome = json.getString("nome");
         caminhoImagem = json.getString("caminhoImagem");
-        caminhoImagem = "assets/" + caminhoImagem;
         raridade = json.getString("raridade");
         categoria = json.getString("categoria");
     }

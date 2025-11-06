@@ -49,18 +49,18 @@ public class TelaAberturaBooster extends TelaBase {
     private Texture fundoCarta;
 
     float larguraTela = Gdx.graphics.getWidth();
-    float LARGURA_CARTA = larguraTela / 5f; // 1/6 da tela
-    float ALTURA_CARTA = (LARGURA_CARTA * (1086f / 768f)) - 230;
-    private static final float ESPACAMENTO = 0f;
+    float LARGURA_CARTA = larguraTela / 5f; // Aumentado: agora usa 1/5.5 da tela (antes era 1/6)
+    float ALTURA_CARTA = LARGURA_CARTA * (1086f / 800f); // Proporção correta
+    private static final float ESPACAMENTO = 4f; // Reduzido o espaço entre cartas
 
     public TelaAberturaBooster(Main game, Booster booster) {
         super(game);
         this.booster = booster;
-        this.cartas = new ArrayList<>();
-        this.texturasFundo = new ArrayList<>();
-        this.texturasFrente = new ArrayList<>();
-        this.angulosCartas = new ArrayList<>();
-        this.cartasViradas = new ArrayList<>();
+        this.cartas = new ArrayList<Carta>();
+        this.texturasFundo = new ArrayList<Texture>();
+        this.texturasFrente = new ArrayList<Texture>();
+        this.angulosCartas = new ArrayList<Float>();
+        this.cartasViradas = new ArrayList<Boolean>();
         this.tempoDecorrido = 0;
         this.animacaoIniciada = false;
         this.todasViradas = false;
@@ -84,7 +84,6 @@ public class TelaAberturaBooster extends TelaBase {
     public void setCartas(List<Carta> cartas) {
         System.out.println("[TelaBooster] ===== RECEBENDO CARTAS =====");
         System.out.println("[TelaBooster] Número de cartas recebidas: " + cartas.size());
-        System.out.println("[TelaBooster] Thread atual: " + Thread.currentThread().getName());
 
         this.cartas = cartas;
         carregarTexturas();
@@ -93,8 +92,6 @@ public class TelaAberturaBooster extends TelaBase {
         System.out.println("[TelaBooster] Cartas configuradas com sucesso!");
         System.out.println("[TelaBooster] cartasCarregadas = " + this.cartasCarregadas);
     }
-
-
 
     private void carregarTexturas() {
         texturasFundo.clear();
@@ -170,25 +167,17 @@ public class TelaAberturaBooster extends TelaBase {
         if (verificandoCartas && booster != null) {
             List<Carta> cartasBooster = booster.getCartasBooster();
 
-            System.out.println("[TelaBooster] Verificando booster... Lista: " + (cartasBooster == null ? "null" : "size=" + cartasBooster.size()));
-
             if (cartasBooster != null && !cartasBooster.isEmpty()) {
-                System.out.println("[TelaBooster] Verificando cartas... Total atual: " + cartasBooster.size());
-
                 // Verifica se todas as cartas têm caminho de imagem válido
                 boolean todasValidas = true;
                 int cartasComImagem = 0;
                 for (Carta c : cartasBooster) {
                     if (c != null && c.getCaminhoImagem() != null && !c.getCaminhoImagem().isEmpty()) {
                         cartasComImagem++;
-                        System.out.println("[TelaBooster]   - Carta válida: " + c.getNome());
                     } else {
                         todasValidas = false;
-                        System.out.println("[TelaBooster]   - Carta inválida ou sem imagem");
                     }
                 }
-
-                System.out.println("[TelaBooster] Total de cartas com imagem: " + cartasComImagem + "/5");
 
                 if (cartasBooster.size() >= 5 && cartasComImagem >= 5) {
                     System.out.println("[TelaBooster] ===== CARTAS PRONTAS! CARREGANDO TEXTURAS =====");
@@ -260,57 +249,29 @@ public class TelaAberturaBooster extends TelaBase {
         }
     }
 
-
     private void desenharCartas() {
-        if (cartas.isEmpty()) {
-            System.out.println("[TelaBooster] RENDER: Lista de cartas vazia!");
-            return;
-        }
-
-        System.out.println("[TelaBooster] RENDER: Desenhando " + cartas.size() + " cartas");
+        if (cartas.isEmpty()) return;
 
         float larguraTotal = cartas.size() * LARGURA_CARTA + (cartas.size() - 1) * ESPACAMENTO;
         float xInicial = (Gdx.graphics.getWidth() - larguraTotal) / 2f;
-        float yPosicao = Gdx.graphics.getHeight() / 2f - ALTURA_CARTA / 2f;
-
-        System.out.println("[TelaBooster] Posição inicial: x=" + xInicial + ", y=" + yPosicao);
-        System.out.println("[TelaBooster] Largura tela: " + Gdx.graphics.getWidth() + ", Altura: " + Gdx.graphics.getHeight());
+        float yPosicao = (Gdx.graphics.getHeight() - ALTURA_CARTA) / 2f;
 
         for (int i = 0; i < cartas.size(); i++) {
             float xPosicao = xInicial + i * (LARGURA_CARTA + ESPACAMENTO);
             float angulo = angulosCartas.get(i);
 
-            System.out.println("[TelaBooster] Carta " + i + " - Ângulo: " + angulo);
-
+            // Efeito de flip 3D
             float escalaX = Math.abs((float) Math.cos(Math.toRadians(angulo)));
-            if (escalaX < 0.1f) {
-                escalaX = 0.1f;
-            }
+            if (escalaX < 0.05f) escalaX = 0.05f;
 
-            Texture texturaAtual;
-            if (angulo < 90f) {
-                texturaAtual = texturasFundo.get(i);
-                System.out.println("[TelaBooster] Carta " + i + " - Usando FUNDO");
-            } else {
-                texturaAtual = texturasFrente.get(i);
-                System.out.println("[TelaBooster] Carta " + i + " - Usando FRENTE");
-            }
+            // Escolhe textura baseado no ângulo
+            Texture texturaAtual = (angulo < 90f) ? texturasFundo.get(i) : texturasFrente.get(i);
 
             if (texturaAtual != null) {
                 float larguraDesenhada = LARGURA_CARTA * escalaX;
                 float xCentrada = xPosicao + (LARGURA_CARTA - larguraDesenhada) / 2f;
 
-                System.out.println("[TelaBooster] Desenhando em x=" + xCentrada + ", y=" + yPosicao + ", w=" + larguraDesenhada + ", h=" + ALTURA_CARTA);
-
-                batch.draw(
-                    texturaAtual,
-                    xCentrada,
-                    yPosicao,
-                    larguraDesenhada,
-                    ALTURA_CARTA
-                );
-            } else {
-                System.out.println("[TelaBooster] TEXTURA NULA para carta " + i + "!");
+                batch.draw(texturaAtual, xCentrada, yPosicao, larguraDesenhada, ALTURA_CARTA);
             }
         }
     }

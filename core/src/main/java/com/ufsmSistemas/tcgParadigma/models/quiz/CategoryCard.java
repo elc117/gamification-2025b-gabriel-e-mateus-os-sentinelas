@@ -24,14 +24,8 @@ public class CategoryCard extends Table {
     private Color hoverColor;
 
     public CategoryCard(final Main game, BitmapFont font, final CategoriaQuiz categoria) {
-        // Converter cor da categoria
-        java.awt.Color corCategoria = categoria.getCor();
-        categoryColor = new Color(
-            corCategoria.getRed() / 255f,
-            corCategoria.getGreen() / 255f,
-            corCategoria.getBlue() / 255f,
-            1f
-        );
+        // ✅ Agora getCor() já retorna LibGDX Color
+        categoryColor = categoria.getCor();
 
         // Cores base e hover
         baseColor = new Color(categoryColor).mul(0.3f, 0.3f, 0.3f, 1f);
@@ -86,13 +80,8 @@ public class CategoryCard extends Table {
 
         // Criar botões de dificuldade horizontalmente
         for (final DificuldadeQuiz dificuldade : DificuldadeQuiz.values()) {
-            java.awt.Color corNivel = dificuldade.getCor();
-            Color gdxColor = new Color(
-                corNivel.getRed() / 255f,
-                corNivel.getGreen() / 255f,
-                corNivel.getBlue() / 255f,
-                1f
-            );
+            // ✅ Agora getCor() já retorna LibGDX Color
+            Color gdxColor = dificuldade.getCor();
 
             TextButton.TextButtonStyle btnStyle = new TextButton.TextButtonStyle();
             btnStyle.font = font;
