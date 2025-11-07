@@ -8,6 +8,8 @@ import com.ufsmSistemas.tcgParadigma.screens.TelaMenu;
 
 public class Main extends Game {
     public static Music musicaFundo;
+    public static boolean musicaLiberada = false;
+
     @Override
     public void create() {
         Gdx.app.log("Main", "🚀 Iniciando aplicação...");
