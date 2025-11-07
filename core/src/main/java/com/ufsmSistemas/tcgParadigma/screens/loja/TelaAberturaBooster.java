@@ -50,7 +50,7 @@ public class TelaAberturaBooster extends TelaBase {
 
     float larguraTela = Gdx.graphics.getWidth();
     float LARGURA_CARTA = larguraTela / 5f; // Aumentado: agora usa 1/5.5 da tela (antes era 1/6)
-    float ALTURA_CARTA = LARGURA_CARTA * (1086f / 800f); // Proporção correta
+    float ALTURA_CARTA = LARGURA_CARTA * (1086f / 1086f); // Proporção correta
     private static final float ESPACAMENTO = 4f; // Reduzido o espaço entre cartas
 
     public TelaAberturaBooster(Main game, Booster booster) {

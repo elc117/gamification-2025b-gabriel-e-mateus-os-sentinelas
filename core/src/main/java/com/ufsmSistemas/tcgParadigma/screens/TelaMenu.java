@@ -21,6 +21,10 @@ public class TelaMenu extends TelaBase {
 
     @Override
     public void show() {
+        if (Gdx.input.justTouched() && !Main.musicaFundo.isPlaying()) {
+            Main.musicaFundo.play();
+        }
+
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
