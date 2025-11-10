@@ -20,7 +20,7 @@ além de um grande uso da técnica de **Pair Programming**.
 A arte das cartas foi uma das primeiras preocupações da equipe, já que nenhum dos integrantes possuía grande experiência em design gráfico.  
 A solução encontrada foi **dividir a criação das imagens em duas frentes**:
 
-- 🧠 **Geração por IA**: utilizada em cartas especiais de conjunto, onde duas figuras históricas interagem entre si.
+- 🤖 **Geração por IA**: utilizada em cartas especiais de conjunto, onde duas figuras históricas interagem entre si.
 - 🖼️ **Imagens do Pinterest**: adotadas para cartas comuns, explorando estilos variados de ilustração.
 
 Para definir quais personalidades seriam retratadas, contamos com a ajuda do **ChatGPT**, que gerou listas com nomes de grandes figuras em diferentes áreas do conhecimento humano.
@@ -65,3 +65,15 @@ Os dados trafegam no formato **JSON**, o que nos permitiu **abstrair o acesso di
 Essa solução não apenas resolveu o problema, mas também tornou o sistema mais **modular, seguro e escalável**.
 
 ---
+
+## 🧠 Quiz
+O Quiz é o principal meio de interação educacional do jogo.
+Ele desafia os jogadores com perguntas de diferentes áreas do conhecimento, organizadas por níveis de dificuldade (fácil, médio e difícil).
+As questões abrangem desde conteúdos fundamentais e de ensino médio até tópicos avançados de programação, permitindo que o jogador aprenda e revise enquanto se diverte.
+Além disso, o sistema pode ser utilizado como uma ferramenta de preparo para o ENEM ou como revisão para provas escolares.
+
+
+Todas as perguntas e respostas estão armazenadas em um arquivo JSON, gerado com o auxílio do ChatGPT para garantir diversidade e quantidade de questões.
+Durante o jogo, as perguntas são sorteadas de forma aleatória conforme o progresso e desempenho do jogador.
+Cada acerto no quiz recompensa o jogador com pontos de troca — quanto mais difícil a questão, mais pontos conquistados.
+Dessa forma, o quiz une aprendizado e colecionismo, transformando o estudo em uma experiência gamificada e divertida.
