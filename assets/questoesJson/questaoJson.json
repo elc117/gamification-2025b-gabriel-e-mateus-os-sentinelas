@@ -1002,7 +1002,7 @@
                 ]
             }
         ],
-        "média": [
+        "media": [
             {
                 "pergunta": "Qual foi o principal objetivo da política do New Deal implementada por Franklin D. Roosevelt nos Estados Unidos?",
                 "respostaCerta": "Recuperar a economia após a Grande Depressão",
@@ -1904,7 +1904,7 @@
                 ]
             }
         ],
-        "difícil": [
+        "dificil": [
             {
                 "pergunta": "Quem foi o líder soviético que iniciou as reformas conhecidas como Perestroika e Glasnost?",
                 "respostaCerta": "Mikhail Gorbachev",
@@ -11834,7 +11834,7 @@
                 ]
             }
         ],
-        "média": [
+        "media": [
             {
                 "pergunta": "O que significa encapsulamento em POO?",
                 "respostaCerta": "Esconder os detalhes internos de uma classe e expor apenas o necessário",
@@ -12736,7 +12736,7 @@
                 ]
             }
         ],
-        "difícil": [
+        "dificil": [
             {
                 "pergunta": "O que é SOLID em engenharia de software?",
                 "respostaCerta": "Conjunto de cinco princípios para tornar o software mais modular e manutenível",

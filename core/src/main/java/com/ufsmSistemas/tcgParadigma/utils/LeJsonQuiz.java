@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.ufsmSistemas.tcgParadigma.models.quiz.Pergunta;
+
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,10 +13,18 @@ import java.util.List;
 public class LeJsonQuiz {
 
     public static List<Pergunta> carregarPerguntas(String tema, String dificuldade) {
+        System.out.println("[LeJsonQuiz] Tema: " + tema + " Dificuldade: "+dificuldade);
         List<Pergunta> perguntas = new ArrayList<Pergunta>(10);
 
         JsonReader reader = new JsonReader();
-        JsonValue json = reader.parse(Gdx.files.internal("json/questoesJson/questaoJson.json"));
+        JsonValue json = reader.parse(Gdx.files.internal("json/questoesJson/questaoJson.json").readString("UTF-8"));
+
+        for (JsonValue child : json) {
+            System.out.println(" → Tema no JSON: '" + child.name() + "'");
+            for (JsonValue dif : child) {
+                System.out.println("   ↳ Dificuldade: '" + dif.name() + "'");
+            }
+        }
 
         JsonValue perguntasArray = json.get(tema).get(dificuldade);
 

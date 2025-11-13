@@ -1002,7 +1002,7 @@
                 ]
             }
         ],
-        "média": [
+        "media": [
             {
                 "pergunta": "Qual foi o principal objetivo da política do New Deal implementada por Franklin D. Roosevelt nos Estados Unidos?",
                 "respostaCerta": "Recuperar a economia após a Grande Depressão",
@@ -1904,7 +1904,7 @@
                 ]
             }
         ],
-        "difícil": [
+        "dificil": [
             {
                 "pergunta": "Quem foi o líder soviético que iniciou as reformas conhecidas como Perestroika e Glasnost?",
                 "respostaCerta": "Mikhail Gorbachev",
@@ -3710,7 +3710,7 @@
                 ]
             }
         ],
-        "média": [
+        "media": [
             {
                 "pergunta": "Quem foi o filósofo que escreveu 'A Política', analisando a organização da cidade-estado grega?",
                 "respostaCerta": "Aristóteles",
@@ -4612,7 +4612,7 @@
                 ]
             }
         ],
-        "difícil": [
+        "dificil": [
             {
                 "pergunta": "Qual filósofo do século XX desenvolveu o conceito de 'morte de Deus'?",
                 "respostaCerta": "Nietzsche",
@@ -6418,7 +6418,7 @@
                 ]
             }
         ],
-        "média": [
+        "media": [
             {
                 "pergunta": "Qual é a aceleração da gravidade na superfície da Terra?",
                 "respostaCerta": "9,8 m/s²",
@@ -7320,7 +7320,7 @@
                 ]
             }
         ],
-        "difícil": [
+        "dificil": [
             {
                 "pergunta": "Qual é a equação da energia total de um corpo em movimento relativístico?",
                 "respostaCerta": "E = γmc²",
@@ -9126,7 +9126,7 @@
                 ]
             }
         ],
-        "média": [
+        "media": [
             {
                 "pergunta": "Qual é o valor de x na equação 3x + 7 = 25?",
                 "respostaCerta": "6",
@@ -10028,7 +10028,7 @@
                 ]
             }
         ],
-        "difícil": [
+        "dificil": [
             {
                 "pergunta": "Se uma fábrica produz 1200 unidades por dia e precisa aumentar a produção em 25%, quantas unidades passarão a ser produzidas por dia?",
                 "respostaCerta": "1500",
@@ -11834,7 +11834,7 @@
                 ]
             }
         ],
-        "média": [
+        "media": [
             {
                 "pergunta": "O que significa encapsulamento em POO?",
                 "respostaCerta": "Esconder os detalhes internos de uma classe e expor apenas o necessário",
@@ -12736,7 +12736,7 @@
                 ]
             }
         ],
-        "difícil": [
+        "dificil": [
             {
                 "pergunta": "O que é SOLID em engenharia de software?",
                 "respostaCerta": "Conjunto de cinco princípios para tornar o software mais modular e manutenível",
@@ -14542,7 +14542,7 @@
                 ]
             }
         ],
-        "média": [
+        "media": [
             {
                 "pergunta": "Quem pintou 'O Casamento Arnolfini'?",
                 "respostaCerta": "Jan van Eyck",
@@ -15444,7 +15444,7 @@
                 ]
             }
         ],
-        "difícil": [
+        "dificil": [
             {
                 "pergunta": "Quem pintou 'A Persistência da Memória'?",
                 "respostaCerta": "Salvador Dalí",

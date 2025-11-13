@@ -80,7 +80,7 @@ public class CategoryCard extends Table {
 
         // Criar botões de dificuldade horizontalmente
         for (final DificuldadeQuiz dificuldade : DificuldadeQuiz.values()) {
-            // ✅ Agora getCor() já retorna LibGDX Color
+            // Agora getCor() já retorna LibGDX Color
             Color gdxColor = dificuldade.getCor();
 
             TextButton.TextButtonStyle btnStyle = new TextButton.TextButtonStyle();
@@ -113,7 +113,7 @@ public class CategoryCard extends Table {
 
         add(submenu).left();
 
-        // Listener para click no card todo
+        // Listener para click no card
         addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

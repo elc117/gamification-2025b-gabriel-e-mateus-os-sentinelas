@@ -12,13 +12,16 @@ public class Quiz {
     private String imagemHost;
     private int pontosGanhos;
     private List<Pergunta> perguntaList;
+    private int vidaHost;
+    private int vidaUser;
 
     //Construtor
     public Quiz(String tema, String dificuldade) throws FileNotFoundException {
         this.tema = TemaQuiz.fromNome(tema);
         this.nivelDificuldade = dificuldade;
-
         this.imagemHost = this.tema.getImagemHost();
+        this.vidaHost = 100;
+        this.vidaUser = 40;
 
         //Pontos
         if (dificuldade.equals("facil")) {
