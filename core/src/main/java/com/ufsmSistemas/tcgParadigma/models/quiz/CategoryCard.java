@@ -16,6 +16,8 @@ import com.ufsmSistemas.tcgParadigma.enums.CategoriaQuiz;
 import com.ufsmSistemas.tcgParadigma.enums.DificuldadeQuiz;
 import com.ufsmSistemas.tcgParadigma.screens.quiz.TelaQuiz;
 
+import java.io.FileNotFoundException;
+
 public class CategoryCard extends Table {
     private Table submenu;
     private boolean expanded = false;
@@ -104,7 +106,11 @@ public class CategoryCard extends Table {
             botao.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    game.setScreen(new TelaQuiz(game, categoria.getTitulo(), dificuldade.name().toLowerCase()));
+                    try {
+                        game.setScreen(new TelaQuiz(game, categoria.getTitulo(), dificuldade.name().toLowerCase()));
+                    } catch (FileNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             });
 
