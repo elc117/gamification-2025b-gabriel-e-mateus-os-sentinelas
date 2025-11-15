@@ -76,7 +76,7 @@ public class TelaQuiz extends TelaBase {
         Gdx.input.setInputProcessor(stage);
 
         // Carregar recursos
-        skin = new Skin(Gdx.files.internal("uiskin.json"));
+        skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
         font = new BitmapFont();
         font.getData().setScale(1.5f);
 
