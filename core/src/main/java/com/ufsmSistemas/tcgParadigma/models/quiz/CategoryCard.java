@@ -1,5 +1,6 @@
 package com.ufsmSistemas.tcgParadigma.models.quiz;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -107,7 +108,20 @@ public class CategoryCard extends Table {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     try {
+
+                        if (Main.musicaFundo != null) {
+                            Main.musicaFundo.stop();
+                            Main.musicaFundo.dispose();
+                        }
+
+                        Main.musicaFundo = Gdx.audio.newMusic(Gdx.files.internal("Audio/musicaLutaQuiz.ogg"));
+                        Main.musicaFundo.setLooping(true);
+                        Main.musicaFundo.setVolume(1f);
+
+                        Main.musicaFundo.play();
+
                         game.setScreen(new TelaQuiz(game, categoria.getTitulo(), dificuldade.name().toLowerCase()));
+
                     } catch (FileNotFoundException e) {
                         throw new RuntimeException(e);
                     }

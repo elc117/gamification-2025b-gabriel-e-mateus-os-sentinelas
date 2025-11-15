@@ -66,6 +66,8 @@ public class TelaQuiz extends TelaBase {
         // Pegar HP inicial do quiz
         playerHP = 100;
         opponentHP = 100;
+
+
     }
 
     @Override
@@ -114,7 +116,19 @@ public class TelaQuiz extends TelaBase {
         desistirButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                giveUp();
+
+                if (Main.musicaFundo != null) {
+                    Main.musicaFundo.stop();
+                    Main.musicaFundo.dispose();
+                }
+
+                Main.musicaFundo = Gdx.audio.newMusic(Gdx.files.internal("Audio/priscilaViolao.ogg"));
+                Main.musicaFundo.setLooping(true);
+                Main.musicaFundo.setVolume(1f);
+
+                Main.musicaFundo.play();
+
+                game.setScreen(new TelaInicialJogo(game));
             }
         });
         stage.addActor(desistirButton);
@@ -277,10 +291,6 @@ public class TelaQuiz extends TelaBase {
         } else {
             loadQuestion();
         }
-    }
-
-    private void giveUp() {
-        game.setScreen(new TelaInicialJogo(game));
     }
 
     private void endGame() {

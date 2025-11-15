@@ -19,7 +19,6 @@ public class Main extends Game {
         musicaFundo.setVolume(1f);
 
 
-        //esperar clique no HTML5
         musicaFundo.play();
 
         setScreen(new TelaMenu(Main.this));
