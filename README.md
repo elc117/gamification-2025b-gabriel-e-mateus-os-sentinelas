@@ -25,6 +25,11 @@ A solução encontrada foi **dividir a criação das imagens em duas frentes**:
 
 Para definir quais personalidades seriam retratadas, contamos com a ajuda do **ChatGPT**, que gerou listas com nomes de grandes figuras em diferentes áreas do conhecimento humano.
 
+### Formatação de Imagens
+Outro desafio técnico enfrentado durante o desenvolvimento envolveu o formato das imagens das cartas. Após a remoção do fundo original, as imagens ficaram com uma área transparente significativa ao redor delas, o que causava problemas na formatação e no posicionamento correto das cartas na interface do projeto.
+
+Esse problema foi particularmente difícil de identificar inicialmente, pois o espaço transparente não era visualmente óbvio. No entanto, uma vez detectada a causa raiz, a solução foi relativamente simples: removemos completamente o espaço transparente excedente através de um processo de **recorte** das imagens, ajustando-as para conter apenas a área útil da carta.
+
 ---
 
 ## 🌱 Primeiros Passos
@@ -40,6 +45,11 @@ Durante a implementação, diversas mudanças surgiram:
 Mesmo assim, o diagrama cumpriu um papel fundamental: serviu **como guia e referência estrutural** para o restante do desenvolvimento, ajudando a organizar o raciocínio sobre a arquitetura do jogo.
 
 O primeiro código concreto escrito foi o das **classes base**, como `Jogador`, `Carta` e outras entidades essenciais para dar forma ao *Historical TCG*.
+
+#### Diagrama Feito antes de Começar o Projeto
+[botar diagrama inicial aqui]
+#### Diagrama Feito após o Término do Projeto
+[botar diagrama final aqui]
 
 ---
 
@@ -64,6 +74,26 @@ Os dados trafegam no formato **JSON**, o que nos permitiu **abstrair o acesso di
 
 Essa solução não apenas resolveu o problema, mas também tornou o sistema mais **modular, seguro e escalável**.
 
+### SQL e Comunicação com a API
+
+Durante o desenvolvimento do projeto, enfrentamos desafios significativos relacionados ao SQL e à comunicação com a API, que exigiram soluções criativas e aprendizado além do conteúdo visto em aula.
+
+#### Latência na Comunicação
+
+A comunicação entre o código e a API não é instantânea, há um delay de alguns segundos entre o envio da requisição, o processamento no servidor e o retorno da resposta. Embora esse tempo seja relativamente curto, ele criou problemas estruturais importantes no código.
+
+Por exemplo, não era possível exibir as cartas na tela se o servidor ainda não tivesse retornado todas elas. Para resolver isso, precisamos implementar conceitos de programação assíncrona que não haviam sido abordados em aula, como **Callbacks** e **sincronização de threads**. Essas técnicas nos permitiram aguardar a resposta da API antes de prosseguir com a renderização das cartas, garantindo a consistência dos dados exibidos.
+
+#### A Importância de um Comando SQL Bem Estruturado
+
+Outro desafio enfrentado foi a comunicação frequente com o banco de dados. Em determinada etapa do projeto, era necessário verificar se o jogador já possuía uma carta específica: caso já tivesse, o sistema deveria atualizar a quantidade; caso contrário, deveria adicionar um novo registro na tabela.
+
+Inicialmente, implementamos três funções separadas: `verificaCarta()`, `updateCarta()` e `adicionaCarta()`. Essa abordagem exigia verificações constantes nos resultados retornados pelo banco de dados, aumentava a complexidade do código e gerava diversos bugs difíceis de rastrear e corrigir.
+
+Foi então que compreendemos a verdadeira importância de um **código SQL bem otimizado**. Ao refatorar a lógica, descobrimos que era possível realizar toda essa operação diretamente no banco de dados. Isso eliminou a necessidade de múltiplas consultas e funções auxiliares, simplificou drasticamente o código e tornou o sistema mais eficiente e confiável.
+
+Mostrando assim que, muitas vezes, a melhor solução não está em adicionar mais código na aplicação, mas sim em aproveitar os recursos nativos do banco de dados.
+
 ---
 
 ## 🧠 Quiz
@@ -77,3 +107,11 @@ Todas as perguntas e respostas estão armazenadas em um arquivo JSON, gerado com
 Durante o jogo, as perguntas são sorteadas de forma aleatória conforme o progresso e desempenho do jogador.
 Cada acerto no quiz recompensa o jogador com pontos de troca — quanto mais difícil a questão, mais pontos conquistados.
 Dessa forma, o quiz une aprendizado e colecionismo, transformando o estudo em uma experiência gamificada e divertida.
+
+---
+
+### 🎵 Músicas
+
+Uma experiência particularmente criativa do projeto foi a produção das músicas utilizadas no jogo. O processo envolveu um trabalho colaborativo que começou com discussões sobre músicas que apreciávamos.
+
+A partir dessas referências, tocamos elas em um teclado MIDI com **voices personalizadas** (timbres customizados). Após a gravação dos áudios, utilizamos os recursos de áudio da biblioteca **LibGDX** para integrar as músicas ao jogo, garantindo qualidade sonora e sincronização adequada com os diferentes momentos da gameplay.
