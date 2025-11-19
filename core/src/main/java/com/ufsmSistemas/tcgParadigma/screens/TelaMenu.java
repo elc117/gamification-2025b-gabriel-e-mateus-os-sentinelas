@@ -1,49 +1,77 @@
 package com.ufsmSistemas.tcgParadigma.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ufsmSistemas.tcgParadigma.Main;
 import com.ufsmSistemas.tcgParadigma.screens.login.TelaCriarUsuario;
 import com.ufsmSistemas.tcgParadigma.screens.login.TelaLogin;
 
 public class TelaMenu extends TelaBase {
+    private Label titulo;
+    private Label subtitulo;
 
     public TelaMenu(Main game) {
         super(game);
+        // Cores para o tema de menu principal - tons de roxo/azul
+        corFundoTop = new Color(0.2f, 0.1f, 0.35f, 1);
+        corFundoBottom = new Color(0.08f, 0.05f, 0.15f, 1);
     }
 
     @Override
     public void show() {
-
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
-        Table table = new Table();
-        table.setFillParent(true);
-        stage.addActor(table);
+        // Container principal
+        Table mainTable = new Table();
+        mainTable.setFillParent(true);
 
-        // Título
-        Label titulo = new Label("Bem-vindo ao TCG Paradigma!", skin);
-        titulo.setFontScale(1.2f);
+        // Título principal com estilo
+        titulo = new Label("TCG PARADIGMA", skin);
+        titulo.setFontScale(3f);
+        titulo.setColor(new Color(0.9f, 0.7f, 1f, 1)); // Roxo claro
+        titulo.setAlignment(Align.center);
 
-        // Botões principais
-        TextButton botaoLogin = new TextButton("Login", skin);
-        TextButton botaoCriarConta = new TextButton("Criar Conta", skin);
-        TextButton botaoSair = new TextButton("Sair", skin);
+        // Animação de brilho no título
+        titulo.addAction(Actions.forever(
+            Actions.sequence(
+                Actions.color(new Color(1f, 0.9f, 1f, 1), 1.2f),
+                Actions.color(new Color(0.9f, 0.7f, 1f, 1), 1.2f)
+            )
+        ));
+
+        // Subtítulo
+        subtitulo = new Label("Bem-vindo ao jogo de cartas!", skin);
+        subtitulo.setFontScale(1.2f);
+        subtitulo.setColor(new Color(0.7f, 0.7f, 0.8f, 1));
+        subtitulo.setAlignment(Align.center);
+
+        // Container para os botões
+        Table botoesTable = new Table();
+        botoesTable.defaults().width(300).height(65).pad(12);
+
+        // Criação dos botões estilizados
+        TextButton botaoLogin = criarBotaoEstilizado("🎮 ENTRAR", skin, new Color(0.3f, 0.6f, 0.9f, 1));
+        TextButton botaoCriarConta = criarBotaoEstilizado("✨ CRIAR CONTA", skin, new Color(0.5f, 0.8f, 0.4f, 1));
+        TextButton botaoSair = criarBotaoEstilizado("🚪 SAIR", skin, new Color(0.8f, 0.4f, 0.4f, 1));
 
         // Ações dos botões
         botaoLogin.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Login clicado!");
                 game.setScreen(new TelaLogin(game));
             }
         });
@@ -51,6 +79,7 @@ public class TelaMenu extends TelaBase {
         botaoCriarConta.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Criar conta clicado!");
                 game.setScreen(new TelaCriarUsuario(game));
             }
         });
@@ -58,41 +87,122 @@ public class TelaMenu extends TelaBase {
         botaoSair.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Sair clicado!");
                 Gdx.app.exit();
             }
         });
 
-        // Layout da tabela
-        table.add(titulo).colspan(2).pad(20);
-        table.row();
-        table.add(botaoLogin).width(200).pad(10);
-        table.row();
-        table.add(botaoCriarConta).width(200).pad(10);
-        table.row();
-        table.add(botaoSair).width(200).pad(10);
+        // Adiciona efeitos de hover
+        adicionarEfeitoHover(botaoLogin);
+        adicionarEfeitoHover(botaoCriarConta);
+        adicionarEfeitoHover(botaoSair);
+
+        // Monta o layout
+        mainTable.add(titulo).padBottom(15).row();
+        mainTable.add(subtitulo).padBottom(50).row();
+
+        botoesTable.add(botaoLogin).row();
+        botoesTable.add(botaoCriarConta).row();
+        botoesTable.add(botaoSair).row();
+
+        mainTable.add(botoesTable);
+
+        // Rodapé com instrução de música
+        Label avisoMusica = new Label("♪ Clique na tela para iniciar a música", skin);
+        avisoMusica.setFontScale(0.8f);
+        avisoMusica.setColor(new Color(0.5f, 0.5f, 0.6f, 0.8f));
+
+        // Animação piscante para o aviso
+        if (!Main.musicaLiberada) {
+            avisoMusica.addAction(Actions.forever(
+                Actions.sequence(
+                    Actions.fadeOut(0.8f),
+                    Actions.fadeIn(0.8f)
+                )
+            ));
+        }
+
+        Table footer = new Table();
+        footer.setFillParent(true);
+        footer.bottom();
+        footer.add(avisoMusica).padBottom(20);
+
+        // Adiciona tudo ao stage
+        stage.addActor(mainTable);
+        stage.addActor(footer);
+
+        // Animação de entrada suave
+        mainTable.setColor(1, 1, 1, 0);
+        mainTable.addAction(Actions.fadeIn(0.6f));
+
+        footer.setColor(1, 1, 1, 0);
+        footer.addAction(Actions.sequence(
+            Actions.delay(0.3f),
+            Actions.fadeIn(0.5f)
+        ));
+    }
+
+    private TextButton criarBotaoEstilizado(String texto, Skin skin, Color cor) {
+        TextButton botao = new TextButton(texto, skin);
+        botao.getLabel().setFontScale(1.4f);
+        botao.setColor(cor);
+        return botao;
+    }
+
+    private void adicionarEfeitoHover(final TextButton botao) {
+        final Color corOriginal = botao.getColor().cpy();
+
+        botao.addListener(new ClickListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, com.badlogic.gdx.scenes.scene2d.Actor fromActor) {
+                if (pointer == -1) { // Apenas para mouse hover, não toque
+                    botao.addAction(Actions.scaleTo(1.08f, 1.08f, 0.15f));
+                }
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, com.badlogic.gdx.scenes.scene2d.Actor toActor) {
+                if (pointer == -1) {
+                    botao.addAction(Actions.scaleTo(1f, 1f, 0.15f));
+                }
+            }
+        });
     }
 
     @Override
     public void render(float delta) {
+        // Ativa música no primeiro clique
         if (Gdx.input.justTouched() && !Main.musicaLiberada) {
             Main.musicaFundo.play();
             Main.musicaLiberada = true;
-        }
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.act(delta);
-        stage.draw();
-    }
 
+            // Remove o aviso de música com fade out
+            for (com.badlogic.gdx.scenes.scene2d.Actor actor : stage.getActors()) {
+                if (actor instanceof Table) {
+                    Table table = (Table) actor;
+                    for (com.badlogic.gdx.scenes.scene2d.Actor child : table.getChildren()) {
+                        if (child instanceof Label) {
+                            Label label = (Label) child;
+                            if (label.getText().toString().contains("música")) {
+                                label.clearActions();
+                                label.addAction(Actions.fadeOut(1f));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        super.render(delta);
+    }
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
+        super.resize(width, height);
     }
 
     @Override
     public void dispose() {
-        stage.dispose();
-        skin.dispose();
+        super.dispose();
     }
 }
