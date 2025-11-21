@@ -15,6 +15,9 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ufsmSistemas.tcgParadigma.Main;
+import com.ufsmSistemas.tcgParadigma.data.DataBaseAPI;
+import com.ufsmSistemas.tcgParadigma.data.Session;
+import com.ufsmSistemas.tcgParadigma.models.Jogador;
 import com.ufsmSistemas.tcgParadigma.models.quiz.Pergunta;
 import com.ufsmSistemas.tcgParadigma.models.quiz.Quiz;
 import com.ufsmSistemas.tcgParadigma.screens.TelaBase;
@@ -24,6 +27,8 @@ import java.io.FileNotFoundException;
 
 public class TelaQuiz extends TelaBase {
 
+
+    private Jogador jogador;
     private Quiz quiz;
     private Stage stage;
     private SpriteBatch batch;
@@ -66,6 +71,7 @@ public class TelaQuiz extends TelaBase {
         // Pegar HP inicial do quiz
         playerHP = 100;
         opponentHP = 100;
+        jogador = Session.getInstance().getJogador();
 
 
     }
@@ -270,6 +276,7 @@ public class TelaQuiz extends TelaBase {
 
             opponentHP = Math.max(0, opponentHP - 15);
             opponentShakeTimer = 0.5f;
+            quiz.setTotalPontos(quiz.getTotalPontos() + quiz.getPontosGanhos());
         } else {
             feedbackLabel.setText("ERROU! 💥 Resposta: " + p.getRespostaCerta());
             Label.LabelStyle style = new Label.LabelStyle(feedbackLabel.getStyle());
@@ -308,13 +315,12 @@ public class TelaQuiz extends TelaBase {
             feedbackLabel.setStyle(style);
         } else if (opponentHP <= 0) {
             resultado = "VITÓRIA! 🏆\nVocê derrotou o oponente!";
-            pontosGanhos = quiz.getPontosGanhos();
             Label.LabelStyle style = new Label.LabelStyle(feedbackLabel.getStyle());
             style.fontColor = Color.GREEN;
             feedbackLabel.setStyle(style);
+            quiz.setTotalPontos(quiz.getTotalPontos() + 100);
         } else if (playerHP > opponentHP) {
             resultado = "VITÓRIA! 🏆\nVocê tem mais HP!";
-            pontosGanhos = quiz.getPontosGanhos();
             Label.LabelStyle style = new Label.LabelStyle(feedbackLabel.getStyle());
             style.fontColor = Color.GREEN;
             feedbackLabel.setStyle(style);
@@ -325,7 +331,6 @@ public class TelaQuiz extends TelaBase {
             feedbackLabel.setStyle(style);
         } else {
             resultado = "EMPATE! 🤝";
-            pontosGanhos = quiz.getPontosGanhos() / 2;
             Label.LabelStyle style = new Label.LabelStyle(feedbackLabel.getStyle());
             style.fontColor = Color.YELLOW;
             feedbackLabel.setStyle(style);
@@ -344,6 +349,10 @@ public class TelaQuiz extends TelaBase {
         for (TextButton btn : answerButtons) {
             btn.setVisible(false);
         }
+
+        jogador.setPontos(jogador.getPontos() + quiz.getTotalPontos());
+        System.out.println("Jogador: " + jogador.getPontos());
+        DataBaseAPI.update(jogador);
     }
 
     @Override

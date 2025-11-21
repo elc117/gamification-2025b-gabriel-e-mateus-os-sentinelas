@@ -13,19 +13,26 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ufsmSistemas.tcgParadigma.Main;
+import com.ufsmSistemas.tcgParadigma.data.Session;
 import com.ufsmSistemas.tcgParadigma.models.Booster;
+import com.ufsmSistemas.tcgParadigma.models.Jogador;
+import com.ufsmSistemas.tcgParadigma.screens.DesenhaMoedaTela;
 import com.ufsmSistemas.tcgParadigma.screens.TelaBase;
 import com.ufsmSistemas.tcgParadigma.screens.TelaInicialJogo;
 
 public class TelaLoja extends TelaBase {
     private Texture texturaBooster;
     private Label mensagemStatus;
+    private final Jogador jogador;
+    private DesenhaMoedaTela desenhaMoeda;
 
     public TelaLoja(Main game) {
         super(game);
         // Cores para tema de loja - tons de dourado/amarelo
         corFundoTop = new Color(0.35f, 0.25f, 0.15f, 1);
         corFundoBottom = new Color(0.15f, 0.1f, 0.05f, 1);
+        jogador = Session.getInstance().getJogador();
+        desenhaMoeda = new DesenhaMoedaTela();
     }
 
     @Override
@@ -208,52 +215,64 @@ public class TelaLoja extends TelaBase {
     }
 
     private void abrirBooster(Table card, TextButton botao) {
-        // Desabilita o botão
-        botao.setDisabled(true);
-        botao.setText("ABRINDO...");
+        if (jogador.getPontos() >= 150) {
+            // Desabilita o botão
+            botao.setDisabled(true);
+            botao.setText("ABRINDO...");
 
-        // Mensagem de status
-        mensagemStatus.setText("🎁 Abrindo booster...");
-        mensagemStatus.setColor(new Color(0.3f, 0.7f, 1f, 1));
-        mensagemStatus.clearActions();
-        mensagemStatus.setColor(0.3f, 0.7f, 1f, 0);
-        mensagemStatus.addAction(Actions.fadeIn(0.3f));
+            // Mensagem de status
+            mensagemStatus.setText("🎁 Abrindo booster...");
+            mensagemStatus.setColor(new Color(0.3f, 0.7f, 1f, 1));
+            mensagemStatus.clearActions();
+            mensagemStatus.setColor(0.3f, 0.7f, 1f, 0);
+            mensagemStatus.addAction(Actions.fadeIn(0.3f));
 
-        // Animação no card
-        card.addAction(Actions.sequence(
-            Actions.scaleTo(1.1f, 1.1f, 0.2f),
-            Actions.scaleTo(0.95f, 0.95f, 0.2f),
-            Actions.scaleTo(1f, 1f, 0.2f)
-        ));
+            // Animação no card
+            card.addAction(Actions.sequence(
+                Actions.scaleTo(1.1f, 1.1f, 0.2f),
+                Actions.scaleTo(0.95f, 0.95f, 0.2f),
+                Actions.scaleTo(1f, 1f, 0.2f)
+            ));
 
-        System.out.println("[TelaLoja] ===== ABRINDO BOOSTER =====");
+            System.out.println("[TelaLoja] ===== ABRINDO BOOSTER =====");
 
-        new Booster(cartas -> {
-            System.out.println("[TelaLoja] Callback recebido com " + cartas.size() + " cartas!");
+            new Booster(cartas -> {
+                System.out.println("[TelaLoja] Callback recebido com " + cartas.size() + " cartas!");
 
-            Gdx.app.postRunnable(() -> {
-                mensagemStatus.setText("✅ Booster aberto com sucesso!");
-                mensagemStatus.setColor(new Color(0.3f, 0.9f, 0.4f, 1));
+                Gdx.app.postRunnable(() -> {
+                    mensagemStatus.setText("✅ Booster aberto com sucesso!");
+                    mensagemStatus.setColor(new Color(0.3f, 0.9f, 0.4f, 1));
 
-                // Pequeno delay antes de mudar de tela
-                stage.addAction(Actions.sequence(
-                    Actions.delay(0.5f),
-                    Actions.run(new Runnable() {
-                        @Override
-                        public void run() {
-                            TelaAberturaBooster telaBooster = new TelaAberturaBooster(game, null);
-                            telaBooster.setCartas(cartas);
-                            game.setScreen(telaBooster);
-                        }
-                    })
-                ));
+                    // Pequeno delay antes de mudar de tela
+                    stage.addAction(Actions.sequence(
+                        Actions.delay(0.5f),
+                        Actions.run(new Runnable() {
+                            @Override
+                            public void run() {
+                                TelaAberturaBooster telaBooster = new TelaAberturaBooster(game, null);
+                                telaBooster.setCartas(cartas);
+                                game.setScreen(telaBooster);
+                            }
+                        })
+                    ));
+                });
+
             });
-        });
+        }else{
+            mensagemStatus.setText("Pontos Insuficientes para abrir o Booster!");
+            mensagemStatus.setColor(new Color(0.8f, 0.1f, 1f, 1));
+            mensagemStatus.clearActions();
+            mensagemStatus.setColor(0.3f, 0.7f, 1f, 0);
+            mensagemStatus.addAction(Actions.fadeIn(0.3f));
+        }
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
+        batch.begin();
+        desenhaMoeda.desenhar(batch, jogador.getPontos());
+        batch.end();
     }
 
     @Override
@@ -263,6 +282,7 @@ public class TelaLoja extends TelaBase {
 
     @Override
     public void dispose() {
+        desenhaMoeda.dispose();
         super.dispose();
         if (texturaBooster != null) {
             texturaBooster.dispose();

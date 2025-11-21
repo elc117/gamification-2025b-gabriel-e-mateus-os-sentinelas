@@ -15,10 +15,6 @@ public class RecebeEnviaCartaApi {
         void onCartaRecebida(Carta carta);
     }
 
-    public interface VerificarCartaCallback {
-        void onResultado(boolean existe);
-    }
-
     public void receberCartaApi(Carta cartaMolde, CartaCallback callback) {
 
         api.select(cartaMolde, new ResponseCallback() {

@@ -13,15 +13,23 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import com.ufsmSistemas.tcgParadigma.Main;
+import com.ufsmSistemas.tcgParadigma.data.Session;
 import com.ufsmSistemas.tcgParadigma.enums.CategoriaQuiz;
+import com.ufsmSistemas.tcgParadigma.models.Jogador;
 import com.ufsmSistemas.tcgParadigma.models.quiz.CategoryCard;
+import com.ufsmSistemas.tcgParadigma.screens.DesenhaMoedaTela;
 import com.ufsmSistemas.tcgParadigma.screens.TelaBase;
 
 public class TelaOpcoesQuiz extends TelaBase {
+
+    private Jogador jogador;
+    private DesenhaMoedaTela desenhaMoeda;
     public BitmapFont font = new BitmapFont(Gdx.files.internal("fonts/utf8.fnt"));
 
     public TelaOpcoesQuiz(Main game) {
         super(game);
+        desenhaMoeda = new DesenhaMoedaTela();
+        jogador = Session.getInstance().getJogador();
     }
 
     @Override
@@ -95,5 +103,13 @@ public class TelaOpcoesQuiz extends TelaBase {
         });
 
         mainTable.add(scrollPane).expand().fill();
+    }
+
+    @Override
+    public void render(float delta){
+        super.render(delta);
+        batch.begin();
+        desenhaMoeda.desenhar(batch, jogador.getPontos());
+        batch.end();
     }
 }

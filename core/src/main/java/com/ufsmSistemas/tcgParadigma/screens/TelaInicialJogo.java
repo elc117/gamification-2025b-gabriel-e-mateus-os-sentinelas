@@ -11,18 +11,24 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ufsmSistemas.tcgParadigma.Main;
+import com.ufsmSistemas.tcgParadigma.data.Session;
+import com.ufsmSistemas.tcgParadigma.models.Jogador;
 import com.ufsmSistemas.tcgParadigma.screens.album.TelaAlbum;
 import com.ufsmSistemas.tcgParadigma.screens.loja.TelaLoja;
 import com.ufsmSistemas.tcgParadigma.screens.quiz.TelaOpcoesQuiz;
 
 public class TelaInicialJogo extends TelaBase {
     private Label titulo;
+    private DesenhaMoedaTela desenhaMoeda;
+    private Jogador jogador;
 
     public TelaInicialJogo(Main game) {
         super(game);
         // Cores personalizadas para um tema mais atraente
         corFundoTop = new Color(0.15f, 0.2f, 0.4f, 1);
         corFundoBottom = new Color(0.05f, 0.08f, 0.2f, 1);
+        desenhaMoeda = new DesenhaMoedaTela();
+        jogador = Session.getInstance().getJogador();
     }
 
     @Override
@@ -162,6 +168,9 @@ public class TelaInicialJogo extends TelaBase {
     @Override
     public void render(float delta) {
         super.render(delta);
+        batch.begin();
+        desenhaMoeda.desenhar(batch, jogador.getPontos());
+        batch.end();
     }
 
     @Override
@@ -171,6 +180,7 @@ public class TelaInicialJogo extends TelaBase {
 
     @Override
     public void dispose() {
+        desenhaMoeda.dispose();
         super.dispose();
     }
 }

@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ufsmSistemas.tcgParadigma.Main;
 
-public class TelaBase implements Screen {
+public abstract class TelaBase implements Screen {
     protected Stage stage;
     protected Skin skin;
     protected final Main game;
@@ -83,4 +83,5 @@ public class TelaBase implements Screen {
         if (batch != null) batch.dispose();
         if (background != null) background.dispose();
     }
+
 }

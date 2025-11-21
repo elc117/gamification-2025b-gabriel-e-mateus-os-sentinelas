@@ -1,5 +1,6 @@
 package com.ufsmSistemas.tcgParadigma.models;
 
+import com.ufsmSistemas.tcgParadigma.data.DataBaseAPI;
 import com.ufsmSistemas.tcgParadigma.data.Session;
 import com.ufsmSistemas.tcgParadigma.utils.RecebeEnviaCartaApi;
 
@@ -12,6 +13,7 @@ public class Booster {
     private final int cartasEsperadas = 5;
     private int cartasCarregadas = 0;
     private BoosterCallback callback;
+    private final Jogador jogador;
 
     public interface BoosterCallback {
         void onBoosterCompleto(List<Carta> cartas);
@@ -23,6 +25,9 @@ public class Booster {
 
     public Booster(BoosterCallback callback) {
         this.callback = callback;
+        jogador = Session.getInstance().getJogador();
+        jogador.setPontos(jogador.getPontos() - 150);
+        DataBaseAPI.update(jogador);
         Random random = new Random();
 
         System.out.println("[Booster] ===== INICIANDO CRIACAO DE BOOSTER =====");
