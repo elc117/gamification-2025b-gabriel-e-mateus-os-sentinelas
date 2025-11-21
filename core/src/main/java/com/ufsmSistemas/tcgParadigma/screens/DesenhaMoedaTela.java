@@ -45,37 +45,3 @@ public class DesenhaMoedaTela {
         font.dispose();
     }
 }
-
-
-// ===== EXEMPLO DE USO EM QUALQUER TELA =====
-
-/*
-public class MinhaTelaQualquer extends TelaBase {
-
-    private DesenhaMoedaTela desenhaMoeda;
-
-    public MinhaTelaQualquer(Main game) {
-        super(game);
-        desenhaMoeda = new DesenhaMoedaTela();
-    }
-
-    @Override
-    public void render(float delta) {
-        // ... seu código de render ...
-
-        batch.begin();
-        // ... desenha outras coisas ...
-
-        // Desenha a moeda com os pontos
-        desenhaMoeda.desenhar(batch, game.jogador.getPontos());
-
-        batch.end();
-    }
-
-    @Override
-    public void dispose() {
-        desenhaMoeda.dispose();
-        super.dispose();
-    }
-}
-*/
