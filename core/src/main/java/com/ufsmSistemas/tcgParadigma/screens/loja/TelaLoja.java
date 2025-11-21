@@ -77,10 +77,8 @@ public class TelaLoja extends TelaBase {
 
         // Cria os cards de booster
         Table cardBooster1 = criarCardBooster("Booster Comum", "150 moedas", 1);
-        Table cardBooster2 = criarCardBooster("Booster Raro", "300 moedas", 2);
 
         boostersContainer.add(cardBooster1).width(280).height(420);
-        boostersContainer.add(cardBooster2).width(280).height(420);
 
         // Mensagem de status
         mensagemStatus = new Label("", skin);

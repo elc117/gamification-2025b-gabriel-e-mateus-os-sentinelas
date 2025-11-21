@@ -66,9 +66,13 @@ public class TelaAberturaBooster extends TelaBase {
 
     @Override
     public void show() {
-        // Define o input processor quando a tela é mostrada
-        Gdx.input.setInputProcessor(stageUI);
-        super.show();
+        InputMultiplexer multiplexer = new InputMultiplexer();
+
+        multiplexer.addProcessor(stageUI);   // Primeiro: UI (botão voltar)
+        multiplexer.addProcessor(stage);     // Segundo: caso o TelaBase tenha UI ou lógica
+        // (opcional: multiplexer.addProcessor(...));
+
+        Gdx.input.setInputProcessor(multiplexer);
     }
 
     private void carregarCartas(Booster booster) {
@@ -102,7 +106,7 @@ public class TelaAberturaBooster extends TelaBase {
         ));
 
         // Instrução
-        instrucao = new Label("Clique nas cartas para revelá-las!", skinUI);
+        instrucao = new Label("Aguarde enquanto as cartas são reveladas...", skinUI);
         instrucao.setFontScale(1.2f);
         instrucao.setColor(new Color(0.8f, 0.8f, 0.9f, 1));
         instrucao.setAlignment(Align.center);
@@ -136,9 +140,13 @@ public class TelaAberturaBooster extends TelaBase {
         btnVoltar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new TelaLoja(game));
+                System.out.println("Botão Voltar clicado!"); // Debug
+                voltarParaLoja();
             }
         });
+
+        // Garante que o botão está acima de tudo
+        btnVoltar.setZIndex(1000);
 
         // Efeito hover no botão
         adicionarEfeitoHover(btnVoltar);
@@ -156,6 +164,7 @@ public class TelaAberturaBooster extends TelaBase {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1) {
+                    botao.clearActions();
                     botao.addAction(Actions.scaleTo(1.08f, 1.08f, 0.15f));
                 }
             }
@@ -163,6 +172,7 @@ public class TelaAberturaBooster extends TelaBase {
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                 if (pointer == -1) {
+                    botao.clearActions();
                     botao.addAction(Actions.scaleTo(1f, 1f, 0.15f));
                 }
             }
@@ -226,26 +236,38 @@ public class TelaAberturaBooster extends TelaBase {
             )
         ));
 
-        instrucao.setText("Confira suas novas cartas!");
+        instrucao.setText("Confira suas novas cartas no álbum!");
         instrucao.clearActions();
         instrucao.setColor(new Color(0.4f, 0.9f, 0.5f, 1));
 
         // Mostra botão com animação
         btnVoltar.setVisible(true);
+        btnVoltar.setTouchable(Touchable.enabled);
+        btnVoltar.toFront(); // Traz para frente
         btnVoltar.setColor(1, 1, 1, 0);
+        btnVoltar.clearActions();
         btnVoltar.addAction(Actions.sequence(
             Actions.delay(0.3f),
             Actions.fadeIn(0.5f)
         ));
 
         System.out.println("Todas as cartas foram reveladas!");
+        System.out.println("Botão visível: " + btnVoltar.isVisible());
+        System.out.println("Botão touchable: " + btnVoltar.getTouchable());
+        System.out.println("Posição do botão: " + btnVoltar.getX() + ", " + btnVoltar.getY());
+    }
+
+    private void voltarParaLoja() {
+        System.out.println("Voltando para a loja...");
+        game.setScreen(new TelaLoja(game));
+        dispose();
     }
 
     private void desenharCartas() {
         if (cartasVisuais.isEmpty()) return;
 
         float larguraTela = Gdx.graphics.getWidth();
-        larguraCarta = larguraTela / 6.5f; // Cartas um pouco menores para melhor visualização
+        larguraCarta = larguraTela / 6.5f;
         alturaCarta = larguraCarta * 1.4f;
 
         float larguraTotal = cartasVisuais.size() * larguraCarta + (cartasVisuais.size() - 1) * ESPACAMENTO;
