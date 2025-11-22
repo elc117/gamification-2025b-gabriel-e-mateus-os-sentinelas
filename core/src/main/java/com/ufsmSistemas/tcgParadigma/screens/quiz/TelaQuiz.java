@@ -451,8 +451,11 @@ public class TelaQuiz extends TelaBase {
 
     private void drawSprites() {
         // Sprite do oponente (canto superior direito)
-        float opponentX = Gdx.graphics.getWidth() - 250;
-        float opponentY = 500;
+        float screenWidth = Gdx.graphics.getWidth();
+        float screenHeight = Gdx.graphics.getHeight();
+
+        float opponentX = screenWidth * 0.82f;
+        float opponentY = screenHeight * 0.65f;
 
         if (opponentShakeTimer > 0) {
             opponentX += (Math.random() - 0.5) * 10;
@@ -462,8 +465,8 @@ public class TelaQuiz extends TelaBase {
         batch.draw(opponentSprite, opponentX, opponentY, 150, 150);
 
         // Sprite do jogador (canto inferior esquerdo)
-        float playerX = 50;
-        float playerY = 320;
+        float playerX = screenWidth * 0.15f;
+        float playerY = screenHeight * 0.20f;
 
         if (playerShakeTimer > 0) {
             playerX += (Math.random() - 0.5) * 10;
@@ -474,22 +477,25 @@ public class TelaQuiz extends TelaBase {
     }
 
     private void drawHealthBars() {
+        float screenWidth = Gdx.graphics.getWidth();
+        float screenHeight = Gdx.graphics.getHeight();
+
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
         // Barra de HP do oponente
-        drawHealthBar(Gdx.graphics.getWidth() - 300, 680, opponentHP, 100, "OPONENTE");
+        drawHealthBar(screenWidth * 0.75f, screenHeight * 0.87f, opponentHP, 100, "OPONENTE");
 
         // Barra de HP do jogador
-        drawHealthBar(50, 280, playerHP, 100, "VOCÊ");
+        drawHealthBar(screenWidth * 0.10f, screenHeight * 0.22f, playerHP, 100, "VOCÊ");
 
         shapeRenderer.end();
 
         // Labels de HP
         batch.begin();
         smallFont.draw(batch, "HP: " + opponentHP + "/" + 100,
-            Gdx.graphics.getWidth() - 200, 665);
+            screenWidth * 0.81f, screenHeight * 0.91f);
         smallFont.draw(batch, "HP: " + playerHP + "/" + 100,
-            150, 265);
+            screenWidth * 0.10f, screenHeight * 0.20f);
         batch.end();
     }
 

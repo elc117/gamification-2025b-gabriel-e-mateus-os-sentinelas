@@ -235,13 +235,13 @@ public class TelaAberturaBooster extends TelaBase {
                 Actions.scaleTo(1f, 1f, 0.4f)
             )
         ));
-
+        btnVoltar.setVisible(true);
         instrucao.setText("Confira suas novas cartas no álbum!");
         instrucao.clearActions();
         instrucao.setColor(new Color(0.4f, 0.9f, 0.5f, 1));
 
         // Mostra botão com animação
-        btnVoltar.setVisible(true);
+
         btnVoltar.setTouchable(Touchable.enabled);
         btnVoltar.toFront(); // Traz para frente
         btnVoltar.setColor(1, 1, 1, 0);
