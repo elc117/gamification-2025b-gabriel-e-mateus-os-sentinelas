@@ -21,6 +21,7 @@ public class TelaInicialJogo extends TelaBase {
     private Label titulo;
     private DesenhaMoedaTela desenhaMoeda;
     private Jogador jogador;
+    private BitmapFont fonteCustomizada;
 
     public TelaInicialJogo(Main game) {
         super(game);
@@ -38,7 +39,10 @@ public class TelaInicialJogo extends TelaBase {
 
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
-        // Customiza o estilo dos botões
+        // Carrega a fonte customizada
+        fonteCustomizada = new BitmapFont(Gdx.files.internal("fonts/utf8Menor.fnt"));
+
+        // Customiza o estilo dos botões com a fonte customizada
         customizarSkin();
 
         // Container principal
@@ -46,9 +50,12 @@ public class TelaInicialJogo extends TelaBase {
         mainTable.setFillParent(true);
 
         // Título do jogo com estilo
-        titulo = new Label("TCG PARADIGMA", skin);
+        Label.LabelStyle tituloStyle = new Label.LabelStyle();
+        tituloStyle.font = fonteCustomizada;
+        tituloStyle.fontColor = new Color(1f, 0.9f, 0.3f, 1); // Dourado
+
+        titulo = new Label("TCG PARADIGMA", tituloStyle);
         titulo.setFontScale(2.5f);
-        titulo.setColor(new Color(1f, 0.9f, 0.3f, 1)); // Dourado
         titulo.setAlignment(Align.center);
 
         // Adiciona animação ao título
@@ -63,10 +70,10 @@ public class TelaInicialJogo extends TelaBase {
         Table botoesTable = new Table();
         botoesTable.defaults().width(280).height(70).pad(15);
 
-        // Cria botões com ícones/emojis
-        final TextButton botaoAlbum = criarBotaoEstilizado("📚 ÁLBUM", skin);
-        final TextButton botaoQuiz = criarBotaoEstilizado("🎯 QUIZ", skin);
-        final TextButton botaoLoja = criarBotaoEstilizado("🛒 LOJA", skin);
+        // Cria botões
+        final TextButton botaoAlbum = criarBotaoEstilizado("ÁLBUM", skin);
+        final TextButton botaoQuiz = criarBotaoEstilizado("QUIZ", skin);
+        final TextButton botaoLoja = criarBotaoEstilizado("LOJA", skin);
 
         // Adiciona listeners
         botaoAlbum.addListener(new ClickListener() {
@@ -107,9 +114,12 @@ public class TelaInicialJogo extends TelaBase {
         mainTable.add(horizontalTable).padTop(20);
 
         // Adiciona versão/créditos no rodapé
-        Label creditos = new Label("v1.0 - UFSM Sistemas", skin);
+        Label.LabelStyle creditosStyle = new Label.LabelStyle();
+        creditosStyle.font = fonteCustomizada;
+        creditosStyle.fontColor = new Color(0.6f, 0.6f, 0.7f, 1);
+
+        Label creditos = new Label("v1.0 - UFSM Sistemas", creditosStyle);
         creditos.setFontScale(0.7f);
-        creditos.setColor(new Color(0.6f, 0.6f, 0.7f, 1));
 
         Table footer = new Table();
         footer.setFillParent(true);
@@ -125,11 +135,14 @@ public class TelaInicialJogo extends TelaBase {
     }
 
     private void customizarSkin() {
-        // Customiza o estilo padrão dos botões se necessário
-        TextButton.TextButtonStyle style = skin.get(TextButton.TextButtonStyle.class);
-        if (style.font != null) {
-            style.font.getData().setScale(1.2f);
-        }
+        // Cria um novo estilo de botão com a fonte customizada
+        TextButton.TextButtonStyle customButtonStyle = new TextButton.TextButtonStyle(
+            skin.get(TextButton.TextButtonStyle.class)
+        );
+        customButtonStyle.font = fonteCustomizada;
+
+        // Adiciona o novo estilo ao skin
+        skin.add("default", customButtonStyle, TextButton.TextButtonStyle.class);
     }
 
     private TextButton criarBotaoEstilizado(String texto, Skin skin) {
@@ -180,6 +193,9 @@ public class TelaInicialJogo extends TelaBase {
 
     @Override
     public void dispose() {
+        if (fonteCustomizada != null) {
+            fonteCustomizada.dispose();
+        }
         desenhaMoeda.dispose();
         super.dispose();
     }

@@ -3,6 +3,7 @@ package com.ufsmSistemas.tcgParadigma.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -107,9 +108,15 @@ public class TelaMenu extends TelaBase {
 
         mainTable.add(botoesTable);
 
+        BitmapFont fontAcento = new BitmapFont(Gdx.files.internal("fonts/utf8Menor.fnt"));
+
         // Rodapé com instrução de música
-        Label avisoMusica = new Label("♪ Clique na tela para iniciar a música", skin);
-        avisoMusica.setFontScale(0.8f);
+        Label.LabelStyle estilo = skin.get(Label.LabelStyle.class);
+        estilo = new Label.LabelStyle(estilo);
+        estilo.font = fontAcento;
+        Label avisoMusica = new Label("Clique na tela para iniciar a música!", estilo);
+
+        avisoMusica.setFontScale(1.4f);
         avisoMusica.setColor(new Color(0.5f, 0.5f, 0.6f, 0.8f));
 
         // Animação piscante para o aviso

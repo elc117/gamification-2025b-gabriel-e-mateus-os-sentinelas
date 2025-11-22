@@ -7,10 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.ufsmSistemas.tcgParadigma.Main;
 import com.ufsmSistemas.tcgParadigma.data.Session;
@@ -19,6 +17,7 @@ import com.ufsmSistemas.tcgParadigma.models.Jogador;
 import com.ufsmSistemas.tcgParadigma.models.quiz.CategoryCard;
 import com.ufsmSistemas.tcgParadigma.screens.DesenhaMoedaTela;
 import com.ufsmSistemas.tcgParadigma.screens.TelaBase;
+import com.ufsmSistemas.tcgParadigma.screens.TelaInicialJogo;
 
 public class TelaOpcoesQuiz extends TelaBase {
 
@@ -49,6 +48,28 @@ public class TelaOpcoesQuiz extends TelaBase {
         background.setBackground(new com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable(new Texture(bgPixmap)));
         bgPixmap.dispose();
         stage.addActor(background);
+
+        // Botão Voltar no canto superior esquerdo
+        Table topLeftTable = new Table();
+        topLeftTable.setFillParent(true);
+        topLeftTable.top().left();
+        topLeftTable.pad(10);
+
+        TextButton.TextButtonStyle voltarStyle = new TextButton.TextButtonStyle(
+            skin.get(TextButton.TextButtonStyle.class)
+        );
+        voltarStyle.font = font;
+
+        TextButton botaoVoltar = new TextButton("VOLTAR", voltarStyle);
+        botaoVoltar.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new TelaInicialJogo(game));
+            }
+        });
+
+        topLeftTable.add(botaoVoltar).width(150).height(50);
+        stage.addActor(topLeftTable);
 
         // Container principal
         Table mainTable = new Table();

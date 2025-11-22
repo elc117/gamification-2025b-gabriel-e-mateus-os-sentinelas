@@ -27,7 +27,6 @@ import java.io.FileNotFoundException;
 
 public class TelaQuiz extends TelaBase {
 
-
     private Jogador jogador;
     private Quiz quiz;
     private Stage stage;
@@ -37,10 +36,12 @@ public class TelaQuiz extends TelaBase {
     private Skin skin;
     private BitmapFont font;
     private BitmapFont smallFont;
+    private BitmapFont fonteCustomizada;
 
     // Sprites
     private Texture playerSprite;
     private Texture opponentSprite;
+    private Texture backgroundTexture;
 
     // Game State
     private int currentQuestionIndex = 0;
@@ -72,8 +73,6 @@ public class TelaQuiz extends TelaBase {
         playerHP = 100;
         opponentHP = 100;
         jogador = Session.getInstance().getJogador();
-
-
     }
 
     @Override
@@ -85,6 +84,10 @@ public class TelaQuiz extends TelaBase {
 
         // Carregar recursos
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
+
+        // Carregar fonte customizada
+        fonteCustomizada = new BitmapFont(Gdx.files.internal("fonts/utf8Menor.fnt"));
+
         font = new BitmapFont();
         font.getData().setScale(1.5f);
 
@@ -105,6 +108,12 @@ public class TelaQuiz extends TelaBase {
             opponentSprite = createDefaultTexture();
         }
 
+        try {
+            backgroundTexture = new Texture(Gdx.files.internal("cenario/cenarioLuta.png"));
+        } catch (Exception e) {
+            backgroundTexture = null; // Se não encontrar, não usa fundo
+        }
+
         createUI();
         loadQuestion();
     }
@@ -116,49 +125,55 @@ public class TelaQuiz extends TelaBase {
 
     private void createUI() {
         // Botão Desistir no canto superior direito
-        desistirButton = new TextButton("DESISTIR", skin);
-        desistirButton.setPosition(Gdx.graphics.getWidth() - 500, Gdx.graphics.getHeight() - 70);
-        desistirButton.setSize(150, 50);
+        Table mainTable = new Table();
+
+        // Estilo customizado para o botão desistir
+        TextButton.TextButtonStyle desistirStyle = new TextButton.TextButtonStyle(
+            skin.get(TextButton.TextButtonStyle.class)
+        );
+        desistirStyle.font = fonteCustomizada;
+
+        desistirButton = new TextButton("DESISTIR", desistirStyle);
         desistirButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
-                if (Main.musicaFundo != null) {
-                    Main.musicaFundo.stop();
-                    Main.musicaFundo.dispose();
-                }
-
-                Main.musicaFundo = Gdx.audio.newMusic(Gdx.files.internal("Audio/priscilaViolao.ogg"));
-                Main.musicaFundo.setLooping(true);
-                Main.musicaFundo.setVolume(1f);
-
-                Main.musicaFundo.play();
-
+                mudarMusica();
                 game.setScreen(new TelaInicialJogo(game));
             }
         });
-        stage.addActor(desistirButton);
+
+        mainTable.setFillParent(true);
+
+        mainTable.top().right().pad(10);
+        mainTable.add(desistirButton).width(150).height(50);
+        mainTable.row();
+
+        mainTable.add().expand(); // empurra para baixo
+        mainTable.row();
 
         // Container de pergunta e respostas (caixa de diálogo menor)
-        Table mainTable = new Table();
         mainTable.setFillParent(true);
-        mainTable.bottom().left();
-        mainTable.padLeft(10).padBottom(10);
+        mainTable.bottom().center();
 
         Table dialogBox = new Table();
         dialogBox.setBackground(skin.newDrawable("white", new Color(1, 1, 1, 0.95f)));
         dialogBox.pad(2);
 
         // Contador de questões
-        questionCountLabel = new Label("", skin);
+        Label.LabelStyle countStyle = new Label.LabelStyle();
+        countStyle.font = fonteCustomizada;
+        countStyle.fontColor = Color.BLUE;
+
+        questionCountLabel = new Label("", countStyle);
         questionCountLabel.setAlignment(Align.left);
-        Label.LabelStyle labelStyle = new Label.LabelStyle(questionCountLabel.getStyle());
-        labelStyle.fontColor = Color.BLUE;
-        questionCountLabel.setStyle(labelStyle);
         dialogBox.add(questionCountLabel).left().padBottom(8).row();
 
         // Label da pergunta
-        questionLabel = new Label("", skin);
+        Label.LabelStyle questionStyle = new Label.LabelStyle();
+        questionStyle.font = fonteCustomizada;
+        questionStyle.fontColor = Color.BLACK;
+
+        questionLabel = new Label("", questionStyle);
         questionLabel.setWrap(true);
         questionLabel.setAlignment(Align.left);
         dialogBox.add(questionLabel).width(550).padBottom(12).row();
@@ -167,9 +182,15 @@ public class TelaQuiz extends TelaBase {
         Table answersTable = new Table();
         answerButtons = new TextButton[4];
 
+        // Estilo customizado para botões de resposta
+        TextButton.TextButtonStyle answerStyle = new TextButton.TextButtonStyle(
+            skin.get(TextButton.TextButtonStyle.class)
+        );
+        answerStyle.font = fonteCustomizada;
+
         for (int i = 0; i < 4; i++) {
             final int index = i;
-            answerButtons[i] = new TextButton("", skin);
+            answerButtons[i] = new TextButton("", answerStyle);
             answerButtons[i].getLabel().setWrap(true);
             answerButtons[i].getLabel().setAlignment(Align.center);
             answerButtons[i].pad(8);
@@ -192,7 +213,12 @@ public class TelaQuiz extends TelaBase {
         dialogBox.add(answersTable).padBottom(12).row();
 
         // Botão Responder
-        responderButton = new TextButton("RESPONDER", skin);
+        TextButton.TextButtonStyle responderStyle = new TextButton.TextButtonStyle(
+            skin.get(TextButton.TextButtonStyle.class)
+        );
+        responderStyle.font = fonteCustomizada;
+
+        responderButton = new TextButton("RESPONDER", responderStyle);
         responderButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -203,14 +229,16 @@ public class TelaQuiz extends TelaBase {
         dialogBox.add(responderButton).width(250).height(50).padBottom(8).row();
 
         // Label de feedback
-        feedbackLabel = new Label("", skin);
-        feedbackLabel.setAlignment(Align.center);
-        Label.LabelStyle feedbackStyle = new Label.LabelStyle(feedbackLabel.getStyle());
+        Label.LabelStyle feedbackStyle = new Label.LabelStyle();
+        feedbackStyle.font = fonteCustomizada;
         feedbackStyle.fontColor = Color.YELLOW;
-        feedbackLabel.setStyle(feedbackStyle);
+
+        feedbackLabel = new Label("", feedbackStyle);
+        feedbackLabel.setAlignment(Align.center);
         dialogBox.add(feedbackLabel).padTop(5);
 
-        mainTable.add(dialogBox).width(600);
+        mainTable.add(dialogBox).width(600).bottom().center().padBottom(10);
+        mainTable.row().expandY();
         stage.addActor(mainTable);
     }
 
@@ -270,7 +298,8 @@ public class TelaQuiz extends TelaBase {
 
         if (selectedAnswer.equals(p.getRespostaCerta())) {
             feedbackLabel.setText("ACERTOU! 🎯");
-            Label.LabelStyle style = new Label.LabelStyle(feedbackLabel.getStyle());
+            Label.LabelStyle style = new Label.LabelStyle();
+            style.font = fonteCustomizada;
             style.fontColor = Color.GREEN;
             feedbackLabel.setStyle(style);
 
@@ -279,7 +308,8 @@ public class TelaQuiz extends TelaBase {
             quiz.setTotalPontos(quiz.getTotalPontos() + quiz.getPontosGanhos());
         } else {
             feedbackLabel.setText("ERROU! 💥 Resposta: " + p.getRespostaCerta());
-            Label.LabelStyle style = new Label.LabelStyle(feedbackLabel.getStyle());
+            Label.LabelStyle style = new Label.LabelStyle();
+            style.font = fonteCustomizada;
             style.fontColor = Color.RED;
             feedbackLabel.setStyle(style);
 
@@ -302,7 +332,6 @@ public class TelaQuiz extends TelaBase {
 
     private void endGame() {
         gameOver = true;
-        responderButton.setDisabled(true);
         desistirButton.setDisabled(true);
 
         String resultado;
@@ -310,28 +339,33 @@ public class TelaQuiz extends TelaBase {
 
         if (playerHP <= 0) {
             resultado = "DERROTA! 😢\nSeu HP chegou a zero!";
-            Label.LabelStyle style = new Label.LabelStyle(feedbackLabel.getStyle());
+            Label.LabelStyle style = new Label.LabelStyle();
+            style.font = fonteCustomizada;
             style.fontColor = Color.RED;
             feedbackLabel.setStyle(style);
         } else if (opponentHP <= 0) {
             resultado = "VITÓRIA! 🏆\nVocê derrotou o oponente!";
-            Label.LabelStyle style = new Label.LabelStyle(feedbackLabel.getStyle());
+            Label.LabelStyle style = new Label.LabelStyle();
+            style.font = fonteCustomizada;
             style.fontColor = Color.GREEN;
             feedbackLabel.setStyle(style);
             quiz.setTotalPontos(quiz.getTotalPontos() + 100);
         } else if (playerHP > opponentHP) {
             resultado = "VITÓRIA! 🏆\nVocê tem mais HP!";
-            Label.LabelStyle style = new Label.LabelStyle(feedbackLabel.getStyle());
+            Label.LabelStyle style = new Label.LabelStyle();
+            style.font = fonteCustomizada;
             style.fontColor = Color.GREEN;
             feedbackLabel.setStyle(style);
         } else if (opponentHP > playerHP) {
             resultado = "DERROTA! 😢\nO oponente tem mais HP!";
-            Label.LabelStyle style = new Label.LabelStyle(feedbackLabel.getStyle());
+            Label.LabelStyle style = new Label.LabelStyle();
+            style.font = fonteCustomizada;
             style.fontColor = Color.RED;
             feedbackLabel.setStyle(style);
         } else {
             resultado = "EMPATE! 🤝";
-            Label.LabelStyle style = new Label.LabelStyle(feedbackLabel.getStyle());
+            Label.LabelStyle style = new Label.LabelStyle();
+            style.font = fonteCustomizada;
             style.fontColor = Color.YELLOW;
             feedbackLabel.setStyle(style);
         }
@@ -341,7 +375,7 @@ public class TelaQuiz extends TelaBase {
         questionLabel.setText("Fim do Quiz!\n\n" +
             "Seu HP: " + playerHP + " / " + 100 + "\n" +
             "HP Oponente: " + opponentHP + " / " + 100 + "\n\n" +
-            "Pontos ganhos: " + pontosGanhos);
+            "Pontos ganhos: " + quiz.getTotalPontos());
 
         questionCountLabel.setText("Tema: " + quiz.getTema() + " - " + quiz.getNivelDificuldade());
 
@@ -349,10 +383,34 @@ public class TelaQuiz extends TelaBase {
         for (TextButton btn : answerButtons) {
             btn.setVisible(false);
         }
+        responderButton.setText("Voltar à Seleção de Quiz");
+        responderButton.clearListeners();
+        responderButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+
+                mudarMusica();
+                game.setScreen(new TelaOpcoesQuiz(game));
+
+            }
+        });
 
         jogador.setPontos(jogador.getPontos() + quiz.getTotalPontos());
         System.out.println("Jogador: " + jogador.getPontos());
         DataBaseAPI.update(jogador);
+    }
+
+    public void mudarMusica(){
+        if (Main.musicaFundo != null) {
+            Main.musicaFundo.stop();
+            Main.musicaFundo.dispose();
+        }
+
+        Main.musicaFundo = Gdx.audio.newMusic(Gdx.files.internal("Audio/priscilaViolao.ogg"));
+        Main.musicaFundo.setLooping(true);
+        Main.musicaFundo.setVolume(1f);
+
+        Main.musicaFundo.play();
     }
 
     @Override
@@ -371,35 +429,24 @@ public class TelaQuiz extends TelaBase {
             }
         }
 
-        // Desenhar fundo de batalha
-        drawBattleField();
-
         batch.begin();
+
+        // Desenhar imagem de fundo
+        if (backgroundTexture != null) {
+            batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        }
 
         // Desenhar sprites
         drawSprites();
 
         batch.end();
 
-        // Desenhar barras de HP
+        // Desenhar barras de HP (ele mesmo gerencia o batch)
         drawHealthBars();
 
         // Desenhar UI
         stage.act(delta);
         stage.draw();
-    }
-
-    private void drawBattleField() {
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-
-        // Fundo verde degradê estilo campo Pokémon
-        shapeRenderer.setColor(0.6f, 0.9f, 0.6f, 1);
-        shapeRenderer.rect(0, 300, Gdx.graphics.getWidth(), 400);
-
-        shapeRenderer.setColor(0.5f, 0.8f, 0.5f, 1);
-        shapeRenderer.rect(0, 300, Gdx.graphics.getWidth(), 200);
-
-        shapeRenderer.end();
     }
 
     private void drawSprites() {
@@ -513,7 +560,9 @@ public class TelaQuiz extends TelaBase {
         if (skin != null) skin.dispose();
         if (font != null) font.dispose();
         if (smallFont != null) smallFont.dispose();
+        if (fonteCustomizada != null) fonteCustomizada.dispose();
         if (playerSprite != null) playerSprite.dispose();
         if (opponentSprite != null) opponentSprite.dispose();
+        if (backgroundTexture != null) backgroundTexture.dispose();
     }
 }
