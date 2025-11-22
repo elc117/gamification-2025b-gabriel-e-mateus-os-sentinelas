@@ -1,12 +1,12 @@
 package com.ufsmSistemas.tcgParadigma.enums;
 
 public enum TemaQuiz {
-    LIDERES_POLITICA("Líderes e Política", "cartasTrabalho/rara/AbrahamLincoln.png"),
-    FILOSOFIA_HISTORIA("Filosofia e História", "cartasTrabalho/rara/Platao.png"),
-    CIENCIA("Ciência", "cartasTrabalho/rara/Newton.png"),
-    MATEMATICA("Matemática", "cartasTrabalho/rara/Pitagoras.png"),
-    PROGRAMACAO("Programação", "cartasTrabalho/rara/AlanTuring.png"),
-    ARTE_MUSICA_ENTRETENIMENTO("Arte, Música e Entretenimento", "cartasTrabalho/rara/vanGogh.png");
+    LIDERES_POLITICA("Líderes e Política", "spritesPersonagens/AbrahamLincoln.png"),
+    FILOSOFIA_HISTORIA("Filosofia e História", "spritesPersonagens/Platao.png"),
+    CIENCIA("Ciência", "spritesPersonagens/Newton.png"),
+    MATEMATICA("Matemática", "spritesPersonagens/Pitagoras.png"),
+    PROGRAMACAO("Programação", "spritesPersonagens/AlanTuring.png"),
+    ARTE_MUSICA_ENTRETENIMENTO("Arte, Música e Entretenimento", "spritesPersonagens/vanGogh.png");
 
     private final String nome;
     private final String imagemHost;

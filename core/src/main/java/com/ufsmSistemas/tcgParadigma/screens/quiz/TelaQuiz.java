@@ -96,7 +96,7 @@ public class TelaQuiz extends TelaBase {
 
         // Carregar sprites
         try {
-            playerSprite = new Texture(Gdx.files.internal("player/player.png"));
+            playerSprite = new Texture(Gdx.files.internal("spritesPersonagens/player.png"));
         } catch (Exception e) {
             playerSprite = createDefaultTexture();
         }
