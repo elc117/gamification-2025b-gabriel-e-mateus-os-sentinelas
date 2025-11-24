@@ -2,12 +2,14 @@ package com.ufsmSistemas.tcgParadigma.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ufsmSistemas.tcgParadigma.Main;
@@ -22,6 +24,11 @@ public class TelaInicialJogo extends TelaBase {
     private DesenhaMoedaTela desenhaMoeda;
     private Jogador jogador;
     private BitmapFont fonteCustomizada;
+
+    // Texturas para os botões de imagem
+    private Texture texturaAlbum;
+    private Texture texturaQuiz;
+    private Texture texturaLoja;
 
     public TelaInicialJogo(Main game) {
         super(game);
@@ -42,14 +49,17 @@ public class TelaInicialJogo extends TelaBase {
         // Carrega a fonte customizada
         fonteCustomizada = new BitmapFont(Gdx.files.internal("fonts/utf8Menor.fnt"));
 
-        // Customiza o estilo dos botões com a fonte customizada
-        customizarSkin();
+        // Carrega as texturas dos ícones
+        // Coloque as imagens na pasta assets/icons/
+        texturaAlbum = new Texture(Gdx.files.internal("icons/album.png"));
+        texturaQuiz = new Texture(Gdx.files.internal("icons/quiz.png"));
+        texturaLoja = new Texture(Gdx.files.internal("icons/loja.png"));
 
-        // Container principal
+        // Container principal que preenche a tela
         Table mainTable = new Table();
         mainTable.setFillParent(true);
 
-        // Título do jogo com estilo
+        // Título do jogo com estilo no centro
         Label.LabelStyle tituloStyle = new Label.LabelStyle();
         tituloStyle.font = fonteCustomizada;
         tituloStyle.fontColor = new Color(1f, 0.9f, 0.3f, 1); // Dourado
@@ -66,14 +76,10 @@ public class TelaInicialJogo extends TelaBase {
             )
         ));
 
-        // Container para os botões principais
-        Table botoesTable = new Table();
-        botoesTable.defaults().width(280).height(70).pad(15);
-
-        // Cria botões
-        final TextButton botaoAlbum = criarBotaoEstilizado("ÁLBUM", skin);
-        final TextButton botaoQuiz = criarBotaoEstilizado("QUIZ", skin);
-        final TextButton botaoLoja = criarBotaoEstilizado("LOJA", skin);
+        // Cria ImageButtons para cada ícone
+        final ImageButton botaoAlbum = criarBotaoImagem(texturaAlbum);
+        final ImageButton botaoQuiz = criarBotaoImagem(texturaQuiz);
+        final ImageButton botaoLoja = criarBotaoImagem(texturaLoja);
 
         // Adiciona listeners
         botaoAlbum.addListener(new ClickListener() {
@@ -102,16 +108,56 @@ public class TelaInicialJogo extends TelaBase {
         adicionarEfeitoHover(botaoQuiz);
         adicionarEfeitoHover(botaoLoja);
 
-        // Layout
-        mainTable.add(titulo).padBottom(60).row();
-        mainTable.add(botaoLoja).row();
+        // Cria legendas para os botões
+        Label.LabelStyle legendaStyle = new Label.LabelStyle();
+        legendaStyle.font = fonteCustomizada;
+        legendaStyle.fontColor = new Color(1f, 0.9f, 0.3f, 1);
 
-        // Container horizontal para Álbum e Quiz
-        Table horizontalTable = new Table();
-        horizontalTable.add(botaoAlbum).padRight(30);
-        horizontalTable.add(botaoQuiz);
+        Label legendaLoja = new Label("LOJA", legendaStyle);
+        legendaLoja.setFontScale(1.5f);
+        legendaLoja.setAlignment(Align.center);
 
-        mainTable.add(horizontalTable).padTop(20);
+        Label legendaAlbum = new Label("ALBUM", legendaStyle);
+        legendaAlbum.setFontScale(1.5f);
+        legendaAlbum.setAlignment(Align.center);
+
+        Label legendaQuiz = new Label("QUIZ", legendaStyle);
+        legendaQuiz.setFontScale(1.5f);
+        legendaQuiz.setAlignment(Align.center);
+
+        // Layout: Loja no topo com legenda
+        mainTable.top();
+        Table containerLoja = new Table();
+        containerLoja.add(botaoLoja).size(400, 400).row();
+        containerLoja.add(legendaLoja).padTop(10);
+        mainTable.add(containerLoja).padTop(50).row();
+
+        // Espaço para empurrar o título para o centro
+        mainTable.add().expandY();
+
+        // Título no centro
+        mainTable.row();
+        mainTable.add(titulo).center();
+
+        // Espaço inferior
+        mainTable.row();
+        mainTable.add().expandY();
+
+        // Container para os botões laterais (álbum e quiz)
+        Table botoesLaterais = new Table();
+        botoesLaterais.setFillParent(true);
+
+        // Container Álbum na esquerda com legenda
+        Table containerAlbum = new Table();
+        containerAlbum.add(botaoAlbum).size(400, 400).row();
+        containerAlbum.add(legendaAlbum).padTop(10);
+        botoesLaterais.add(containerAlbum).left().expandX().padLeft(50);
+
+        // Container Quiz na direita com legenda
+        Table containerQuiz = new Table();
+        containerQuiz.add(botaoQuiz).size(400, 400).row();
+        containerQuiz.add(legendaQuiz).padTop(10);
+        botoesLaterais.add(containerQuiz).right().expandX().padRight(50);
 
         // Adiciona versão/créditos no rodapé
         Label.LabelStyle creditosStyle = new Label.LabelStyle();
@@ -127,35 +173,27 @@ public class TelaInicialJogo extends TelaBase {
         footer.add(creditos).padBottom(10);
 
         stage.addActor(mainTable);
+        stage.addActor(botoesLaterais);
         stage.addActor(footer);
 
         // Animação de entrada
         mainTable.setColor(1, 1, 1, 0);
         mainTable.addAction(Actions.fadeIn(0.5f));
+        botoesLaterais.setColor(1, 1, 1, 0);
+        botoesLaterais.addAction(Actions.fadeIn(0.5f));
     }
 
-    private void customizarSkin() {
-        // Cria um novo estilo de botão com a fonte customizada
-        TextButton.TextButtonStyle customButtonStyle = new TextButton.TextButtonStyle(
-            skin.get(TextButton.TextButtonStyle.class)
-        );
-        customButtonStyle.font = fonteCustomizada;
-
-        // Adiciona o novo estilo ao skin
-        skin.add("default", customButtonStyle, TextButton.TextButtonStyle.class);
+    private ImageButton criarBotaoImagem(Texture textura) {
+        ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
+        style.imageUp = new TextureRegionDrawable(textura);
+        return new ImageButton(style);
     }
 
-    private TextButton criarBotaoEstilizado(String texto, Skin skin) {
-        TextButton botao = new TextButton(texto, skin);
-        botao.getLabel().setFontScale(1.3f);
-        return botao;
-    }
-
-    private void adicionarEfeitoHover(final TextButton botao) {
+    private void adicionarEfeitoHover(final ImageButton botao) {
         botao.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, com.badlogic.gdx.scenes.scene2d.Actor fromActor) {
-                botao.addAction(Actions.scaleTo(1.1f, 1.1f, 0.1f));
+                botao.addAction(Actions.scaleTo(1.2f, 1.2f, 0.1f));
             }
 
             @Override
@@ -165,7 +203,7 @@ public class TelaInicialJogo extends TelaBase {
         });
     }
 
-    private void adicionarEfeitoCliqueESair(final TextButton botao, final TelaBase proximaTela) {
+    private void adicionarEfeitoCliqueESair(final ImageButton botao, final TelaBase proximaTela) {
         botao.addAction(Actions.sequence(
             Actions.scaleTo(0.9f, 0.9f, 0.1f),
             Actions.scaleTo(1f, 1f, 0.1f),
@@ -195,6 +233,15 @@ public class TelaInicialJogo extends TelaBase {
     public void dispose() {
         if (fonteCustomizada != null) {
             fonteCustomizada.dispose();
+        }
+        if (texturaAlbum != null) {
+            texturaAlbum.dispose();
+        }
+        if (texturaQuiz != null) {
+            texturaQuiz.dispose();
+        }
+        if (texturaLoja != null) {
+            texturaLoja.dispose();
         }
         desenhaMoeda.dispose();
         super.dispose();
