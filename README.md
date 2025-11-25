@@ -59,9 +59,11 @@ arquitetura do jogo.
 O primeiro código concreto escrito foi o das **classes base**, como `Jogador`, `Carta` e outras entidades essenciais para dar forma ao *Historical TCG*.
 
 #### Diagrama Feito antes de Começar o Projeto
-[botar diagrama inicial aqui]
+![Diagrama inicial](./diagramas/ClassDiagramTrabalhoParadigmaPng.png)
 #### Diagrama Feito após o Término do Projeto
-[botar diagrama final aqui]
+![Diagrama final resumido](./diagramas/Diagrama_geral_resumido.png)
+### Diagrama Completo
+![Diagrama final](./diagramas/tcgParadigma.png)
 
 ---
 
