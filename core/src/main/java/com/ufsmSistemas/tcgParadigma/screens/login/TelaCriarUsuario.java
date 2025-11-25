@@ -55,24 +55,24 @@ public class TelaCriarUsuario extends TelaBase {
         titulo.setAlignment(Align.center);
 
         // Subtítulo
-        Label subtitulo = new Label("Junte-se à aventura!", skin);
+        Label subtitulo = new Label("Junte-se a aventura!", skin);
         subtitulo.setFontScale(1f);
         subtitulo.setColor(new Color(0.7f, 0.7f, 0.8f, 1));
         subtitulo.setAlignment(Align.center);
 
         // Labels dos campos com ícones
-        Label labelNome = new Label("👤 Usuário:", skin);
+        Label labelNome = new Label(" Username:", skin);
         labelNome.setFontScale(1.1f);
 
-        Label labelSenha = new Label("🔑 Senha:", skin);
+        Label labelSenha = new Label(" Senha:", skin);
         labelSenha.setFontScale(1.1f);
 
-        Label labelConfirmarSenha = new Label("🔒 Confirmar Senha:", skin);
+        Label labelConfirmarSenha = new Label(" Confirmar Senha:", skin);
         labelConfirmarSenha.setFontScale(1.1f);
 
         // Campos de texto estilizados
         campoNome = new TextField("", skin);
-        campoNome.setMessageText("Escolha seu nome de usuário");
+        campoNome.setMessageText("Escolha seu nome de username");
 
         campoSenha = new TextField("", skin);
         campoSenha.setMessageText("Crie uma senha segura");
@@ -96,11 +96,11 @@ public class TelaCriarUsuario extends TelaBase {
         mensagem.setWrap(true);
 
         // Botões
-        botaoCriar = new TextButton("✓ CRIAR CONTA", skin);
+        botaoCriar = new TextButton(" CRIAR CONTA", skin);
         botaoCriar.getLabel().setFontScale(1.3f);
         botaoCriar.setColor(new Color(0.4f, 0.8f, 0.5f, 1)); // Verde
 
-        botaoVoltar = new TextButton("← VOLTAR", skin);
+        botaoVoltar = new TextButton(" VOLTAR", skin);
         botaoVoltar.getLabel().setFontScale(1.1f);
         botaoVoltar.setColor(new Color(0.6f, 0.6f, 0.7f, 1)); // Cinza
 

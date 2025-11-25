@@ -62,7 +62,7 @@ public class TelaLogin extends TelaBase {
         subtitulo.setAlignment(Align.center);
 
         // Labels dos campos
-        Label labelNome = new Label("👤 Usuário:", skin);
+        Label labelNome = new Label("👤 Username:", skin);
         labelNome.setFontScale(1.1f);
 
         Label labelSenha = new Label("🔑 Senha:", skin);
@@ -70,7 +70,7 @@ public class TelaLogin extends TelaBase {
 
         // Campos de texto estilizados
         campoNome = new TextField("", skin);
-        campoNome.setMessageText("Digite seu usuário");
+        campoNome.setMessageText("Digite seu username");
 
         campoSenha = new TextField("", skin);
         campoSenha.setMessageText("Digite sua senha");
