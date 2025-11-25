@@ -1,6 +1,6 @@
 package com.ufsmSistemas.tcgParadigma.enums;
 
-import com.badlogic.gdx.graphics.Color; // ✅ LibGDX Color
+import com.badlogic.gdx.graphics.Color;
 
 public enum DificuldadeQuiz {
     FACIL("Fácil", new Color(0.4f, 1f, 0.4f, 1f)),

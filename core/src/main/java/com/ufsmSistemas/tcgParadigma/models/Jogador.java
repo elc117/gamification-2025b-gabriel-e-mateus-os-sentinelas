@@ -2,8 +2,6 @@ package com.ufsmSistemas.tcgParadigma.models;
 
 import com.badlogic.gdx.utils.JsonValue;
 import com.ufsmSistemas.tcgParadigma.interfaces.DataBaseEntityAPI;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 public class Jogador implements DataBaseEntityAPI {
     private int id;

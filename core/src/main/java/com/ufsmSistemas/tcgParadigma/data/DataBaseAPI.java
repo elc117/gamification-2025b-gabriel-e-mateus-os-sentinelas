@@ -1,10 +1,10 @@
 package com.ufsmSistemas.tcgParadigma.data;
 
-import com.ufsmSistemas.tcgParadigma.interfaces.DataBaseEntityAPI;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
+import com.ufsmSistemas.tcgParadigma.interfaces.DataBaseEntityAPI;
 import com.ufsmSistemas.tcgParadigma.interfaces.ResponseCallback;
 import com.ufsmSistemas.tcgParadigma.models.Carta;
 import com.ufsmSistemas.tcgParadigma.models.Jogador;

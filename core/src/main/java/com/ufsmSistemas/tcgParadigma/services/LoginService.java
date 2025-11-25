@@ -3,10 +3,8 @@ package com.ufsmSistemas.tcgParadigma.services;
 import com.badlogic.gdx.utils.JsonValue;
 import com.ufsmSistemas.tcgParadigma.data.DataBaseAPI;
 import com.ufsmSistemas.tcgParadigma.data.Session;
-import com.ufsmSistemas.tcgParadigma.models.Jogador;
 import com.ufsmSistemas.tcgParadigma.interfaces.ResponseCallback;
-
-import javax.xml.crypto.Data;
+import com.ufsmSistemas.tcgParadigma.models.Jogador;
 
 public class LoginService {
 

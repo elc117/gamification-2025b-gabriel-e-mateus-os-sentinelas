@@ -323,7 +323,11 @@ public class TelaAlbum extends TelaBase {
         }
         float percentual = (float) obtidas / total * 100f;
 
-        lblTotal.setText(String.format("Progresso: %d/%d cartas (%.1f%%)", obtidas, total, percentual));
+        // GWT não suporta String.format, então formatamos manualmente
+        int pInt = (int) percentual;
+        int pDecimal = (int) ((percentual - pInt) * 10);
+
+        lblTotal.setText("Progresso: " + obtidas + "/" + total + " cartas (" + pInt + "." + pDecimal + "%)");
 
         // Barra de progresso moderna e animada
         Table progressBar = new Table();
