@@ -16,8 +16,6 @@ public class Main extends Game {
         musicaFundo = Gdx.audio.newMusic(Gdx.files.internal("Audio/priscilaViolao.ogg"));
         musicaFundo.setLooping(true);
         musicaFundo.setVolume(1f);
-
-
         musicaFundo.play();
 
         setScreen(new TelaMenu(Main.this));

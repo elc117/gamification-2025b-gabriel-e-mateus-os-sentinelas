@@ -44,14 +44,6 @@ public class TelaMenu extends TelaBase {
         titulo.setColor(new Color(0.9f, 0.7f, 1f, 1)); // Roxo claro
         titulo.setAlignment(Align.center);
 
-        // Animação de brilho no título
-        titulo.addAction(Actions.forever(
-            Actions.sequence(
-                Actions.color(new Color(1f, 0.9f, 1f, 1), 1.2f),
-                Actions.color(new Color(0.9f, 0.7f, 1f, 1), 1.2f)
-            )
-        ));
-
         // Subtítulo
         subtitulo = new Label("Bem-vindo ao jogo de cartas!", skin);
         subtitulo.setFontScale(1.2f);
@@ -71,7 +63,6 @@ public class TelaMenu extends TelaBase {
         botaoLogin.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Login clicado!");
                 game.setScreen(new TelaLogin(game));
             }
         });
@@ -79,7 +70,6 @@ public class TelaMenu extends TelaBase {
         botaoCriarConta.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Criar conta clicado!");
                 game.setScreen(new TelaCriarUsuario(game));
             }
         });
@@ -87,7 +77,6 @@ public class TelaMenu extends TelaBase {
         botaoSair.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Sair clicado!");
                 Gdx.app.exit();
             }
         });

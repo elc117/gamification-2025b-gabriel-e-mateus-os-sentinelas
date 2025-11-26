@@ -51,7 +51,7 @@ public class TelaAlbum extends TelaBase {
         super(game);
         this.albumService = new AlbumService();
         this.todasCartas = new Array<Carta>();
-        // Gradiente moderno - azul escuro para roxo escuro
+
         corFundoTop = new Color(0.08f, 0.12f, 0.22f, 1);
         corFundoBottom = new Color(0.12f, 0.08f, 0.18f, 1);
     }
@@ -69,11 +69,11 @@ public class TelaAlbum extends TelaBase {
         mainTable.pad(30);
         stage.addActor(mainTable);
 
-        // ======== CABEÇALHO MODERNO ========
+        // Cabeçalho
         Table headerTable = new Table();
         headerTable.pad(25);
 
-        // Título com fonte customizada
+        // Título
         Label.LabelStyle tituloStyle = new Label.LabelStyle();
         tituloStyle.font = fonteCustomizada;
         tituloStyle.fontColor = COR_SECUNDARIA;
@@ -81,7 +81,7 @@ public class TelaAlbum extends TelaBase {
         Label titulo = new Label("COLECAO", tituloStyle);
         titulo.setFontScale(3f);
 
-        // Animação suave no título
+        // Animação
         titulo.addAction(Actions.forever(
             Actions.sequence(
                 Actions.color(COR_PRIMARIA, 2f),
@@ -89,7 +89,7 @@ public class TelaAlbum extends TelaBase {
             )
         ));
 
-        // Estatísticas modernas
+        // Estatísticas
         Label.LabelStyle statsStyle = new Label.LabelStyle();
         statsStyle.font = fonteCustomizada;
         statsStyle.fontColor = COR_TEXTO_CLARO;
@@ -108,7 +108,7 @@ public class TelaAlbum extends TelaBase {
 
         mainTable.add(headerTable).colspan(4).padBottom(30).center().fillX().row();
 
-        // ======== FILTROS MODERNOS ========
+        // Filtros
         Table filtrosTable = new Table();
         filtrosTable.pad(15);
 
@@ -120,7 +120,7 @@ public class TelaAlbum extends TelaBase {
 
         mainTable.add(filtrosTable).colspan(4).padBottom(25).center().row();
 
-        // ======== GRID DE CARTAS ========
+        // Grid de cartas
         gridCartas = new Table();
         gridCartas.defaults().pad(ESPACAMENTO / 2);
         scrollPane = new ScrollPane(gridCartas, skinUI);
@@ -129,7 +129,7 @@ public class TelaAlbum extends TelaBase {
         scrollPane.setOverscroll(false, false);
         mainTable.add(scrollPane).colspan(4).expand().fill().padBottom(25).row();
 
-        // ======== LABEL DE CARREGAMENTO ========
+        // Label de carregamento
         Label.LabelStyle loadingStyle = new Label.LabelStyle();
         loadingStyle.font = fonteCustomizada;
         loadingStyle.fontColor = COR_PRIMARIA;
@@ -144,12 +144,12 @@ public class TelaAlbum extends TelaBase {
         ));
         gridCartas.add(lblCarregando).center();
 
-        // ======== BOTÃO VOLTAR MODERNO ========
+        // Voltar
         btnVoltar = criarBotaoModerno("VOLTAR");
         btnVoltar.setColor(new Color(0.5f, 0.5f, 0.6f, 1));
         mainTable.add(btnVoltar).colspan(4).width(250).height(65).center().padTop(15);
 
-        // ======== LISTENERS ========
+
         btnVoltar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -176,7 +176,7 @@ public class TelaAlbum extends TelaBase {
         adicionarEfeitoHover(btnFiltroTodas);
         adicionarEfeitoHover(btnFiltroObtidas);
 
-        // Animação de entrada suave
+        // Animação de entrada
         mainTable.setColor(1, 1, 1, 0);
         mainTable.addAction(Actions.fadeIn(0.7f));
 
@@ -310,7 +310,6 @@ public class TelaAlbum extends TelaBase {
 
         exibirCartas(cartasFiltradas);
 
-        // Cores modernas para botões ativos
         btnFiltroTodas.setColor(filtro.equals("todas") ? COR_SUCESSO : Color.WHITE);
         btnFiltroObtidas.setColor(filtro.equals("obtidas") ? COR_SUCESSO : Color.WHITE);
     }
@@ -323,13 +322,11 @@ public class TelaAlbum extends TelaBase {
         }
         float percentual = (float) obtidas / total * 100f;
 
-        // GWT não suporta String.format, então formatamos manualmente
         int pInt = (int) percentual;
         int pDecimal = (int) ((percentual - pInt) * 10);
 
         lblTotal.setText("Progresso: " + obtidas + "/" + total + " cartas (" + pInt + "." + pDecimal + "%)");
 
-        // Barra de progresso moderna e animada
         Table progressBar = new Table();
 
         // Barra de fundo
@@ -397,7 +394,6 @@ public class TelaAlbum extends TelaBase {
     private Table criarCardModerno(final Carta carta) {
         final Table card = new Table();
 
-        // Background com efeito glass
         Pixmap cardBg = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         cardBg.setColor(COR_CARD_BG);
         cardBg.fill();

@@ -16,7 +16,6 @@ public class Quiz {
     private int vidaHost;
     private int vidaUser;
 
-    //Construtor
     public Quiz(String tema, String dificuldade) throws FileNotFoundException {
         this.tema = TemaQuiz.fromNome(tema);
         this.nivelDificuldade = dificuldade;
@@ -24,7 +23,7 @@ public class Quiz {
         this.vidaHost = 100;
         this.vidaUser = 40;
 
-        //Pontos
+
         if (dificuldade.equals("facil")) {
             this.pontosGanhos = 15;
         } else if (dificuldade.equals("media")) {
@@ -36,7 +35,6 @@ public class Quiz {
         this.perguntaList = LeJsonQuiz.carregarPerguntas(this.tema.getNome(), this.nivelDificuldade);
     }
 
-    // Getters
     public String getTema() {
         return tema.getNome();
     }
@@ -57,5 +55,4 @@ public class Quiz {
     }
 
     public void setTotalPontos(int pontos){ this.totalPontos = pontos;}
-
 }

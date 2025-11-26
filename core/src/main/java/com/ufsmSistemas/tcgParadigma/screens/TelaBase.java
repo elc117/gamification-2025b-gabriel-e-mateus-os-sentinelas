@@ -28,16 +28,12 @@ public abstract class TelaBase implements Screen {
         batch = new SpriteBatch();
     }
 
-    /**
-     * Desenha um gradiente de fundo
-     */
+    // Desenha um gradiente de fundo
     protected void desenharFundoGradiente() {
         Gdx.gl.glDisable(GL20.GL_TEXTURE_2D);
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-        // Aqui você pode usar ShapeRenderer se preferir
-        // Por simplicidade, vamos limpar com uma cor base
         Gdx.gl.glClearColor(corFundoBottom.r, corFundoBottom.g, corFundoBottom.b, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -63,17 +59,14 @@ public abstract class TelaBase implements Screen {
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override
     public void hide() {
-
     }
 
     @Override

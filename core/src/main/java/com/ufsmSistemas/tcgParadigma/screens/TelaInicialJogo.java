@@ -28,17 +28,17 @@ public class TelaInicialJogo extends TelaBase {
     private Jogador jogador;
     private BitmapFont fonteCustomizada;
 
-    // Texturas para os botões de imagem
     private Texture texturaAlbum;
     private Texture texturaQuiz;
     private Texture texturaLoja;
 
     public TelaInicialJogo(Main game) {
         super(game);
-        // Cores personalizadas para um tema mais atraente
+
         corFundoTop = new Color(0.15f, 0.2f, 0.4f, 1);
         corFundoBottom = new Color(0.05f, 0.08f, 0.2f, 1);
         desenhaMoeda = new DesenhaMoedaTela();
+
         jogador = Session.getInstance().getJogador();
     }
 
@@ -48,12 +48,8 @@ public class TelaInicialJogo extends TelaBase {
         Gdx.input.setInputProcessor(stage);
 
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
-
-        // Carrega a fonte customizada
         fonteCustomizada = new BitmapFont(Gdx.files.internal("fonts/utf8Menor.fnt"));
 
-        // Carrega as texturas dos ícones
-        // Coloque as imagens na pasta assets/icons/
         texturaAlbum = new Texture(Gdx.files.internal("icons/album.png"));
         texturaQuiz = new Texture(Gdx.files.internal("icons/quiz.png"));
         texturaLoja = new Texture(Gdx.files.internal("icons/loja.png"));
@@ -66,50 +62,34 @@ public class TelaInicialJogo extends TelaBase {
         Label.LabelStyle tituloStyle = new Label.LabelStyle();
         tituloStyle.font = fonteCustomizada;
         tituloStyle.fontColor = new Color(1f, 0.9f, 0.3f, 1); // Dourado
-
         titulo = new Label("TCG PARADIGMA", tituloStyle);
         titulo.setFontScale(2.5f);
         titulo.setAlignment(Align.center);
-
-        // Adiciona animação ao título
-        titulo.addAction(Actions.forever(
-            Actions.sequence(
-                Actions.scaleTo(1.05f, 1.05f, 0.8f),
-                Actions.scaleTo(1f, 1f, 0.8f)
-            )
-        ));
 
         // Cria ImageButtons para cada ícone
         final ImageButton botaoAlbum = criarBotaoImagem(texturaAlbum);
         final ImageButton botaoQuiz = criarBotaoImagem(texturaQuiz);
         final ImageButton botaoLoja = criarBotaoImagem(texturaLoja);
 
-        // Adiciona listeners
+        // Listeners
         botaoAlbum.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 adicionarEfeitoCliqueESair(botaoAlbum, new TelaAlbum(game));
             }
         });
-
         botaoQuiz.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 adicionarEfeitoCliqueESair(botaoQuiz, new TelaOpcoesQuiz(game));
             }
         });
-
         botaoLoja.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 adicionarEfeitoCliqueESair(botaoLoja, new TelaLoja(game));
             }
         });
-
-        // Adiciona efeitos de hover nos botões
-        adicionarEfeitoHover(botaoAlbum);
-        adicionarEfeitoHover(botaoQuiz);
-        adicionarEfeitoHover(botaoLoja);
 
         // Cria legendas para os botões
         Label.LabelStyle legendaStyle = new Label.LabelStyle();

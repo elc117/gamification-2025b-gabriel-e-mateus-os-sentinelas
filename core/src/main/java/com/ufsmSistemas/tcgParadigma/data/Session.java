@@ -13,25 +13,15 @@ public class Session {
         return instance;
     }
 
-    // Getters
     public Jogador getJogador() {
         return jogador;
     }
-    public boolean getIsLogado() {
-        return isLogado;
-    }
 
-    // Setters
     public void setJogador(Jogador jogador) {
         this.jogador = jogador;
         this.isLogado = (jogador != null);
     }
     public void setLogado(boolean isLogado) {
         this.isLogado = isLogado;
-    }
-
-    public void limpar() {
-        jogador = null;
-        isLogado = false;
     }
 }

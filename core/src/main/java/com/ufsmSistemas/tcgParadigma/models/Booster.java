@@ -23,14 +23,13 @@ public class Booster {
         return cartasBooster;
     }
 
+
     public Booster(BoosterCallback callback) {
         this.callback = callback;
         jogador = Session.getInstance().getJogador();
         jogador.setPontos(jogador.getPontos() - 150);
         DataBaseAPI.update(jogador);
         Random random = new Random();
-
-        System.out.println("[Booster] ===== INICIANDO CRIACAO DE BOOSTER =====");
 
         for (int i = 0; i < cartasEsperadas; i++) {
             Carta carta = new Carta();
@@ -39,7 +38,6 @@ public class Booster {
             else if (numero <= 6) carta.setRaridade("Rara");
             else carta.setRaridade("Comum");
 
-            System.out.println("[Booster] Solicitando carta " + (i + 1) + " - Raridade: " + carta.getRaridade());
             RecebeEnviaCartaApi receberCarta = new RecebeEnviaCartaApi();
             receberCarta.receberCartaApi(carta, novaCarta -> {
                 synchronized (cartasBooster) {
@@ -48,16 +46,11 @@ public class Booster {
                     if (cartasBooster.size() == cartasEsperadas && callback != null) {
                         callback.onBoosterCompleto(new ArrayList<>(cartasBooster));
 
-                        // todas as cartas carregadas,enviar/verificar
                         Jogador jogador = Session.getInstance().getJogador();
                         RecebeEnviaCartaApi temp = new RecebeEnviaCartaApi();
-                        System.out.println("[Booster] Jogador Id: " + jogador.getId());
 
                         for (Carta c : cartasBooster) {
-
                             temp.atualizaCartaApi(c, jogador);
-                            System.out.println("[Booster] Carta atualizado com sucesso!");
-
                         }
                     }
                 }

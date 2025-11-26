@@ -26,7 +26,7 @@ public class TelaLoja extends TelaBase {
 
     public TelaLoja(Main game) {
         super(game);
-        // Cores para tema de loja - tons de dourado/amarelo
+
         corFundoTop = new Color(0.35f, 0.25f, 0.15f, 1);
         corFundoBottom = new Color(0.15f, 0.1f, 0.05f, 1);
         jogador = Session.getInstance().getJogador();
@@ -39,12 +39,10 @@ public class TelaLoja extends TelaBase {
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
-        // Carrega a textura do booster
         try {
             texturaBooster = new Texture(Gdx.files.internal("assets/boosterImg/imgBoosterComum.png"));
         } catch (Exception e) {
             System.out.println("Erro ao carregar imagem do booster: " + e.getMessage());
-            // Tenta sem o "assets/" no caminho
             try {
                 texturaBooster = new Texture(Gdx.files.internal("boosterImg/imgBoosterComum.png"));
             } catch (Exception e2) {
@@ -97,7 +95,6 @@ public class TelaLoja extends TelaBase {
         botaoVoltar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Voltando para tela inicial...");
                 game.setScreen(new TelaInicialJogo(game));
             }
         });
@@ -154,7 +151,6 @@ public class TelaLoja extends TelaBase {
         botaoComprar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Abrindo " + nome + "...");
                 abrirBooster(card, botaoComprar);
             }
         });
@@ -232,11 +228,7 @@ public class TelaLoja extends TelaBase {
                 Actions.scaleTo(1f, 1f, 0.2f)
             ));
 
-            System.out.println("[TelaLoja] ===== ABRINDO BOOSTER =====");
-
             new Booster(cartas -> {
-                System.out.println("[TelaLoja] Callback recebido com " + cartas.size() + " cartas!");
-
                 Gdx.app.postRunnable(() -> {
                     mensagemStatus.setText("✅ Booster aberto com sucesso!");
                     mensagemStatus.setColor(new Color(0.3f, 0.9f, 0.4f, 1));

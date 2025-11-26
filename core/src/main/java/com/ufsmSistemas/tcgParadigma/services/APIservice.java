@@ -19,12 +19,8 @@ public class APIservice {
         return BASE_URL + "generic";
     }
 
-    /**
-     * Envia requisição POST com JSON
-     */
     public static void sendRequest(final String url, JsonValue json, final ResponseCallback callback) {
         String jsonString = JsonUtils.buildJsonString(json);
-        System.out.println("JSON: " + jsonString);
 
         Net.HttpRequest request = new Net.HttpRequest(Net.HttpMethods.POST);
         request.setUrl(url);
@@ -59,11 +55,7 @@ public class APIservice {
         });
     }
 
-    /**
-     * Envia requisição GET (sem body)
-     */
     public static void sendGetRequest(final String url, final ResponseCallback callback) {
-        System.out.println("GET Request: " + url);
 
         Net.HttpRequest request = new Net.HttpRequest(Net.HttpMethods.GET);
         request.setUrl(url);

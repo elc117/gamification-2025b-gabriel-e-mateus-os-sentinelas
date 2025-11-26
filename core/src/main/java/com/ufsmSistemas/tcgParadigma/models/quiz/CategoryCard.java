@@ -29,10 +29,8 @@ public class CategoryCard extends Table {
     private Color hoverColor;
 
     public CategoryCard(final Main game, BitmapFont font, final CategoriaQuiz categoria) {
-        // ✅ Agora getCor() já retorna LibGDX Color
         categoryColor = categoria.getCor();
 
-        // Cores base e hover
         baseColor = new Color(categoryColor).mul(0.3f, 0.3f, 0.3f, 1f);
         hoverColor = new Color(categoryColor).mul(0.5f, 0.5f, 0.5f, 1f);
 
@@ -83,9 +81,8 @@ public class CategoryCard extends Table {
         submenuTitle.setFontScale(0.7f);
         submenu.add(submenuTitle).padRight(10);
 
-        // Criar botões de dificuldade horizontalmente
+        // Botões de dificuldade horizontalmente
         for (final DificuldadeQuiz dificuldade : DificuldadeQuiz.values()) {
-            // Agora getCor() já retorna LibGDX Color
             Color gdxColor = dificuldade.getCor();
 
             TextButton.TextButtonStyle btnStyle = new TextButton.TextButtonStyle();
@@ -110,7 +107,6 @@ public class CategoryCard extends Table {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     try {
-
                         if (Main.musicaFundo != null) {
                             Main.musicaFundo.stop();
                             Main.musicaFundo.dispose();
@@ -119,7 +115,6 @@ public class CategoryCard extends Table {
                         Main.musicaFundo = Gdx.audio.newMusic(Gdx.files.internal("Audio/musicaLutaQuiz.ogg"));
                         Main.musicaFundo.setLooping(true);
                         Main.musicaFundo.setVolume(1f);
-
                         Main.musicaFundo.play();
 
                         game.setScreen(new TelaQuiz(game, categoria.getTitulo(), dificuldade.name().toLowerCase()));

@@ -399,7 +399,6 @@ public class TelaQuiz extends TelaBase {
         });
 
         jogador.setPontos(jogador.getPontos() + quiz.getTotalPontos());
-        System.out.println("Jogador: " + jogador.getPontos());
         DataBaseAPI.update(jogador);
     }
 

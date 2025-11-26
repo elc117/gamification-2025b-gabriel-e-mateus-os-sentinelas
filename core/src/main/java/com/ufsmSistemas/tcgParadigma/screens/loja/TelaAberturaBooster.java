@@ -55,7 +55,7 @@ public class TelaAberturaBooster extends TelaBase {
 
     public TelaAberturaBooster(Main game, Booster booster) {
         super(game);
-        // Cores para tema de abertura - tons de roxo/violeta místico
+
         corFundoTop = new Color(0.25f, 0.15f, 0.35f, 1);
         corFundoBottom = new Color(0.1f, 0.05f, 0.2f, 1);
 
@@ -76,9 +76,8 @@ public class TelaAberturaBooster extends TelaBase {
     public void show() {
         InputMultiplexer multiplexer = new InputMultiplexer();
 
-        multiplexer.addProcessor(stageUI);   // Primeiro: UI (botão voltar)
-        multiplexer.addProcessor(stage);     // Segundo: caso o TelaBase tenha UI ou lógica
-        // (opcional: multiplexer.addProcessor(...));
+        multiplexer.addProcessor(stageUI);
+        multiplexer.addProcessor(stage);
 
         Gdx.input.setInputProcessor(multiplexer);
     }
@@ -119,7 +118,6 @@ public class TelaAberturaBooster extends TelaBase {
         instrucao.setColor(new Color(0.8f, 0.8f, 0.9f, 1));
         instrucao.setAlignment(Align.center);
 
-        // Animação piscante na instrução
         instrucao.addAction(Actions.forever(
             Actions.sequence(
                 Actions.alpha(0.5f, 0.6f),
@@ -148,7 +146,6 @@ public class TelaAberturaBooster extends TelaBase {
         btnVoltar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Botão Voltar clicado!"); // Debug
                 voltarParaLoja();
             }
         });
@@ -206,10 +203,8 @@ public class TelaAberturaBooster extends TelaBase {
 
     @Override
     public void render(float delta) {
-        // Desenha o fundo gradiente
         desenharFundoGradiente();
 
-        // Atualiza animações
         if (animacao != null) {
             animacao.atualizar(delta);
         }
@@ -234,7 +229,6 @@ public class TelaAberturaBooster extends TelaBase {
     }
 
     private void mostrarBotaoVoltar() {
-        // Atualiza mensagens
         titulo.setText("🎉 TODAS AS CARTAS REVELADAS! 🎉");
         titulo.clearActions();
         titulo.addAction(Actions.forever(
@@ -249,7 +243,6 @@ public class TelaAberturaBooster extends TelaBase {
         instrucao.setColor(new Color(0.4f, 0.9f, 0.5f, 1));
 
         // Mostra botão com animação
-
         btnVoltar.setTouchable(Touchable.enabled);
         btnVoltar.toFront(); // Traz para frente
         btnVoltar.setColor(1, 1, 1, 0);
@@ -258,15 +251,9 @@ public class TelaAberturaBooster extends TelaBase {
             Actions.delay(0.3f),
             Actions.fadeIn(0.5f)
         ));
-
-        System.out.println("Todas as cartas foram reveladas!");
-        System.out.println("Botão visível: " + btnVoltar.isVisible());
-        System.out.println("Botão touchable: " + btnVoltar.getTouchable());
-        System.out.println("Posição do botão: " + btnVoltar.getX() + ", " + btnVoltar.getY());
     }
 
     private void voltarParaLoja() {
-        System.out.println("Voltando para a loja...");
         game.setScreen(new TelaLoja(game));
         dispose();
     }
@@ -292,7 +279,6 @@ public class TelaAberturaBooster extends TelaBase {
     public void resize(int width, int height) {
         stageUI.getViewport().update(width, height, true);
 
-        // Reposiciona o botão voltar
         if (btnVoltar != null) {
             btnVoltar.setPosition(width / 2f - 125, 40);
         }

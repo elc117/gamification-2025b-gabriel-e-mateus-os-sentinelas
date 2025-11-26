@@ -8,20 +8,13 @@ import com.ufsmSistemas.tcgParadigma.models.Carta;
 public class AlbumService {
     private static final String BASE_URL = "https://mateuscardoso.pythonanywhere.com/api/";
 
-    /**
-     * Interface para callback de cartas
-     */
     public interface CartasCallback {
         void onSuccess(Array<Carta> cartas);
         void onError(String erro);
     }
 
-    /**
-     * Busca todas as cartas disponíveis no jogo usando APIservice (assíncrono)
-     */
     public void buscarTodasCartas(final CartasCallback callback) {
         String url = BASE_URL + "cartas/todas";
-        System.out.println("[AlbumService] Buscando todas as cartas...");
 
         APIservice.sendGetRequest(url, new ResponseCallback() {
             @Override
@@ -34,7 +27,6 @@ public class AlbumService {
                             carta.fromJson(cartaJson);
                             cartas.add(carta);
                         }
-                        System.out.println("[AlbumService] Total de cartas: " + cartas.size);
                     }
                     callback.onSuccess(cartas);
                 } catch (Exception e) {
@@ -52,17 +44,12 @@ public class AlbumService {
         });
     }
 
-    /**
-     * Busca cartas do álbum de um jogador específico usando APIservice (assíncrono)
-     */
     public void buscarCartasJogador(int idJogador, final CartasCallback callback) {
         String url = BASE_URL + "album/jogador";
 
         // Criar JSON com idJogador
         JsonValue json = new JsonValue(JsonValue.ValueType.object);
         json.addChild("idJogador", new JsonValue(idJogador));
-
-        System.out.println("[AlbumService] Buscando cartas do jogador " + idJogador);
 
         APIservice.sendRequest(url, json, new ResponseCallback() {
             @Override
@@ -81,7 +68,6 @@ public class AlbumService {
                             carta.setObtida(true);
                             cartas.add(carta);
                         }
-                        System.out.println("[AlbumService] Jogador possui " + cartas.size + " cartas");
                     }
                     callback.onSuccess(cartas);
                 } catch (Exception e) {
@@ -99,9 +85,6 @@ public class AlbumService {
         });
     }
 
-    /**
-     * Busca estatísticas do álbum usando APIservice
-     */
     public void buscarEstatisticas(int idJogador, final EstatisticasCallback callback) {
         String url = BASE_URL + "album/stats";
 
@@ -130,9 +113,6 @@ public class AlbumService {
         });
     }
 
-    /**
-     * Interface para callback de estatísticas
-     */
     public interface EstatisticasCallback {
         void onEstatisticas(int total, int obtidas, float porcentagem);
         void onErro(String erro);

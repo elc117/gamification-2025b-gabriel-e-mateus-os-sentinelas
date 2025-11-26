@@ -28,7 +28,7 @@ public class TelaCriarUsuario extends TelaBase {
     public TelaCriarUsuario(Main game) {
         super(game);
         this.registroService = new RegistroService();
-        // Cores para tema de registro - tons de verde/turquesa
+
         corFundoTop = new Color(0.15f, 0.35f, 0.35f, 1);
         corFundoBottom = new Color(0.05f, 0.15f, 0.2f, 1);
     }
@@ -43,7 +43,7 @@ public class TelaCriarUsuario extends TelaBase {
         Table mainTable = new Table();
         mainTable.setFillParent(true);
 
-        // Painel de registro (card estilo)
+        // Painel de registro
         Table painelRegistro = new Table();
         painelRegistro.setBackground(skin.getDrawable("default-round"));
         painelRegistro.pad(40);
@@ -108,7 +108,6 @@ public class TelaCriarUsuario extends TelaBase {
         botaoCriar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Botão Criar Conta clicado!");
                 criarConta();
             }
         });
@@ -116,7 +115,6 @@ public class TelaCriarUsuario extends TelaBase {
         botaoVoltar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Botão Voltar clicado!");
                 game.setScreen(new TelaMenu(game));
             }
         });
@@ -238,8 +236,6 @@ public class TelaCriarUsuario extends TelaBase {
                         Actions.scaleTo(1.05f, 1.05f, 0.2f),
                         Actions.scaleTo(1f, 1f, 0.2f)
                     ));
-
-                    System.out.println("Conta criada com sucesso: " + nome);
                 });
             }
 

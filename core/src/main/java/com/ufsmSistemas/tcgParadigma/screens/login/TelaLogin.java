@@ -29,7 +29,7 @@ public class TelaLogin extends TelaBase {
     public TelaLogin(Main game) {
         super(game);
         this.loginService = new LoginService();
-        // Cores para tema de login - tons de azul
+
         corFundoTop = new Color(0.15f, 0.25f, 0.45f, 1);
         corFundoBottom = new Color(0.05f, 0.1f, 0.25f, 1);
     }
@@ -96,7 +96,6 @@ public class TelaLogin extends TelaBase {
         botaoLogin.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Botão Entrar clicado!");
                 autenticarUsuario();
             }
         });
@@ -104,7 +103,6 @@ public class TelaLogin extends TelaBase {
         botaoVoltar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Botão Voltar clicado!");
                 game.setScreen(new TelaMenu(game));
             }
         });
@@ -191,7 +189,6 @@ public class TelaLogin extends TelaBase {
             public void onSuccess(Jogador jogador) {
                 Gdx.app.postRunnable(() -> {
                     exibirMensagem("✅ Login realizado com sucesso!", new Color(0.3f, 0.9f, 0.4f, 1));
-                    System.out.println("Jogador logado: " + jogador.getNome());
 
                     // Pequeno delay antes de mudar de tela
                     stage.addAction(Actions.sequence(

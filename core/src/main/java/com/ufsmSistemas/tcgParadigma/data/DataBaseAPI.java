@@ -17,6 +17,7 @@ public class DataBaseAPI {
     public static void insert(final DataBaseEntityAPI entity) {
         String endpoint = getEndpoint(entity) + "/insert";
         JsonValue json = entity.toJson();
+
         sendRequest(endpoint, json, new ResponseCallback() {
             @Override
             public void onResponse(JsonValue response) {
@@ -29,7 +30,6 @@ public class DataBaseAPI {
 
             @Override
             public void onError(String response) {
-
             }
 
         });
@@ -38,6 +38,7 @@ public class DataBaseAPI {
     public static void update(final DataBaseEntityAPI entity) {
         String endpoint = getEndpoint(entity) + "/update";
         JsonValue json = entity.toJson();
+
         sendRequest(endpoint, json, new ResponseCallback() {
             @Override
             public void onResponse(JsonValue response) {
@@ -54,12 +55,12 @@ public class DataBaseAPI {
     public void select(final DataBaseEntityAPI entity, ResponseCallback callback, String tipo) {
         String endpoint = getEndpoint(entity) + tipo;
         JsonValue json = entity.toJsonKey();
+
         sendRequest(endpoint, json, new ResponseCallback() {
             @Override
             public void onResponse(JsonValue response) {
                 try {
                     entity.fromJson(response);
-                    System.out.println("API " + entity.getClass().getSimpleName() + " carregado");
                     callback.onResponse(response);
                 } catch (Exception e) {
                     callback.onError("Erro ao processar JSON: " + e.getMessage());
@@ -80,11 +81,7 @@ public class DataBaseAPI {
     }
 
     private static void sendRequest(final String url, JsonValue json, final ResponseCallback callback) {
-        // Converte JsonValue para String JSON manualmente (GWT-safe)
         String jsonString = buildJsonString(json);
-
-        //Gdx.app.log("API", "Enviando para " + url + ": " + jsonString);
-        System.out.println("JSON: " + jsonString);
 
         // Cria requisição HTTP de forma mais simples
         Net.HttpRequest request = new Net.HttpRequest(Net.HttpMethods.POST);

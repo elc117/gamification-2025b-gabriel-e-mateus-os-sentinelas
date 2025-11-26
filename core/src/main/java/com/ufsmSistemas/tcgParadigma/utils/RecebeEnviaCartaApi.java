@@ -16,7 +16,6 @@ public class RecebeEnviaCartaApi {
     }
 
     public void receberCartaApi(Carta cartaMolde, CartaCallback callback) {
-
         api.select(cartaMolde, new ResponseCallback() {
             @Override
             public void onResponse(JsonValue response) {
@@ -38,11 +37,8 @@ public class RecebeEnviaCartaApi {
         }, "/get");
     }
 
-
     public void atualizaCartaApi(Carta cartaAtualizada, Jogador jogador) {
         CartaEJogador cartaJogador = new CartaEJogador(jogador, cartaAtualizada);
         DataBaseAPI.update(cartaJogador);
     }
-
-
 }

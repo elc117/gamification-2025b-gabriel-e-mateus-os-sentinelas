@@ -11,6 +11,7 @@ public class Jogador implements DataBaseEntityAPI {
     private int quantidadeBoosterAbertos;
     private String senha;
 
+
     public Jogador(String nome, String senha) {
         this.nome = nome;
         this.senha = senha;
@@ -19,7 +20,6 @@ public class Jogador implements DataBaseEntityAPI {
         this.quantidadeBoosterAbertos = 0;
     }
 
-    // Getters
     public int getId() {
         return id;
     }
@@ -39,7 +39,6 @@ public class Jogador implements DataBaseEntityAPI {
         return quantidadeBoosterAbertos;
     }
 
-    // Setters
     public void setId(int id) {
         this.id = id;
     }
@@ -61,7 +60,7 @@ public class Jogador implements DataBaseEntityAPI {
 
 
     @Override
-    public JsonValue toJson() { // Converte os dados do objeto para um JsonValue que será salvo no banco de dados pela API
+    public JsonValue toJson() {
         JsonValue json = new JsonValue(JsonValue.ValueType.object);
         json.addChild("id", new JsonValue(id));
         json.addChild("nome", new JsonValue(nome));
