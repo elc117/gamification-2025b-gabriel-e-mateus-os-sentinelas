@@ -1,8 +1,8 @@
 # 🎴 Lendas Históricas
 
 ## 🧭 Resumo
-Desenvolvido pelos alunos **Mateus Cardoso** e **Gabriel Saueressig** para a disciplina de **Paradigmas de Programação**, o Lendas Históricas nasceu de um hobby em comum: 
-a paixão por colecionar cartas de Pokémon e o interesse por figuras históricas.
+Desenvolvido pelos alunos **Mateus Cardoso** e **Gabriel Saueressig** para a disciplina de **Paradigmas de Programação** do curso de Sistemas de informação UFSM, 
+o Lendas Históricas nasceu de um hobby em comum: a paixão por colecionar cartas de Pokémon e o interesse por figuras históricas.
 
 A proposta central é implementar um sistema gamificado de resposta a perguntas, ele permite que os jogadores escolham a área do conhecimento e a dificuldade dos quizzes, 
 recebendo perguntas aleatórias dentro desses critérios. Durante os quizzes, os usuários receberão feedback sobre suas respostas e acumularão pontos proporcionais à dificuldade escolhida. 
@@ -58,9 +58,9 @@ arquitetura do jogo.
 
 O primeiro código concreto escrito foi o das **classes base**, como `Jogador`, `Carta` e outras entidades essenciais para dar forma ao *Historical TCG*.
 
-#### Diagrama Feito antes de Começar o Projeto
+### Diagrama Feito antes de Começar o Projeto
 ![Diagrama inicial](./diagramas/ClassDiagramTrabalhoParadigmaPng.png)
-#### Diagrama Feito após o Término do Projeto
+### Diagrama Feito após o Término do Projeto
 ![Diagrama final resumido](./diagramas/Diagrama_geral_resumido.png)
 ### Diagrama Completo
 ![Diagrama final](./diagramas/tcgParadigma.png)
@@ -84,11 +84,49 @@ no ambiente Web.
 
 ### 🌐 A Solução: API Python
 Após muita experimentação, adotamos uma abordagem mais robusta: a criação de uma **API** hospedada em [PyAnyWhere](https://www.pythonanywhere.com/). 
-Essa API, escrita em **Python**, recebe requisições **GET** e **POST** do jogo e as traduz em comandos SQL para o banco **SQLite**. 
+Essa API, escrita em **Python Flask**, recebe requisições **GET** e **POST** do jogo e as traduz em comandos SQL para o banco **SQLite**. 
 Os dados trafegam no formato **JSON**, o que nos permitiu **abstrair o acesso direto ao banco de dados** e tornar o código **totalmente multiplataforma** —
 funcionando de forma idêntica em **Web, Desktop e Mobile**.
-
 Essa solução não apenas resolveu o problema, mas também tornou o sistema mais **modular, seguro e escalável**.
+
+### Código python para inserção de jogador na API:
+```python
+@app.route('/api/jogador/insert', methods=['POST', 'OPTIONS'])
+def insert_jogador():
+    if request.method == 'OPTIONS':
+        return '', 200  
+
+    data = request.get_json()
+    nome = data.get('nome')
+    senha = data.get('senha')
+
+    if not nome or not senha:
+        return jsonify({"erro": "nome e senha são obrigatórios"}), 400
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        'INSERT INTO jogador (nome, senha) VALUES (?, ?)',
+        (nome, senha)
+    )
+    conn.commit()
+    jogador_id = cursor.lastrowid
+    conn.close()
+
+    return jsonify({"status": "ok", "id": jogador_id})
+```
+
+### Interface Java para objetos que relacionam-se com a API:
+```java
+public interface DataBaseEntityAPI {
+    JsonValue toJson();
+    JsonValue toJsonKey();
+
+    void fromJson(JsonValue json);
+    void setId(int id);
+    int getId();
+}
+```
 
 ### SQL e Comunicação com a API
 
@@ -130,12 +168,24 @@ Dessa forma, o quiz une aprendizado e colecionismo, transformando o estudo em um
 
 ---
 
-### 🎵 Músicas
+## 🎵 Músicas
 
 Uma experiência particularmente criativa do projeto foi a produção das músicas utilizadas no jogo. O processo envolveu um trabalho colaborativo que começou com discussões sobre músicas
 que apreciávamos. A partir dessas referências, tocamos elas em um teclado MIDI com **voices personalizadas** (timbres customizados). 
 Após a gravação dos áudios, utilizamos os recursos de áudio da biblioteca **LibGDX** para integrar as músicas ao jogo, garantindo qualidade sonora e sincronização adequada com 
 os diferentes momentos da gameplay.
+
+---
+
+## 🚀 Execução
+
+### 🔧 Orientações
+Requer constante conexão com a internet para funcionar corretamente.
+
+### ▶️ Vídeo
+Há um vídeo da execução em web disponível [aqui](https://www.youtube.com/watch?v=YXsPFa4iCvw).
+
+---
 
 ## 📘 Referências
 
@@ -225,5 +275,8 @@ Alguns prompts utilizados:
 
 #### Ultra Rara
 - Todas geradas por IA
+
+### 🎵 Músicas
+As músicas utilizadas como base foram [The Witcher 3 Soundtrack OST - Priscilla's Song](https://www.youtube.com/watch?v=2bSk-8C76dc) e [Pokemon Fire Red Version Intro](https://www.youtube.com/watch?v=XBmgAp_PlgI).
 
 Para solicitar qualquer alteração de referência e/ou inclusão de novas referências favor entrar em contato com o autor.
