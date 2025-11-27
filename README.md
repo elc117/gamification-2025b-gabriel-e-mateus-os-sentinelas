@@ -141,6 +141,20 @@ Por exemplo, não era possível exibir as cartas na tela se o servidor ainda nã
 assíncrona que não haviam sido abordados em aula, como **Callbacks** e **sincronização de threads**. Essas técnicas nos permitiram aguardar a resposta da API antes de prosseguir 
 com a renderização das cartas, garantindo a consistência dos dados exibidos.
 
+O aprendizado destas técnicas foi feito atravez de pesquisa em fóruns e de perguntas ativas à IA, entendendo o funcionamento e chegando a esta solução:
+
+```java
+receberCarta.receberCartaApi(carta, novaCarta -> {
+    synchronized (cartasBooster) {
+        cartasBooster.add(novaCarta);
+
+        if (cartasBooster.size() == cartasEsperadas && callback != null) {
+            callback.onBoosterCompleto(new ArrayList<>(cartasBooster));
+        }
+    }
+});
+```
+
 #### A Importância de um Comando SQL Bem Estruturado
 
 Outro desafio enfrentado foi a comunicação frequente com o banco de dados. Em determinada etapa do projeto, era necessário verificar se o jogador já possuía uma carta específica: 
@@ -148,14 +162,49 @@ caso já tivesse, o sistema deveria atualizar a quantidade; caso contrário, dev
 Inicialmente, implementamos três funções separadas: `verificaCarta()`, `updateCarta()` e `adicionaCarta()`. Essa abordagem exigia verificações constantes nos resultados retornados pelo
 banco de dados, aumentava a complexidade do código e gerava diversos bugs difíceis de rastrear e corrigir.
 
-Foi então que compreendemos a verdadeira importância de um **código SQL bem otimizado**. Ao refatorar a lógica, descobrimos que era possível realizar toda essa operação
-diretamente no banco de dados. 
-Isso eliminou a necessidade de múltiplas consultas e funções auxiliares, simplificou drasticamente o código e tornou o sistema mais eficiente e confiável.
-Mostrando assim que, muitas vezes, a melhor solução não está em adicionar mais código na aplicação, mas sim em aproveitar os recursos nativos do banco de dados.
+Foi então que compreendemos a verdadeira importância de um **código SQL bem otimizado**. Ao refatorar a lógica, descobrimos que era possível realizar toda essa operação diretamente no Servidor, gerando um único endpoint que se comunica com o banco de dados diretamente. 
+A migração dessa lógica para o servidor simplificou drasticamente o sistema e gerou múltiplos benefícios:
+
+1. Performance Aprimorada: Eliminação de múltiplas consultas e da latência de rede associada.
+
+2. Código Simplificado: Remoção da necessidade de funções auxiliares e do gerenciamento complexo de callbacks assíncronos nesta parte da aplicação.
+
+
+---
+
+## 🖌️ Desenvolvimento de Interface e Uso de IA
+
+### Classe Base para Reutilização de Código
+
+No início do desenvolvimento, foi percebida uma grande repetição de código entre as diferentes telas do jogo. Para solucionar isso, foi criada a classe **`TelaBase`** que estende `Screen` e implementa a maioria dos métodos padrão do LibGDX (`show()`, `render()`, `resize()`, `dispose()`, etc.). 
+
+Essa classe foi extendida por todas as outras telas do projeto, reduzindo significativamente a duplicação de código e facilitando a manutenção.
+
+A classe `TelaBase` faz coisas como: botar um fundo padrão para todas as telas, e implementar o render e resize padrão da LibGdx.
+
+### IA como Ferramenta de Aprendizado e Estilização
+
+Durante o desenvolvimento, foi utilizada inteligência artificial para compreender o funcionamento do sistema de telas do LibGDX, especialmente conceitos como:
+
+- Ciclo de vida das telas (`show()`, `render()`, `resize()`, `dispose()`)
+- Sistema de Stage e Actors
+- Organização com Tables e Layouts
+
+### Processo de Criação das Interfaces
+
+Toda a estilização visual das telas foi desenvolvida com auxílio de IA, que gerava a estrutura base dos layouts, componentes UI e estilos visuais. E então era adicionado a lógica funcional, incluindo:
+- Event listeners dos botões
+- Chamadas de funções de outras classes
+- Integração com o banco de dados
+- Gerenciamento de estados do jogo
+- Navegação entre telas
+
+Esse fluxo de trabalho permitiu focar na lógica de negócio enquanto a IA acelerava a criação da interface, resultando em telas visualmente consistentes e funcionalmente robustas.
 
 ---
 
 ## 🧠 Quiz
+
 O Quiz é o principal meio de interação educacional do jogo.
 Ele desafia os jogadores com perguntas de diferentes áreas do conhecimento, organizadas por níveis de dificuldade (fácil, médio e difícil).
 As questões abrangem desde conteúdos fundamentais e de ensino médio até tópicos avançados de programação, permitindo que o jogador aprenda e revise enquanto se diverte.
@@ -168,12 +217,124 @@ Dessa forma, o quiz une aprendizado e colecionismo, transformando o estudo em um
 
 ---
 
+## 🔠 Fontes
+
+### O Desafio
+
+Implementar fontes customizadas no LibGDX foi mais complicado do que esperado. LibGDX não trabalha diretamente com arquivos `.ttf` - é necessário converter para o formato `.fnt` usando ferramentas como o **Hiero** (ferramenta recomendada pelo próprio LibGdx), que gera um arquivo `.fnt` e um `.png`.
+
+Além disso, ajustar tamanhos de fonte é trabalhoso: não é possível simplesmente mudar o tamanho usando o próprio código, é preciso gerar múltiplas versões da fonte em tamanhos diferentes ou usar `setFontScale()`, que pode deixar o texto borrado. Neste projeto por exemplo, foi necessário gerar dois arquivos `.fnt` com seus `.png` adequados, um para textos grandes e outro para textos menores.
+
+### Erros Cometidos
+
+#### Modificar o Estilo Original da Skin
+
+Em alguns casos, eu precisava adicionar suporte a acentos em componentes que já vinham estilizados pela Skin padrão, como o `TextField` (input de texto). O problema era que criar um novo estilo apenas para mudar a fonte destruía completamente a estilização visual do componente, perdia cores, bordas, padding e outros detalhes.
+
+**Tentativa:**
+```java
+TextField.TextFieldStyle customStyle = new TextField.TextFieldStyle(
+    skin.get(TextField.TextFieldStyle.class)
+);
+customStyle.font = fonteComAcentos;
+TextField input = new TextField("", customStyle);
+// Resultado: input completamente desconfigurado
+```
+
+**Problema não resolvido:** No fim, não consegui corrigir este problema, principalmente no input de "Usuário", tanto pela falta de tempo quanto pela dificuldade em replicar toda a estilização manualmente.
+
+**Solução adotada:** Simplesmente mudei o texto de "Usuário" para "Username", evitando o acento.
+
+
+#### Limitações com Emojis e Unicode
+
+Quando a fonte é gerada usando o Hiero, ele oferece apenas conjuntos de caracteres limitados como **Latin Extended** ou **ASCII**. Gerar uma fonte com suporte completo a Unicode (incluindo emojis) resulta em arquivos extremamente grandes e tempos de carregamento inviáveis.
+
+Isso dificultou a utilização de emojis como forma rápida de adicionar ícones e estilização visual aos textos (📚, 🎯, 🛒), algo que seria muito prático para melhorar a interface.
+
+---
+
 ## 🎵 Músicas
 
 Uma experiência particularmente criativa do projeto foi a produção das músicas utilizadas no jogo. O processo envolveu um trabalho colaborativo que começou com discussões sobre músicas
 que apreciávamos. A partir dessas referências, tocamos elas em um teclado MIDI com **voices personalizadas** (timbres customizados). 
 Após a gravação dos áudios, utilizamos os recursos de áudio da biblioteca **LibGDX** para integrar as músicas ao jogo, garantindo qualidade sonora e sincronização adequada com 
 os diferentes momentos da gameplay.
+
+A biblioteca LibGDX oferece funções prontas e fáceis de usar para a implementação de diferentes músicas em diversas telas do jogo. A classe Music é ideal para faixas longas de áudio que não precisam ser carregadas totalmente na memória, como músicas de fundo.
+
+O seguinte bloco de código ilustra a inicialização e a configuração da música de fundo na fase de criação (create) do jogo:
+
+```java
+
+public static Music musicaFundo;
+
+public void create() {
+    // 1. Carrega o arquivo de áudio.
+    musicaFundo = Gdx.audio.newMusic(Gdx.files.internal("Audio/priscilaViolao.ogg"));
+    
+    // 2. Configura a reprodução (loop e volume).
+    musicaFundo.setLooping(true); // Repete infinitamente
+    musicaFundo.setVolume(1f);     // Volume máximo (1.0)
+
+    // 3. Inicia a reprodução.
+    musicaFundo.play();
+    
+    // Define a tela inicial.
+    setScreen(new TelaMenu(Main.this));
+}
+
+```
+
+Sempre que é necessário trocar a música de fundo (por exemplo, ao mudar de tela), a prática recomendada é parar a música atual, liberar seus recursos da memória e, em seguida, carregar a nova faixa. evitando o consumo desnecessário de memória e a sobreposição de áudios.
+
+```java
+
+// Verifica se há uma música tocando
+if (Main.musicaFundo != null) {
+    // 1. Para a música atual.
+    Main.musicaFundo.stop();
+    // 2. Libera os recursos de memória.
+    Main.musicaFundo.dispose();
+}
+
+// 3. Carrega e inicia a nova música (substituindo a anterior).
+Main.musicaFundo = Gdx.audio.newMusic(Gdx.files.internal("Audio/priscilaViolao.ogg"));
+
+```
+---
+
+## Possíveis Melhorias
+
+
+O projeto teve várias idealizações que não puderam ser implementadas a tempo devido ao prazo limitado, como:
+
+### 1. Sistema de Batalha Multijogador em Tempo Real
+Utilizar os recursos de **WebSocket** da biblioteca LibGDX para implementar batalhas PvP (Player vs Player) em tempo real.
+
+### 2. Versão Mobile para Android
+Adaptar o jogo para a plataforma Android, aproveitando a compatibilidade multiplataforma nativa do LibGDX. Isso expandiria significativamente o público-alvo, tornando o jogo mais acessível e portátil.
+
+
+Além das funcionalidades inicialmente planejadas, identificamos melhorias que podem agregar valor ao projeto em versões futuras:
+
+### 3. Sistema de Ranking e Leaderboards
+Implementar um sistema de classificação global onde jogadores possam comparar seus pontos, estatísticas e conquistas, incentivando a competitividade e o engajamento contínuo.
+
+### 4. Expansão de Conteúdo - Novas Categorias e Níveis
+Ampliar o banco de perguntas com novas categorias, temas e dificuldades.
+
+### 5. Sistema de Conquistas
+Adicionar conquistas desbloqueáveis que recompensem jogadores por atingir marcos específicos (vencer X batalhas, completar categorias, acumular pontos), incentivando a exploração completa das funcionalidades do jogo.
+
+### 6. Aprimoramento de Animações e Efeitos Visuais
+Implementar animações mais fluidas durante as batalhas, adicionar efeitos de partículas para acertos/erros, melhorar transições entre telas e criar feedback visual mais rico para as ações do jogador.
+
+### 7. Sistema de Troca de Cartas entre Jogadores
+Permitir que jogadores troquem cartas entre si através de um sistema de trade.
+
+### 8. Sistema de Áudio Dinâmico e Contextual
+Expandir o sistema de áudio com músicas que se adaptam dinamicamente ao contexto do jogo (menu principal, preparação para batalha, combate ativo, vitória/derrota), além de adicionar efeitos sonoros responsivos para todas as ações do jogador, aumentando a imersão.
 
 ---
 
@@ -204,6 +365,9 @@ Alguns prompts utilizados:
 - “Como melhorar o visual de um trabalho que usa libgdx…”
 - “preciso que melhore mto a visualização da carta, mas sem mudar a lógica…”
 - “me ajude a modularizar”
+- "Como utilzar Callbacks e Syncronized"
+- "Porque as imagens parecem mau formatadas"
+- "Como mexer com Json em uma aplicação java usando LibGdx"
 
 ### 🎨 Imagens
 É devido creditar também os diversos artistas que criaram as imagens utilizadas no jogo, as seguintes cartas têm imagem retirada de variadas fontes:
@@ -273,6 +437,7 @@ Alguns prompts utilizados:
 - [Hobbes](https://mundoeducacao.uol.com.br/historiageral/estado-moderno.htm)
 - [Voltaire](https://in.pinterest.com/pin/724727765073979280/)
 
+- O Restante das cartas raras foram feitas com o uso de IA
 #### Ultra Rara
 - Todas geradas por IA
 
