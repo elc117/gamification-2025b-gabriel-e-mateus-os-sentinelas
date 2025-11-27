@@ -359,6 +359,7 @@ Além do já creditado nas secções devidas, as inteligências artificiais fora
 - 🔧 refatoração
 - 📝 formatação do README (apenas formatação, sem gerar conteúdo)
 - 🐞 resolução de erros
+- 📚 Aprendizado de novos conceitos
 
 Alguns prompts utilizados:
 - “botão de voltar não funciona”
@@ -443,5 +444,11 @@ Alguns prompts utilizados:
 
 ### 🎵 Músicas
 As músicas utilizadas como base foram [The Witcher 3 Soundtrack OST - Priscilla's Song](https://www.youtube.com/watch?v=2bSk-8C76dc) e [Pokemon Fire Red Version Intro](https://www.youtube.com/watch?v=XBmgAp_PlgI).
+
+### 🔎 Pesquisas
+- [LibGdx Documentation](https://libgdx.com/dev/)
+- [Pesquisas sobre Screen em LibGdx](https://codingtechroom.com/question/-how-to-set-up-screens-in-libgdx)
+- [CallBack Functions em Java](https://www.baeldung.com/java-callback-functions)
+- Slides da Disciplina de Paradigmas de Programação
 
 Para solicitar qualquer alteração de referência e/ou inclusão de novas referências favor entrar em contato com o autor.
